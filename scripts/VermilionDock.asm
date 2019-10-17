@@ -155,10 +155,10 @@ VermilionDock_EmitSmokePuff:
 	ret
 
 VermilionDockOAMBlock:
-	db $fc, $10
-	db $fd, $10
-	db $fe, $10
-	db $ff, $10
+	db $fc, $01
+	db $fd, $01
+	db $fe, $01
+	db $ff, $01
 
 VermilionDock_1dc7c:
 	ld h, d

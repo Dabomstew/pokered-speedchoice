@@ -17,6 +17,10 @@ TitleScroll_Out:
 	db $12, $22, $32, $42, $52, $62, $83, $93, 0
 
 TitleScroll:
+	ld a, [rLYC]
+	push af
+	ld a, $70
+	ld [rLYC], a
 	ld a, d
 
 	ld bc, TitleScroll_In
@@ -34,7 +38,7 @@ TitleScroll:
 _TitleScroll:
 	ld a, [bc]
 	and a
-	ret z
+	jr z, .done
 
 	inc bc
 	push bc
@@ -81,6 +85,11 @@ _TitleScroll:
 	cp h
 	jr z, .wait2
 	ret
+	
+.done
+	pop af
+	ld [rLYC], a
+	ret
 
 TitleBallYTable:
 ; OBJ y-positions for the Poke Ball held by Red in the title screen.
@@ -100,6 +109,10 @@ TitleScreenAnimateBallIfStarterOut:
 	ld e, 1 ; animate titleball
 	ld bc, TitleScroll_WaitBall
 	ld d, 0
+	ld a, [rLYC]
+	push af
+	ld a, $70
+	ld [rLYC], a
 	jp _TitleScroll
 
 GetTitleBallY:

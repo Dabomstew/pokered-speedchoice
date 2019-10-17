@@ -2096,3 +2096,11 @@ INCLUDE "engine/evolution.asm"
 INCLUDE "engine/overworld/elevator.asm"
 
 INCLUDE "engine/items/tm_prices.asm"
+
+SECTION "hblankfar", ROMX
+
+INCLUDE "engine/hblank.asm"
+
+SECTION "print_number", ROMX
+
+INCLUDE "engine/print_number.asm"

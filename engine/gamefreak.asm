@@ -146,7 +146,7 @@ AnimateShootingStar:
 	ret
 
 SmallStarsOAM:
-	db $00,$00,$A2,$90
+	db $00,$00,$A2,$81
 SmallStarsOAMEnd:
 
 SmallStarsWaveCoordsPointerTable:
@@ -232,10 +232,10 @@ GameFreakLogoOAMData:
 GameFreakLogoOAMDataEnd:
 
 GameFreakShootingStarOAMData:
-	db $00,$A0,$A0,$10
-	db $00,$A8,$A0,$30
-	db $08,$A0,$A1,$10
-	db $08,$A8,$A1,$30
+	db $00,$A0,$A0,$01
+	db $00,$A8,$A0,$21
+	db $08,$A0,$A1,$01
+	db $08,$A8,$A1,$21
 GameFreakShootingStarOAMDataEnd:
 
 FallingStar:

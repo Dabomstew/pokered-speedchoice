@@ -38,6 +38,36 @@ rLCDC_DEFAULT EQU %11100011
 	ld a, rLCDC_ENABLE_MASK
 	ld [rLCDC], a
 	call DisableLCD
+	
+	lb bc, $3f, rBGPI & $ff
+	ld a, %10000000
+	ld [$ff00+c], a
+	inc c
+	ld a, $ff
+.bgpClearLoop
+	ld [$ff00+c], a
+	dec b
+	jr nz, .bgpClearLoop
+	lb bc, $3f, rOBPI & $ff
+	ld a, %10000000
+	ld [$ff00+c], a
+	inc c
+	ld a, $ff
+.obpClearLoop
+	ld [$ff00+c], a
+	dec b
+	jr nz, .obpClearLoop
+	ld a, [rKEY1]
+	bit 7, a
+	jr nz, .skipSpeedSwitch
+	ld a, 1
+	ld [rKEY1], a
+	dec a
+	ld [rJOYP], a
+	stop
+	ld a, $30
+	ld [rJOYP], a
+.skipSpeedSwitch
 
 	ld sp, wStack
 
@@ -63,21 +93,29 @@ rLCDC_DEFAULT EQU %11100011
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	call WriteDMACodeToHRAM
+	
+	ld a, %1000000
+	ld [rSTAT], a
 
 	xor a
 	ld [hTilesetType], a
-	ld [rSTAT], a
 	ld [hSCX], a
 	ld [hSCY], a
 	ld [rIF], a
-	ld a, 1 << VBLANK + 1 << TIMER + 1 << SERIAL
+	ld a, 1 << LCD_STAT + 1 << VBLANK + 1 << TIMER + 1 << SERIAL
 	ld [rIE], a
 
+	ld a, $81
+	ld [rLYC], a
 	ld a, 144 ; move the window off-screen
 	ld [hWY], a
 	ld [rWY], a
 	ld a, 7
 	ld [rWX], a
+	ld a, $FF
+	ld [wLastPalette], a
+	xor a
+	ld [wCurPalette], a
 
 	ld a, CONNECTION_NOT_ESTABLISHED
 	ld [hSerialConnectionStatus], a

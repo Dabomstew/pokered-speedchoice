@@ -33,6 +33,83 @@ ClearBgMap::
 	jr nz, .loop
 	ret
 
+WriteCGBPalettes::
+	ld a, [hLastBGP]
+	ld b, a
+	ld a, [rBGP]
+	cp b ; has the BGP changed since the last check?
+	ld [hLastBGP], a
+	jr z, .checkOBP0 ; if not, check OBP0
+	ld hl, wTempBGP
+	lb bc, 8, rBGPI & $ff
+	ld a, %10000000
+	ld [$ff00+c], a
+	inc c
+.bgpLoop
+	ld a, [hli]
+	ld [$ff00+c], a
+	dec b
+	jr nz, .bgpLoop
+.checkOBP0
+	ld a, [hLastOBP0]
+	ld b, a
+	ld a, [rOBP0]
+	cp b ; has the OBP0 changed?
+	ld [hLastOBP0], a
+	jr z, .checkOBP1
+	
+	ld hl, wTempOBP0
+	ld d, h ; save address to copy non-sequentially to palettes 2 and 3 (see below)
+	ld e, l
+	lb bc, 8, rOBPI & $ff
+	ld a, %10000000
+	ld [$ff00+c], a
+	inc c
+.obp0Loop1
+	ld a, [hli]
+	ld [$ff00+c], a
+	dec b
+	jr nz, .obp0Loop1
+; the oam code writes 02 and 03 to the flags byte for the bottom half of sprites for some reason
+; the hblank function clears these writes, but sprite flickering still occurs
+; therefore, we write to palettes 2 and 3 to hide the sprite flickering
+	ld a, %10000000 | 16
+	ld [rOBPI], a
+	ld b, 8
+	ld h, d ; saves cycles over push/pop
+	ld l, e
+.obp0Loop2
+	ld a, [hli]
+	ld [$ff00+c], a
+	dec b
+	jr nz, .obp0Loop2
+	ld b, 8
+	ld h, d
+	ld l, e
+.obp0Loop3
+	ld a, [hli]
+	ld [$ff00+c], a
+	dec b
+	jr nz, .obp0Loop3
+.checkOBP1
+	ld a, [hLastOBP1]
+	ld b, a
+	ld a, [rOBP1]
+	cp b ; has the OBP1 changed?
+	ld [hLastOBP1], a
+	ret z
+	ld hl, wTempOBP1
+	lb bc, 8, rOBPI & $ff
+	ld a, %10000000 | 8
+	ld [$ff00+c], a
+	inc c
+.obp1Loop
+	ld a, [hli]
+	ld [$ff00+c], a
+	dec b
+	jr nz, .obp1Loop
+	ret
+
 ; This function redraws a BG row of height 2 or a BG column of width 2.
 ; One of its main uses is redrawing the row or column that will be exposed upon
 ; scrolling the BG when the player takes a step. Redrawing only the exposed
@@ -123,6 +200,56 @@ AutoBgMapTransfer::
 	ld a, [H_AUTOBGTRANSFERENABLED]
 	and a
 	ret z
+	ld a, [H_AUTOBGTRANSFERDEST]
+	and a
+	jr nz, .oldMode
+	xor a
+	ld l, a
+	ld h, $d0
+	ld a, [H_AUTOBGTRANSFERDEST + 1]
+	ld d, a
+; change to wram bank 2
+	ld a, 2
+	ld [rSVBK], a
+	ld b, 18
+.hdmaLoop
+	ld a, h
+	ld [rHDMA1], a
+	ld a, l
+	ld [rHDMA2], a
+	ld [rHDMA4], a ; e and l are always the same
+	ld a, d
+	ld [rHDMA3], a
+	xor a ; value of 00 = $10 bytes
+	ld [rHDMA5], a
+; copy remaining 4 bytes manually
+	set 4, l ; +$10
+	ld e, l
+rept 3
+	ld a, [hli]
+	ld [de], a
+	inc e
+endr
+	; last tile
+	ld a, [hl]
+	ld [de], a
+	; done?
+	dec b
+	jr z, .done
+	; move to next row
+	ld a, BG_MAP_WIDTH - (SCREEN_WIDTH - 1)
+	add l
+	ld l, a
+	jr nc, .hdmaLoop
+	inc h
+	inc d
+	jr .hdmaLoop
+; done
+.done
+	xor a
+	ld [rSVBK], a
+	ret
+.oldMode
 	ld hl, sp + 0
 	ld a, h
 	ld [H_SPTEMP], a

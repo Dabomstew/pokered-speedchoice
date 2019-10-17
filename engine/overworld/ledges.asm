@@ -82,5 +82,5 @@ LedgeHoppingShadow:
 LedgeHoppingShadowEnd:
 
 LedgeHoppingShadowOAM:
-	db $FF,$10,$FF,$20
+	db $FF,$01,$FF,$20
 	db $FF,$40,$FF,$60
