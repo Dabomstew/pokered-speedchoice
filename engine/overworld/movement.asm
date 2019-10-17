@@ -680,9 +680,27 @@ CanWalkOntoTile:
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $8
 	ld l, a
+	ld a, [wPermanentOptions]
+	and SPINNERS_MASK
+	jr z, .normal
+	dec a
+	ld a, SPINNERHELL_NORMAL_SPEED
+	jr z, .generate
+	ld a, SPINNERHELL_WHY_SPEED
+.generate
+	push bc
+	ld b, a
+	call Random
+	ld a, [hRandomAdd]
+	and b
+	inc a ; prevent underflow for spinnerhell
+	pop bc
+	jr .done
+.normal
 	call Random
 	ld a, [hRandomAdd]
 	and $7f
+.done
 	ld [hl], a         ; c2x8: set next movement delay to a random value in [0,$7f] (again with delay $100 if value is 0)
 	scf                ; set carry (marking failure to walk)
 	ret

@@ -2460,7 +2460,12 @@ CheckForEngagingTrainers::
 	xor a
 	call ReadTrainerHeaderInfo       ; get trainer header pointer
 	inc hl
+	ld a, [wPermanentOptions]
+	bit MAX_RANGE, a
+	ld a, $50
+	jr nz, .loadedVision
 	ld a, [hl]                       ; read trainer engage distance
+.loadedVision
 	pop hl
 	ld [wTrainerEngageDistance], a
 	ld a, [wSpriteIndex]

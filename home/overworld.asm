@@ -2221,7 +2221,16 @@ LoadMapHeader::
 	ld a, [hLoadSpriteTemp1]
 	ld [hli], a ; store movement byte 2 in byte 0 of sprite entry
 	ld a, [hLoadSpriteTemp2]
-	ld [hl], a ; this appears pointless, since the value is overwritten immediately after
+; random facing direction for spinner hell, by lucky
+	bit 6, a
+	jr z, .notTrainerOrSpinnerHell
+	ld a, [wPermanentOptions]
+	and SPINNERS_MASK
+	jr z, .notTrainerOrSpinnerHell
+	dec hl
+	ld a, NONE
+	ld [hli], a
+.notTrainerOrSpinnerHell
 	ld a, [hLoadSpriteTemp2]
 	ld [hLoadSpriteTemp1], a
 	and $3f

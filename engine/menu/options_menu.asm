@@ -143,7 +143,7 @@ OptionsMenuScreens:
 	; default options page 1
 	options_menu 5, MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
 	; permaoptions page 1
-	options_menu 3, PermaOptionsString, PermaOptionsPointers, START
+	options_menu 5, PermaOptionsString, PermaOptionsPointers, START
 
 GetOptionPointer:
 	ld a, [wOptionsMenuCount]

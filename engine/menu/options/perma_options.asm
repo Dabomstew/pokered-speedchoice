@@ -5,8 +5,6 @@ PermaOptionsString::
 	db "        :<LNBRK>"
 	db "RIVAL NAME<LNBRK>"
 	db "        :<LNBRK>"
-	db "ROCKET SECTIONS<LNBRK>"
-	db "        :<LNBRK>"
 	db "SPINNERS<LNBRK>"
 	db "        :<LNBRK>"
 	db "TRAINER VISION<LNBRK>"
@@ -18,6 +16,8 @@ PermaOptionsPointers::
 	dw Options_Preset
 	dw Options_Name
 	dw Options_RivalName
+	dw Options_Spinners
+	dw Options_TrainerVision
 	dw Options_PermaOptionsPage
 
 PermaOptionsPresets:
@@ -149,3 +149,83 @@ Options_RivalName:
 
 .NotSetString
 	db "NOT SET@"
+	
+Options_TrainerVision:
+	ld hl, wPermanentOptions
+	ld b, MAX_RANGE
+	ld c, 11
+	ld de, .NormalMax
+	jp Options_TrueFalse
+.NormalMax
+	dw .Off
+	dw .On
+.Off
+	db "NORMAL@"
+.On
+	db "MAX   @"
+	
+Options_Spinners:
+	ld hl, wPermanentOptions
+	bit BIT_D_LEFT, a
+	jr nz, .LeftPressed
+	bit BIT_D_RIGHT, a
+	jr nz, .RightPressed
+	jr .UpdateDisplay
+
+.RightPressed
+	call .GetSpinnerVal
+	inc a
+	jr .Save
+
+.LeftPressed
+	call .GetSpinnerVal
+	dec a
+
+.Save
+	cp $ff
+	jr nz, .nextCheck
+	ld a, 2
+	jr .store
+.nextCheck
+	cp $03
+	jr nz, .store
+	xor a
+.store
+	ld b, a
+	ld a, [hl]
+	and $ff ^ SPINNERS_MASK
+	or b
+	ld [hl], a
+	
+.UpdateDisplay: ; e4512
+	call .GetSpinnerVal
+	ld c, a
+	ld b, 0
+	ld hl, .Strings
+rept 2
+	add hl, bc
+endr
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	hlcoord 11, 9
+	call PlaceString
+	and a
+	ret
+	
+.GetSpinnerVal:
+	ld a, [hl]
+	and SPINNERS_MASK
+	ret
+	
+.Strings:
+	dw .Normal
+	dw .Hell
+	dw .Why
+	
+.Normal
+	db "NORMAL@"
+.Hell
+	db "HELL  @"
+.Why
+	db "WHY   @"
