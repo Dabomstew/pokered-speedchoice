@@ -3414,7 +3414,12 @@ WaitForTextScrollButtonPress::
 	pop hl
 	call JoypadLowSensitivity
 	predef CableClub_Run
+	ld a, [wOptions]
+	and (1 << HOLD_TO_MASH)
+	ld a, [hJoyHeld]
+	jr nz, .check
 	ld a, [hJoy5]
+.check
 	and A_BUTTON | B_BUTTON
 	jr z, .loop
 	pop af
