@@ -1,4 +1,4 @@
-MainOptionsString:: ; e4241
+MainOptionsString::
 	db "TEXT SPEED<LNBRK>"
 	db "        :<LNBRK>"
 	db "HOLD TO MASH<LNBRK>"
@@ -9,7 +9,6 @@ MainOptionsString:: ; e4241
 	db "        :<LNBRK>"
 	db "PALETTE<LNBRK>"
 	db " :@"
-; e42d6
 
 MainOptionsPointers::
 	dw Options_TextSpeed
@@ -20,7 +19,7 @@ MainOptionsPointers::
 	dw Options_OptionsPage
 ; e42f5
 
-Options_TextSpeed: ; e42f5
+Options_TextSpeed:
 	call GetTextSpeed
 	ld a, [hJoyPressed]
 	bit BIT_D_LEFT, a
@@ -64,7 +63,6 @@ endr
 	call PlaceString
 	and a
 	ret
-; e4331
 
 .Strings
 	dw .Inst
@@ -81,7 +79,6 @@ endr
 	db "MID @"
 .Slow
 	db "SLOW@"
-; e4346
 
 GetTextSpeed::
 	ld a, [wOptions]
@@ -89,7 +86,7 @@ GetTextSpeed::
 	ld c, a
 	ret
 
-Options_BattleScene: ; e4365
+Options_BattleScene:
 	ld hl, wOptions
 	and (1 << BIT_D_LEFT) | (1 << BIT_D_RIGHT)
 	ld a, [hl]
@@ -106,16 +103,14 @@ Options_BattleScene: ; e4365
 	call PlaceString
 	and a
 	ret
-; e4398
 
 .On
 	db "ON @"
 .Off
 	db "OFF@"
-; e43a0
 
 
-Options_BattleStyle: ; e43a0
+Options_BattleStyle:
 	ld hl, wOptions
 	and (1 << BIT_D_LEFT) | (1 << BIT_D_RIGHT)
 	ld a, [hl]
@@ -132,15 +127,13 @@ Options_BattleStyle: ; e43a0
 	call PlaceString
 	and a
 	ret
-; e43d1
 
 .Shift
 	db "SHIFT@"
 .Set
 	db "SET  @"
-; e43dd
 
-Options_HoldToMash: ; e44c1
+Options_HoldToMash:
 	ld hl, wOptions
 	and (1 << BIT_D_LEFT) | (1 << BIT_D_RIGHT)
 	ld a, [hl]
@@ -157,13 +150,11 @@ Options_HoldToMash: ; e44c1
 	call PlaceString
 	and a
 	ret
-; e44f2
 
 .Off
 	db "OFF@"
 .On
 	db "ON @"
-; e44fa
 
 Options_Palette:
 	ld a, [wCurPalette]
@@ -214,7 +205,6 @@ Options_Palette:
 	call PlaceString
 	and a
 	ret
-; e4331
 
 .Strings
 	db "DEFAULT       @"

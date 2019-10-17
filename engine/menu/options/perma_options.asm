@@ -1,4 +1,4 @@
-PermaOptionsString:: ; e4241
+PermaOptionsString::
 	db "PRESET (A: SET)<LNBRK>"
 	db "        :<LNBRK>"
 	db "PLAYER NAME<LNBRK>"
@@ -13,7 +13,6 @@ PermaOptionsString:: ; e4241
 	db "        :<LNBRK>"
 	db "NERF HMs<LNBRK>"
 	db "        :@"
-; e42d6
 
 PermaOptionsPointers::
 	dw Options_Preset

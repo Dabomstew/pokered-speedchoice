@@ -12,7 +12,7 @@ OptionsMenu::
 	xor a
 	; fallthrough
 
-OptionsMenuCommon:: ; e41d0
+OptionsMenuCommon::
 	ld [wOptionsMenuID], a
 	xor a
 	ld [wStoredJumptableIndex], a
@@ -76,7 +76,6 @@ OptionsMenuCommon:: ; e41d0
 	call PlaySound
 	call WaitForSoundToFinish
 	ret
-; e4241
 
 DrawOptionsMenu:
 	call DrawOptionsMenuLagless
@@ -146,7 +145,7 @@ OptionsMenuScreens:
 	; permaoptions page 1
 	options_menu 3, PermaOptionsString, PermaOptionsPointers, START
 
-GetOptionPointer: ; e42d6
+GetOptionPointer:
 	ld a, [wOptionsMenuCount]
 	ld b, a
 	ld a, [wJumptableIndex] ; load the cursor position to a
@@ -168,9 +167,8 @@ endr
 	ld l, a
 	ld a, [hJoyPressed] ; almost all options use this, so it's easier to just do it here
 	jp hl ; jump to the code of the current highlighted item
-; e42e5
 
-Options_Cancel: ; e4520
+Options_Cancel:
 	and A_BUTTON
 	jr nz, Options_Exit
 Options_NoFunc:
@@ -180,7 +178,6 @@ Options_NoFunc:
 Options_Exit:
 	scf
 	ret
-; e452a
 
 Options_OptionsPage:
 	lb bc, FIRST_OPTIONS_PAGEID, FIRST_OPTIONS_PAGEID + NUM_OPTIONS_PAGES - 1
@@ -233,7 +230,7 @@ Options_Page:
 .PageString
 	db "PAGE:@"
 
-OptionsControl: ; e452a
+OptionsControl:
 	ld hl, wJumptableIndex
 	ld a, [hJoyPressed]
 	cp D_DOWN
@@ -284,9 +281,8 @@ OptionsControl: ; e452a
 	ld [hl], a
 	scf
 	ret
-; e455c
 
-Options_UpdateCursorPosition: ; e455c
+Options_UpdateCursorPosition:
 	hlcoord 1, 1
 	ld de, SCREEN_WIDTH
 	ld c, $10
@@ -301,7 +297,6 @@ Options_UpdateCursorPosition: ; e455c
 	call AddNTimes
 	ld [hl], "▶"
 	ret
-; e4579
 
 INCLUDE "engine/menu/options/main_options.asm"
 INCLUDE "engine/menu/options/perma_options.asm"
