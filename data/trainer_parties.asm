@@ -156,6 +156,8 @@ JrTrainerMData:
 	db 19,RATTATA,DIGLETT,EKANS,SANDSHREW,0
 ; Route 12
 	db 29,NIDORAN_M,NIDORINO,0
+; Pewter Gym nerfed
+	db 9,DIGLETT,SANDSHREW,0
 JrTrainerFData:
 ; Cerulean Gym
 	db 19,GOLDEEN,0
@@ -607,6 +609,7 @@ BrunoData:
 	db $FF,53,ONIX,55,HITMONCHAN,55,HITMONLEE,56,ONIX,58,MACHAMP,0
 BrockData:
 	db $FF,12,GEODUDE,14,ONIX,0
+	db $FF,10,GEODUDE,12,ONIX,0 ; nerfed version
 MistyData:
 	db $FF,18,STARYU,21,STARMIE,0
 LtSurgeData:

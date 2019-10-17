@@ -2176,7 +2176,7 @@ wCurrentMapScriptFlags:: ds 1 ; not exactly sure what this is used for, but it s
 wCurEnemyLVL:: ; d127
 	ds 1
 
-wItemListPointer:: ; d128
+wItemListPointer:: ; d128 ; unused
 ; pointer to list of items terminated by $FF
 	ds 2
 

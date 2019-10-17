@@ -1,20 +1,9 @@
 ; mart inventories are below
 ; they are texts
+; note that these don't actually need to be in homebank (except for better early mart which is shared by several marts)
 
-; Viridian
-ViridianCashierText::
-	TX_MART POKE_BALL, ANTIDOTE, PARLYZ_HEAL, BURN_HEAL
-
-; Pewter
-PewterCashierText::
-	TX_MART POKE_BALL, POTION, ESCAPE_ROPE, ANTIDOTE, BURN_HEAL, AWAKENING, PARLYZ_HEAL
-
-; Cerulean
-CeruleanCashierText::
-	TX_MART POKE_BALL, POTION, REPEL, ANTIDOTE, BURN_HEAL, AWAKENING, PARLYZ_HEAL
-
-; Bike shop
-	TX_MART BICYCLE
+BetterEarlyMartCashierText::
+	TX_MART POKE_BALL, POTION, ESCAPE_ROPE, REPEL, ANTIDOTE, BURN_HEAL, ICE_HEAL, AWAKENING, PARLYZ_HEAL
 
 ; Vermilion
 VermilionCashierText::
@@ -31,10 +20,6 @@ CeladonMart2Clerk1Text::
 ; Celadon Dept. Store 2F (2)
 CeladonMart2Clerk2Text::
 	TX_MART TM_32, TM_33, TM_02, TM_07, TM_37, TM_01, TM_05, TM_09, TM_17
-
-; Celadon Dept. Store 4F
-CeladonMart4ClerkText::
-	TX_MART POKE_DOLL, FIRE_STONE, THUNDER_STONE, WATER_STONE, LEAF_STONE
 
 ; Celadon Dept. Store 5F (1)
 CeladonMart5Clerk1Text::

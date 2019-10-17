@@ -11,7 +11,11 @@ ViridianMartScript_1d47d:
 	ld hl, ViridianMart_TextPointers
 	jr .asm_1d48c
 .asm_1d489
+	ld a, [wPermanentOptions]
+	and (1 << BETTER_MARTS)
 	ld hl, ViridianMart_TextPointers2
+	jr z, .asm_1d48c
+	ld hl, ViridianMart_TextPointers3
 .asm_1d48c
 	ld a, l
 	ld [wMapTextPtr], a
@@ -71,6 +75,10 @@ ViridianMart_TextPointers2:
 	dw ViridianCashierText
 	dw ViridianMartText2
 	dw ViridianMartText3
+ViridianMart_TextPointers3:
+	dw BetterEarlyMartCashierText
+	dw ViridianMartText2
+	dw ViridianMartText3
 
 ViridianMartText1:
 	TX_FAR _ViridianMartText1
@@ -92,3 +100,6 @@ ViridianMartText2:
 ViridianMartText3:
 	TX_FAR _ViridianMartText3
 	db "@"
+	
+ViridianCashierText::
+	TX_MART POKE_BALL, ANTIDOTE, PARLYZ_HEAL, BURN_HEAL

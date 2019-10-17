@@ -18,13 +18,6 @@ DisplayPokemartDialogue_:
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
 
-; This code is useless. It copies the address of the pokemart's inventory to hl,
-; but the address is never used.
-	ld hl, wItemListPointer
-	ld a, [hli]
-	ld l, [hl]
-	ld h, a
-
 	ld a, [wMenuExitMethod]
 	cp CANCELLED_MENU
 	jp z, .done

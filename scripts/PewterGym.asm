@@ -1,4 +1,12 @@
 PewterGym_Script:
+	ld a, [wPermanentOptions]
+	and (1 << NERF_PEWTER_GYM)
+	jr z, .continue
+	ld a, 2 ; alt brock roster
+	ld [wMapSpriteExtraData + 1], a
+	ld a, 10 ; alt jrM roster
+	ld [wMapSpriteExtraData + 3], a
+.continue
 	ld hl, wCurrentMapScriptFlags
 	bit 6, [hl]
 	res 6, [hl]

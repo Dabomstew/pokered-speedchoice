@@ -1195,10 +1195,6 @@ PokemartGreetingText::
 LoadItemList::
 	ld a, 1
 	ld [wUpdateSpritesEnabled], a
-	ld a, h
-	ld [wItemListPointer], a
-	ld a, l
-	ld [wItemListPointer + 1], a
 	ld de, wItemList
 .loop
 	ld a, [hli]
