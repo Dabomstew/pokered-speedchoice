@@ -88,45 +88,19 @@ GetTextSpeed::
 
 Options_BattleScene:
 	ld hl, wOptions
-	and (1 << BIT_D_LEFT) | (1 << BIT_D_RIGHT)
-	ld a, [hl]
-	jr z, .GetText
-	xor (1 << BATTLE_SHOW_ANIMATIONS)
-	ld [hl], a
-.GetText
-	bit BATTLE_SHOW_ANIMATIONS, a
-	ld de, .On
-	jr nz, .Display
-	ld de, .Off
-.Display
-	hlcoord 11, 7
-	call PlaceString
-	and a
-	ret
-
-.On
-	db "ON @"
-.Off
-	db "OFF@"
-
+	ld b, BATTLE_SHOW_ANIMATIONS
+	ld c, 7
+	jp Options_GenericOnOffOption
 
 Options_BattleStyle:
 	ld hl, wOptions
-	and (1 << BIT_D_LEFT) | (1 << BIT_D_RIGHT)
-	ld a, [hl]
-	jr z, .GetText
-	xor (1 << BATTLE_SHIFT)
-	ld [hl], a
-.GetText
-	bit BATTLE_SHIFT, a
-	ld de, .Shift
-	jr nz, .Display
-	ld de, .Set
-.Display
-	hlcoord 11, 9
-	call PlaceString
-	and a
-	ret
+	ld b, BATTLE_SHIFT
+	ld c, 9
+	ld de, .ShiftSet
+	jp Options_OnOffOptionCustomStrings
+.ShiftSet
+	dw .Set
+	dw .Shift
 
 .Shift
 	db "SHIFT@"
@@ -135,26 +109,9 @@ Options_BattleStyle:
 
 Options_HoldToMash:
 	ld hl, wOptions
-	and (1 << BIT_D_LEFT) | (1 << BIT_D_RIGHT)
-	ld a, [hl]
-	jr z, .GetText
-	xor (1 << HOLD_TO_MASH)
-	ld [hl], a
-.GetText
-	bit HOLD_TO_MASH, a
-	ld de, .Off
-	jr z, .Display
-	ld de, .On
-.Display
-	hlcoord 11, 5
-	call PlaceString
-	and a
-	ret
-
-.Off
-	db "OFF@"
-.On
-	db "ON @"
+	ld b, HOLD_TO_MASH
+	ld c, 5
+	jp Options_GenericOnOffOption
 
 Options_Palette:
 	ld a, [wCurPalette]

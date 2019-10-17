@@ -80,6 +80,10 @@ DisplayNameRaterScreen:
 .playerCancelled
 	scf
 	ret
+	
+FarcallNamingScreen:
+	ld h, d
+	ld l, e
 
 DisplayNamingScreen:
 	push hl

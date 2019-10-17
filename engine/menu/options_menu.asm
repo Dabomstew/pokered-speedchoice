@@ -297,6 +297,69 @@ Options_UpdateCursorPosition:
 	call AddNTimes
 	ld [hl], "▶"
 	ret
+	
+; hl = ram address
+; b = bit number in ram address
+; c = y-coordinate to draw at
+; de = off/on string table (off first)
+Options_GenericOnOffOption:
+	ld de, OnOffStrings
+Options_OnOffOptionCustomStrings:
+	push de
+	ld d, a
+	ld a, 1
+	and a ; clear carry
+	inc b
+.shiftloop
+	dec b
+	jr z, .doneshift
+	rla
+	jr .shiftloop
+.doneshift
+	ld b, a
+	ld a, d
+	and (1 << BIT_D_LEFT) | (1 << BIT_D_RIGHT)
+	ld a, [hl]
+	jr z, .GetText
+	xor b
+	ld [hl], a
+.GetText
+	pop de
+	and b
+	jr z, .Display
+	ld a, 2
+	add e
+	ld e, a
+	jr nc, .Display
+	inc d
+.Display
+	ld a, [de]
+	ld l, a
+	inc de
+	ld a, [de]
+	ld d, a
+	ld e, l
+	ld h, 0
+	ld b, h
+	ld l, c
+	add hl, hl
+	add hl, hl ; *4
+	add hl, bc ; *5
+	add hl, hl
+	add hl, hl ; *20
+	ld bc, wTileMap + 11
+	add hl, bc
+	call PlaceString
+	and a
+	ret
+	
+OnOffStrings::
+	dw .Off
+	dw .On
+.Off:
+	db "OFF@"
+.On:
+	db "ON @"
 
 INCLUDE "engine/menu/options/main_options.asm"
 INCLUDE "engine/menu/options/perma_options.asm"

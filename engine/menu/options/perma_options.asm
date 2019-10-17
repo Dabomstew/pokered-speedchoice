@@ -101,10 +101,10 @@ Options_Name:
 	jr z, .GetText
 	ld a, [wJumptableIndex]
 	push af
-	ld hl, wPlayerName
+	ld de, wPlayerName
 	xor a ; NAME_PLAYER_SCREEN
 	ld [wNamingScreenType], a
-	call DisplayNamingScreen
+	callab FarcallNamingScreen
 	call DrawOptionsMenu
 	pop af
 	ld [wJumptableIndex], a
@@ -128,10 +128,10 @@ Options_RivalName:
 	jr z, .GetText
 	ld a, [wJumptableIndex]
 	push af
-	ld hl, wRivalName
+	ld de, wRivalName
 	ld a, NAME_RIVAL_SCREEN
 	ld [wNamingScreenType], a
-	call DisplayNamingScreen
+	callab FarcallNamingScreen
 	call DrawOptionsMenu
 	pop af
 	ld [wJumptableIndex], a
