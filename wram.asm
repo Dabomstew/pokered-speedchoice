@@ -1444,15 +1444,16 @@ wPartyMenuBlkPacket:: ; cf2e
 	ds 29
 
 wExpAmountGained:: ; cf4b
-; 2-byte big-endian number
+; 3-byte big-endian number
 ; the total amount of exp a mon gained
 
-wcf4b:: ds 2 ; storage buffer for various strings
+wcf4b:: ds 3 ; storage buffer for various strings
 
-wGainBoostedExp:: ; cf4d
+wGainBoostedExp:: ; cf4e
 	ds 1
-
-	ds 17
+wGainingExp:: ; cf4f
+	ds 1
+	ds 15
 
 wGymCityName:: ; cf5f
 	ds 17

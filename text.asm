@@ -1436,8 +1436,13 @@ _BoostedText::
 	cont "@@"
 
 _ExpPointsText::
-	TX_NUM wExpAmountGained, 2, 4
+	TX_NUM wExpAmountGained + 1, 2, 4
 	text " EXP. Points!"
+	prompt
+	
+_ExpPointsLongText::
+	TX_NUM wExpAmountGained, 3, 8
+	text " EXP!"
 	prompt
 
 _GrewLevelText::

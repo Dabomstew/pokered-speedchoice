@@ -84,6 +84,8 @@ hSpriteScreenY EQU $FF92
 hTilePlayerStandingOn EQU $FF93
 
 hSpritePriority EQU $FF94
+H_BIGMULTIPLICAND EQU $FF94
+H_BIGDIVIDEND EQU $FF94
 
 ; 2 bytes
 hSignCoordPointer EQU $FF95

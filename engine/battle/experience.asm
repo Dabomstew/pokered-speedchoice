@@ -2,15 +2,20 @@ GainExperience:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
+	; kill immediately if no exp
+	ld a, [wPermanentOptions]
+	and EXP_MASK
+	cp EXP_NONE << EXP_SHIFT
+	ret z
 	call DivideExpDataByNumMonsGainingExp
 	ld hl, wPartyMon1
 	xor a
 	ld [wWhichPokemon], a
-.partyMonLoop ; loop over each mon and add gained exp
+ExperiencePartyLoop ; loop over each mon and add gained exp
 	inc hl
 	ld a, [hli]
 	or [hl] ; is mon's HP 0?
-	jp z, .nextMon ; if so, go to next mon
+	jp z, ExperienceNextMon ; if so, go to next mon
 	push hl
 	ld hl, wPartyGainExpFlags
 	ld a, [wWhichPokemon]
@@ -20,7 +25,7 @@ GainExperience:
 	ld a, c
 	and a ; is mon's gain exp flag set?
 	pop hl
-	jp z, .nextMon ; if mon's gain exp flag not set, go to next mon
+	jp z, ExperienceNextMon ; if mon's gain exp flag not set, go to next mon
 	ld de, (wPartyMon1HPExp + 1) - (wPartyMon1HP + 1)
 	add hl, de
 	ld d, h
@@ -54,6 +59,10 @@ GainExperience:
 	inc de
 	jr .gainStatExpLoop
 .statExpDone
+	ld a, [wPermanentOptions]
+	and EXP_MASK
+	cp EXP_BLACKWHITE << EXP_SHIFT
+	jp z, BlackWhiteEXP
 	xor a
 	ld [H_MULTIPLICAND], a
 	ld [H_MULTIPLICAND + 1], a
@@ -90,14 +99,16 @@ GainExperience:
 	inc hl
 	inc hl
 ; add the gained exp to the party mon's exp
+	xor a
+	ld [wExpAmountGained], a
 	ld b, [hl]
 	ld a, [H_QUOTIENT + 3]
-	ld [wExpAmountGained + 1], a
+	ld [wExpAmountGained + 2], a
 	add b
 	ld [hld], a
 	ld b, [hl]
 	ld a, [H_QUOTIENT + 2]
-	ld [wExpAmountGained], a
+	ld [wExpAmountGained + 1], a
 	adc b
 	ld [hl], a
 	jr nc, .noCarry
@@ -107,6 +118,7 @@ GainExperience:
 .noCarry
 ; calculate exp for the mon at max level, and cap the exp at that value
 	inc hl
+ExperienceReturnPoint::
 	push hl
 	ld a, [wWhichPokemon]
 	ld c, a
@@ -159,7 +171,7 @@ GainExperience:
 	pop hl
 	ld a, [hl] ; current level
 	cp d
-	jp z, .nextMon ; if level didn't change, go to next mon
+	jp z, ExperienceNextMon ; if level didn't change, go to next mon
 	ld a, [wCurEnemyLVL]
 	push af
 	push hl
@@ -263,7 +275,7 @@ GainExperience:
 	pop af
 	ld [wCurEnemyLVL], a
 
-.nextMon
+ExperienceNextMon
 	ld a, [wPartyCount]
 	ld b, a
 	ld a, [wWhichPokemon]
@@ -274,7 +286,7 @@ GainExperience:
 	ld bc, wPartyMon2 - wPartyMon1
 	ld hl, wPartyMon1
 	call AddNTimes
-	jp .partyMonLoop
+	jp ExperiencePartyLoop
 .done
 	ld hl, wPartyGainExpFlags
 	xor a
@@ -304,6 +316,7 @@ DivideExpDataByNumMonsGainingExp:
 	ld d, a
 	dec c
 	jr nz, .countSetBitsLoop
+	ld [wGainingExp], a
 	cp $2
 	ret c ; return if only one mon is gaining exp
 	ld [wd11e], a ; store number of mons gaining exp
@@ -346,12 +359,26 @@ GainedText:
 	ld hl, WithExpAllText
 	and a
 	ret nz
+	ld a, [wExpAmountGained]
+	and a
+	jr nz, .longEXP
+	ld a, [wExpAmountGained + 1]
+	cp $27
+	jr nc, .longEXP
 	ld hl, ExpPointsText
 	ld a, [wGainBoostedExp]
 	and a
 	ret z
 	ld hl, BoostedText
 	ret
+.longEXP
+	ld hl, ExpPointsLongText
+	ld a, [wGainBoostedExp]
+	and a
+	ret z
+	ld hl, BoostedLongText
+	ret
+	
 
 WithExpAllText:
 	TX_FAR _WithExpAllText
@@ -364,6 +391,13 @@ BoostedText:
 
 ExpPointsText:
 	TX_FAR _ExpPointsText
+	db "@"
+	
+BoostedLongText:
+	TX_FAR _BoostedText
+
+ExpPointsLongText:
+	TX_FAR _ExpPointsLongText
 	db "@"
 
 GrewLevelText:

@@ -9,7 +9,7 @@ PermaOptionsString::
 	db "        :<LNBRK>"
 	db "TRAINER VISION<LNBRK>"
 	db "        :<LNBRK>"
-	db "NERF HMs<LNBRK>"
+	db "EXPERIENCE<LNBRK>"
 	db "        :@"
 
 PermaOptionsPointers::
@@ -18,6 +18,7 @@ PermaOptionsPointers::
 	dw Options_RivalName
 	dw Options_Spinners
 	dw Options_TrainerVision
+	dw Options_EXP
 	dw Options_PermaOptionsPage
 
 PermaOptionsPresets:
@@ -229,3 +230,75 @@ endr
 	db "HELL  @"
 .Why
 	db "WHY   @"
+	
+Options_EXP:
+	ld hl, wPermanentOptions
+	bit BIT_D_LEFT, a
+	jr nz, .LeftPressed
+	bit BIT_D_RIGHT, a
+	jr nz, .RightPressed
+	jr .UpdateDisplay
+
+.RightPressed
+	call .GetEXPVal
+	inc a
+	jr .Save
+
+.LeftPressed
+	call .GetEXPVal
+	dec a
+
+.Save
+	cp $ff
+	jr nz, .nextCheck
+	ld a, 2
+	jr .store
+.nextCheck
+	cp $03
+	jr nz, .store
+	xor a
+.store
+	ld b, a
+	sla b
+	sla b
+	sla b
+	ld a, [hl]
+	and $ff ^ EXP_MASK
+	or b
+	ld [hl], a
+	
+.UpdateDisplay: ; e4512
+	call .GetEXPVal
+	ld c, a
+	ld b, 0
+	ld hl, .Strings
+rept 2
+	add hl, bc
+endr
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	hlcoord 11, 9
+	call PlaceString
+	and a
+	ret
+	
+.GetEXPVal:
+	ld a, [hl]
+	and EXP_MASK
+	srl a
+	srl a
+	srl a
+	ret
+	
+.Strings:
+	dw .Normal
+	dw .BW
+	dw .None
+	
+.Normal
+	db "NORMAL@"
+.BW
+	db "B/W   @"
+.None
+	db "NONE  @"
