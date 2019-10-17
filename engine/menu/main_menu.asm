@@ -9,6 +9,9 @@ MainMenu:
 	jr nc, .mainMenuLoop
 
 	predef LoadSAV
+	; force loading the player's palette
+	ld a, $ff
+	ld [wLastPalette], a
 
 .mainMenuLoop
 	ld c, 20

@@ -61,3 +61,25 @@ const_value = 0
 	const PAL_BADGE     ; $22
 	const PAL_CAVE      ; $23
 	const PAL_GAMEFREAK ; $24
+
+; gbc palettes
+const_value = 0
+	const GBCPAL_DEFAULT
+	const GBCPAL_BROWN
+	const GBCPAL_RED
+	const GBCPAL_DARKBROWN
+	const GBCPAL_PASTEL
+	const GBCPAL_ORANGE
+	const GBCPAL_YELLOW
+	const GBCPAL_BLUE
+	const GBCPAL_DARKBLUE
+	const GBCPAL_GRAY
+	const GBCPAL_GREEN
+	const GBCPAL_DARKGREEN
+	const GBCPAL_INVERTED
+	const GBCPAL_OTHERVERSION
+	const GBCPAL_TRUEINVERTED
+	const GBCPAL_CHEATERPASTEL
+	const GBCPAL_HOTPINK
+	
+NUM_GBC_PALETTES EQU const_value + -1
