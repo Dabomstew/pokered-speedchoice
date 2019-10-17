@@ -301,10 +301,10 @@ Options_UpdateCursorPosition:
 ; hl = ram address
 ; b = bit number in ram address
 ; c = y-coordinate to draw at
-; de = off/on string table (off first)
-Options_GenericOnOffOption:
+; de = table of strings to show for false/true (false first)
+Options_OnOff:
 	ld de, OnOffStrings
-Options_OnOffOptionCustomStrings:
+Options_TrueFalse:
 	push de
 	ld d, a
 	ld a, 1

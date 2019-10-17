@@ -90,14 +90,14 @@ Options_BattleScene:
 	ld hl, wOptions
 	ld b, BATTLE_SHOW_ANIMATIONS
 	ld c, 7
-	jp Options_GenericOnOffOption
+	jp Options_OnOff
 
 Options_BattleStyle:
 	ld hl, wOptions
 	ld b, BATTLE_SHIFT
 	ld c, 9
 	ld de, .ShiftSet
-	jp Options_OnOffOptionCustomStrings
+	jp Options_TrueFalse
 .ShiftSet
 	dw .Set
 	dw .Shift
@@ -111,7 +111,7 @@ Options_HoldToMash:
 	ld hl, wOptions
 	ld b, HOLD_TO_MASH
 	ld c, 5
-	jp Options_GenericOnOffOption
+	jp Options_OnOff
 
 Options_Palette:
 	ld a, [wCurPalette]
