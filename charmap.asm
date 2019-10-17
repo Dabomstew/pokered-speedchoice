@@ -147,6 +147,7 @@ charmap "ゅ", $E1
 charmap "ょ", $E2
 charmap "ー", $E3
 
+charmap "<LNBRK>",  $22
 charmap "<pkmn>", $4A ; PkMn
 charmap "@", $50
 charmap "<PLAYER>", $52

@@ -1462,8 +1462,8 @@ EnemySendOutFirstMon:
 	cp LINK_STATE_BATTLING
 	jr z, .next4
 	ld a, [wOptions]
-	bit 6, a
-	jr nz, .next4
+	bit BATTLE_SHIFT, a
+	jr z, .next4
 	ld hl, TrainerAboutToUseText
 	call PrintText
 	coord hl, 0, 7

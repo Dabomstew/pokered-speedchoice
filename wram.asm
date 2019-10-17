@@ -1205,7 +1205,21 @@ wFlags_0xcd60:: ; cd60
 ; bit 6: tried pushing against boulder once (you need to push twice before it will move)
 	ds 1
 
-	ds 9
+wJumptableIndex::
+	ds 1
+wStoredJumptableIndex::
+	ds 1
+wOptionsMenuCount:: ds 1
+wPlayStatsStringPtr:: 
+wOptionsStringPtr:: ds 2
+wPlayStatsConfigPtr:: 
+wOptionsJumptablePtr:: ds 2
+wPlayStatsConfigEnds:: 
+wOptionsExitButtons:: ds 1
+wPlayStatsStatNum:: 
+wOptionsNextMenuID:: ds 1
+wOptionsMenuID:: ds 1
+wOptionsMenuPreset:: ds 1
 
 wActionResultOrTookBattleTurn:: ; cd6a
 ; This has overlapping related uses.
@@ -2557,7 +2571,9 @@ wLastPalette::
 	ds 1
 wCurPalette::
 	ds 1
-	ds 110
+wPermanentOptions::
+	ds 2
+	ds 108
 
 wNumSigns:: ; d4b0
 ; number of signs in the current map (up to 16)

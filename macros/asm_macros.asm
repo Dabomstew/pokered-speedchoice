@@ -66,6 +66,18 @@ ENDM
 ;\1 = X
 ;\2 = Y
 ;\3 = which tilemap (optional)
+hlcoord: MACRO
+	validateCoords \1, \2
+	IF _NARG >= 3
+		ld hl, \3 + SCREEN_WIDTH * \2 + \1
+	ELSE
+		ld hl, wTileMap + SCREEN_WIDTH * \2 + \1
+	ENDC
+ENDM
+
+;\1 = X
+;\2 = Y
+;\3 = which tilemap (optional)
 aCoord: MACRO
 	validateCoords \1, \2
 	IF _NARG >= 3

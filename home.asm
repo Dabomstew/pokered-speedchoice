@@ -3494,7 +3494,17 @@ PrintLetterDelay::
 	bit 0, a
 	jr z, .waitOneFrame
 	ld a, [wOptions]
-	and $f
+	and TEXT_SPEED_MASK
+	jr z, .done ; instant
+	dec a
+	ld b, 1
+	jr z, .setwait ; fast
+	dec a
+	ld b, 3
+	jr z, .setwait ; medium
+	ld b, 5
+.setwait
+	ld a, b
 	ld [H_FRAMECOUNTER], a
 	jr .checkButtons
 .waitOneFrame

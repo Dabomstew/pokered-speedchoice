@@ -310,6 +310,7 @@ hCoordsInFrontOfPlayerMatch EQU $FFEA
 
 hSpriteAnimFrameCounter EQU $FFEA
 
+hInMenu EQU $FFEF
 hLastBGP EQU $FFF0
 hLastOBP0 EQU $FFF1
 hLastOBP1 EQU $FFF2

@@ -2104,3 +2104,7 @@ INCLUDE "engine/hblank.asm"
 SECTION "print_number", ROMX
 
 INCLUDE "engine/print_number.asm"
+
+SECTION "options", ROMX
+
+INCLUDE "engine/menu/options_menu.asm"

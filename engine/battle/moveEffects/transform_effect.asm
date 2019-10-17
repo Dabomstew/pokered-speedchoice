@@ -30,10 +30,10 @@ TransformEffect_:
 	ld b, BANK(HideSubstituteShowMonAnim)
 	call nz, Bankswitch
 	ld a, [wOptions]
-	add a
+	bit BATTLE_SHOW_ANIMATIONS, a
 	ld hl, PlayCurrentMoveAnimation
 	ld b, BANK(PlayCurrentMoveAnimation)
-	jr nc, .gotAnimToPlay
+	jr nz, .gotAnimToPlay
 	ld hl, AnimationTransformMon
 	ld b, BANK(AnimationTransformMon)
 .gotAnimToPlay

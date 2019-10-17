@@ -110,6 +110,7 @@ endm
 	dict $5F, Char5F ; dex
 	dict $59, Char59 ; TARGET
 	dict $5A, Char5A ; USER
+	dict "<LNBRK>", Char22
 
 	ld [hli], a
 	call PrintLetterDelay
@@ -117,6 +118,14 @@ PlaceNextChar_inc::
 	inc de
 	jp PlaceNextChar
 
+Char22::
+	pop hl
+	ld bc, SCREEN_WIDTH
+	add hl, bc
+	push hl
+	inc de
+	jp PlaceNextChar
+	
 Char00::
 	ld b, h
 	ld c, l

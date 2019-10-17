@@ -28,14 +28,10 @@ SetDefaultNames:
 	ld a, [wOptionsInitialized]
 	and a
 	call z, InitOptions
-	ld hl, NintenText
-	ld de, wPlayerName
-	ld bc, NAME_LENGTH
-	call CopyData
-	ld hl, SonyText
-	ld de, wRivalName
-	ld bc, NAME_LENGTH
-	jp CopyData
+	ld a, "@"
+	ld [wPlayerName], a
+	ld [wRivalName], a
+	ret
 
 OakSpeech:
 	ld a, $FF
@@ -48,6 +44,8 @@ OakSpeech:
 	call LoadTextBoxTilePatterns
 	call SetDefaultNames
 	predef InitPlayerData2
+	callab PermaOptionsMenu
+	call ClearScreen
 	ld hl, wNumBoxItems
 	ld a, POTION
 	ld [wcf91], a
@@ -87,7 +85,7 @@ OakSpeech:
 	call MovePicLeft
 	ld hl, IntroducePlayerText
 	call PrintText
-	call ChoosePlayerName
+	;call ChoosePlayerName
 	call GBFadeOutToWhite
 	call ClearScreen
 	ld de, Rival1Pic
@@ -96,7 +94,7 @@ OakSpeech:
 	call FadeInIntroPic
 	ld hl, IntroduceRivalText
 	call PrintText
-	call ChooseRivalName
+	;call ChooseRivalName
 .skipChoosingNames
 	call GBFadeOutToWhite
 	call ClearScreen
