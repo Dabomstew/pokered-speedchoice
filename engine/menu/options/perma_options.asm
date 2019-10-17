@@ -278,7 +278,7 @@ endr
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
-	hlcoord 11, 9
+	hlcoord 11, 13
 	call PlaceString
 	and a
 	ret
