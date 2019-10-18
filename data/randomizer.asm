@@ -1,20 +1,16 @@
 ; a place to store all the speedchoice-unique data that randomizers should parse/change 
 ; also serves as a way to keep offsets static for mission-critical data
 RandomizerData::
+RandomizerDataPointers::
+	dw KeyItemRandoDataVersion
+	dw OtherRandomizerDataVersion
 ; version number OF THIS DATA BLOCK. not the same as the version of the rom itself
-; used to make sure randomizer understands what it's reading from here
-RandomizerDataVersion::
-	dw 1
-; encounter slot type
-RandomizerDataVanillaEncounterSlots::
-IF DEF(_VANILLAWILDS)
+; key itemrando should refuse if this mismatches what it's expecting
+KeyItemRandoDataBegin::
+KeyItemRandoDataVersion::
 	db $01
-ELSE
-	db $00
-ENDC
 ; key item rando key items and logic-enable flag
 ; key item rando should write to these items and also turn on the flag to enable the logic
-KeyItemRandoDataBegin::
 KeyItemBicycle::
 	db BICYCLE
 KeyItemBikeVoucher::
@@ -68,13 +64,24 @@ KeyItemTownMap::
 KeyItemRandoActive::
 	db $00
 KeyItemRandoSeed::
-	ds 11 ; up to 10 numbers + terminator
+	db "@"
+	ds 10 ; up to 10 numbers + terminator
 KeyItemRandoDataEnd::
 
 ; other rando stuff
+OtherRandomizerDataVersion::
+	db $01
+; encounter slot type
+RandomizerVanillaEncounterSlots::
+IF DEF(_VANILLAWILDS)
+	db $01
+ELSE
+	db $00
+ENDC
 RandomizerCheckValue::
 	ds 4
 RandomizerSeed::
-	ds 16 ; up to 15 numbers + terminator
+	db "@"
+	ds 15 ; up to 15 numbers + terminator
 	
 RandomizerDataEnd::
