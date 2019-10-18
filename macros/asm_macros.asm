@@ -41,6 +41,20 @@ jpab: MACRO
 	jp Bankswitch
 ENDM
 
+ldafarbyte: MACRO
+	ld hl, \1
+	ld b, BANK(\1)
+	call GetFarByte
+ENDM
+
+ldafarbytesafe: MACRO
+	push hl
+	push bc
+	ldafarbyte \1
+	pop bc
+	pop hl
+ENDM
+
 validateCoords: MACRO
 	IF \1 >= SCREEN_WIDTH
 		fail "x coord out of range"

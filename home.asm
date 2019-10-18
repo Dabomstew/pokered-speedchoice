@@ -4515,3 +4515,18 @@ const_value = 1
 	add_tx_pre BookOrSculptureText                  ; 40
 	add_tx_pre ElevatorText                         ; 41
 	add_tx_pre PokemonStuffText                     ; 42
+
+; returns 1 byte from b:hl in a
+; clobbers b
+GetFarByte::
+	ld a, [H_LOADEDROMBANK]
+	push af
+	ld a, b
+	ld [H_LOADEDROMBANK], a
+	ld [MBC1RomBank], a
+	ld b, [hl]
+	pop af
+	ld [H_LOADEDROMBANK], a
+	ld [MBC1RomBank], a
+	ld a, b
+	ret
