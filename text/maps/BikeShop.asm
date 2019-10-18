@@ -27,7 +27,9 @@ _BikeShopText_1d81f::
 _BikeShopText_1d824::
 	text "<PLAYER> exchanged"
 	line "the BIKE VOUCHER"
-	cont "for a BICYCLE.@@"
+	cont "for @"
+	TX_RAM wcf4b
+	text "!@@"
 
 _BikeShopComeAgainText::
 	text "Come back again"

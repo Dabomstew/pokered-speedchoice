@@ -19,7 +19,9 @@ BikeShopText1:
 	jr z, .asm_41190
 	ld hl, BikeShopText_1d81f
 	call PrintText
-	lb bc, BICYCLE, 1
+	ldafarbyte KeyItemBicycle
+	ld b, a
+	ld c, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld a, BIKE_VOUCHER
@@ -28,7 +30,7 @@ BikeShopText1:
 	SetEvent EVENT_GOT_BICYCLE
 	ld hl, BikeShopText_1d824
 	call PrintText
-	jr .Done
+	jp .Done
 .BagFull
 	ld hl, BikeShopText_1d834
 	call PrintText
@@ -54,7 +56,12 @@ BikeShopText1:
 	ld c, $f
 	call TextBoxBorder
 	call UpdateSprites
+	ldafarbyte KeyItemBicycle
+	ld [wd11e], a
+	call GetItemName
 	coord hl, 2, 2
+	ld de, wcd6d
+	call PlaceString
 	ld de, BikeShopMenuText
 	call PlaceString
 	coord hl, 8, 3
@@ -79,7 +86,6 @@ BikeShopText1:
 	jp TextScriptEnd
 
 BikeShopMenuText:
-	db   "BICYCLE"
 	next "CANCEL@"
 
 BikeShopMenuPrice:
