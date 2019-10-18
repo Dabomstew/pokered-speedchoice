@@ -2,7 +2,13 @@ PokemonFanClub_Script:
 	jp EnableAutoTextBoxDrawing
 
 FanClubBikeInBag:
+	ldafarbyte KeyItemRandoActive
+	and a
+	jr z, .vanilla
+	CheckEvent EVENT_GOT_BIKE_VOUCHER
+	ret
 ; check if any bike paraphernalia in bag
+.vanilla
 	CheckEvent EVENT_GOT_BIKE_VOUCHER
 	ret nz
 	ld b, BICYCLE
@@ -113,7 +119,9 @@ FanClubText5:
 	; tell the story
 	ld hl, .storytext
 	call PrintText
-	lb bc, BIKE_VOUCHER, 1
+	ldafarbyte KeyItemBikeVoucher
+	ld b, a
+	ld c, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld hl, .receivedvouchertext
