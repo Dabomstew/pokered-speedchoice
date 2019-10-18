@@ -13,7 +13,7 @@ SECTION "Save Data", SRAM ; BANK 1
 	ds $598
 
 sPlayerName::  ds NAME_LENGTH ; a598
-sMainData::    ds wMainDataEnd   - wMainDataStart ; a5a3
+sMainData::    ds $789 ; a5a3. hardcoded length to ensure pikasav compatibility
 sSpriteData::  ds wSpriteDataEnd - wSpriteDataStart ; ad2c
 sPartyData::   ds wPartyDataEnd  - wPartyDataStart ; af2c
 sCurBoxData::  ds wBoxDataEnd    - wBoxDataStart ; b0c0

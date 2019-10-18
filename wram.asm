@@ -2574,8 +2574,11 @@ wCurPalette::
 	ds 1
 wPermanentOptions::
 	ds 2
-	ds 108
+	
+wMainDataBlock1End::
+	ds 100
 
+wMainDataBlock2Start::
 wNumSigns:: ; d4b0
 ; number of signs in the current map (up to 16)
 	ds 1
