@@ -2103,6 +2103,10 @@ INCLUDE "engine/overworld/elevator.asm"
 
 INCLUDE "engine/items/tm_prices.asm"
 
+SECTION "randomizer", ROMX
+
+INCLUDE "data/randomizer.asm"
+
 SECTION "hblankfar", ROMX
 
 INCLUDE "engine/hblank.asm"

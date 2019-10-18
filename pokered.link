@@ -243,6 +243,10 @@ ROMX $2B
 ROMX $2C
 	org $4000
 	"Move Names" ; MOVE_NAMES
+	
+ROMX $3F
+	org $4000
+	"randomizer"
 
 WRAM0
 	org $c000
