@@ -102,6 +102,7 @@ TryDoWildEncounter:
 	ret
 
 WildMonEncounterSlotChances:
+IF DEF(_VANILLAWILDS)
 ; There are 10 slots for wild pokemon, and this is the table that defines how common each of
 ; those 10 slots is. A random number is generated and then the first byte of each pair in this
 ; table is compared against that random number. If the random number is less than or equal
@@ -116,3 +117,13 @@ WildMonEncounterSlotChances:
 	db $F1, $0E ; 13/256 =  5.1% chance of slot 7
 	db $FC, $10 ; 11/256 =  4.3% chance of slot 8
 	db $FF, $12 ;  3/256 =  1.2% chance of slot 9
+ELSE
+; 7 slots, 20/20/15/15/10/10/10 (APPROX)
+	db $32, $00 ; 51/256 = ~20%
+	db $65, $02 ; 51/256 = ~20%
+	db $8C, $04 ; 39/256 = ~15%
+	db $B3, $06 ; 39/256 = ~15%
+	db $CD, $08 ; 26/256 = ~10% (they can't all be 25/256)
+	db $E6, $0A ; 25/256 = ~10%
+	db $FF, $0C ; 25/256 = ~10%
+ENDC

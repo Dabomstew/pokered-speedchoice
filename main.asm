@@ -107,7 +107,11 @@ INCLUDE "engine/overworld/field_move_messages.asm"
 
 INCLUDE "engine/items/inventory.asm"
 
-INCLUDE "engine/overworld/wild_mons.asm"
+IF DEF(_VANILLAWILDS)
+	INCLUDE "engine/overworld/wild_mons_vanilla.asm"
+ELSE
+	INCLUDE "engine/overworld/wild_mons.asm"
+ENDC
 
 INCLUDE "engine/items/items.asm"
 
