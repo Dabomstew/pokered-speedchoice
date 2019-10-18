@@ -1,4 +1,5 @@
 SilphCo5F_Script:
+	call ReplaceCardKey
 	call SilphCo5Script_19f4d
 	call EnableAutoTextBoxDrawing
 	ld hl, SilphCo5TrainerHeader0
@@ -6,6 +7,11 @@ SilphCo5F_Script:
 	ld a, [wSilphCo5FCurScript]
 	call ExecuteCurMapScriptInTable
 	ld [wSilphCo5FCurScript], a
+	ret
+	
+ReplaceCardKey:
+	ldafarbyte KeyItemCardKey
+	ld [wMapSpriteExtraData + $0E], a
 	ret
 
 SilphCo5Script_19f4d:
