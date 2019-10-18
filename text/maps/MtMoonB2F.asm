@@ -1,15 +1,12 @@
-_MtMoon3Text_49f24::
-	text "You want the"
-	line "DOME FOSSIL?"
-	done
-
-_MtMoon3Text_49f64::
-	text "You want the"
-	line "HELIX FOSSIL?"
+_MtMoon3Text_WantFossil::
+	text "You want"
+	line "@"
+	TX_RAM wcd6d
+	text "?"
 	done
 
 _MtMoon3Text_49f6f::
-	text "<PLAYER> got the"
+	text "<PLAYER> got"
 	line "@"
 	TX_RAM wcf4b
 	text "!@@"
