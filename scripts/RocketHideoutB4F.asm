@@ -13,6 +13,8 @@ RocketHideout4Script_45473:
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
+	ldafarbyte KeyItemSilphScope
+	ld [wMapSpriteExtraData + $0E], a
 	CheckEvent EVENT_ROCKET_HIDEOUT_4_DOOR_UNLOCKED
 	jr nz, .asm_45496
 	CheckBothEventsSet EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_0, EVENT_BEAT_ROCKET_HIDEOUT_4_TRAINER_1, 1
