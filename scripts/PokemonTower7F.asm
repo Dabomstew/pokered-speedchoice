@@ -263,9 +263,14 @@ PokemonTower7FujiText:
 	ld a, HS_SAFFRON_CITY_E
 	ld [wMissableObjectIndex], a
 	predef HideObject
+; key item: don't reshow this guard
+	ldafarbyte KeyItemRandoActive
+	and a
+	jr nz, .skipShowingSilphGuard
 	ld a, HS_SAFFRON_CITY_F
 	ld [wMissableObjectIndex], a
 	predef ShowObject
+.skipShowingSilphGuard
 	ld a, $4
 	ld [wPokemonTower7FCurScript], a
 	ld [wCurMapScript], a

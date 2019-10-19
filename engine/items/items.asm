@@ -63,7 +63,7 @@ ItemUsePtrTable:
 	dw UnusableItem      ; BIKE_VOUCHER
 	dw ItemUseXAccuracy  ; X_ACCURACY
 	dw ItemUseEvoStone   ; LEAF_STONE
-	dw ItemUseCardKey    ; CARD_KEY
+	dw UnusableItem      ; CARD_KEY
 	dw UnusableItem      ; NUGGET
 	dw UnusableItem      ; ??? PP_UP
 	dw ItemUsePokedoll   ; POKE_DOLL
@@ -1549,106 +1549,37 @@ ItemUseXAccuracy:
 	set USING_X_ACCURACY, [hl] ; X Accuracy bit
 	jp PrintItemUseTextAndRemoveItem
 
-; This function is bugged and never works. It always jumps to ItemUseNotTime.
-; The Card Key is handled in a different way.
-ItemUseCardKey:
-	xor a
-	ld [wUnusedD71F], a
-	call GetTileAndCoordsInFrontOfPlayer
-	ld a, [GetTileAndCoordsInFrontOfPlayer]
-	cp $18
-	jr nz, .next0
-	ld hl, CardKeyTable1
-	jr .next1
-.next0
-	cp $24
-	jr nz, .next2
-	ld hl, CardKeyTable2
-	jr .next1
-.next2
-	cp $5e
-	jp nz, ItemUseNotTime
-	ld hl, CardKeyTable3
-.next1
-	ld a, [wCurMap]
-	ld b, a
-.loop
-	ld a, [hli]
-	cp $ff
-	jp z, ItemUseNotTime
-	cp b
-	jr nz, .nextEntry1
-	ld a, [hli]
-	cp d
-	jr nz, .nextEntry2
-	ld a, [hli]
-	cp e
-	jr nz, .nextEntry3
-	ld a, [hl]
-	ld [wUnusedD71F], a
-	jr .done
-.nextEntry1
-	inc hl
-.nextEntry2
-	inc hl
-.nextEntry3
-	inc hl
-	jr .loop
-.done
-	ld hl, ItemUseText00
-	call PrintText
-	ld hl, wd728
-	set 7, [hl]
-	ret
-
-; These tables are probably supposed to be door locations in Silph Co.,
-; but they are unused.
-; The reason there are 3 tables is unknown.
-
-; Format:
-; 00: Map ID
-; 01: Y
-; 02: X
-; 03: ID?
-
-CardKeyTable1:
-	db  SILPH_CO_2F,$04,$04,$00
-	db  SILPH_CO_2F,$04,$05,$01
-	db  SILPH_CO_4F,$0C,$04,$02
-	db  SILPH_CO_4F,$0C,$05,$03
-	db  SILPH_CO_7F,$06,$0A,$04
-	db  SILPH_CO_7F,$06,$0B,$05
-	db  SILPH_CO_9F,$04,$12,$06
-	db  SILPH_CO_9F,$04,$13,$07
-	db SILPH_CO_10F,$08,$0A,$08
-	db SILPH_CO_10F,$08,$0B,$09
-	db $ff
-
-CardKeyTable2:
-	db SILPH_CO_3F,$08,$09,$0A
-	db SILPH_CO_3F,$09,$09,$0B
-	db SILPH_CO_5F,$04,$07,$0C
-	db SILPH_CO_5F,$05,$07,$0D
-	db SILPH_CO_6F,$0C,$05,$0E
-	db SILPH_CO_6F,$0D,$05,$0F
-	db SILPH_CO_8F,$08,$07,$10
-	db SILPH_CO_8F,$09,$07,$11
-	db SILPH_CO_9F,$08,$03,$12
-	db SILPH_CO_9F,$09,$03,$13
-	db $ff
-
-CardKeyTable3:
-	db SILPH_CO_11F,$08,$09,$14
-	db SILPH_CO_11F,$09,$09,$15
-	db $ff
-
 ItemUsePokedoll:
 	ld a, [wIsInBattle]
 	dec a
 	jp nz, ItemUseNotTime
+	ldafarbyte KeyItemRandoActive
+	and a
+	jr z, .success
+; key item rando: no pokedolling marowak
+; instead of looking for species, look for the map script active
+	ld a, [wCurMap]
+	cp POKEMON_TOWER_6F
+	jr nz, .success
+	ld a, [wPokemonTower6FCurScript]
+	cp $4
+	jr nz, .success
+	ld hl, NoPokedollingMarowakText
+	jp ItemUseFailed
+.success
 	ld a, $01
 	ld [wEscapedFromBattle], a
 	jp PrintItemUseTextAndRemoveItem
+	
+NoPokedollingMarowakText:
+	text "No! There are"
+	line "enough sequence"
+	cont "breaks in this"
+	cont "game already -"
+	cont "let's not add"
+	cont "any more!"
+	prompt
+	db "@"
 
 ItemUseGuardSpec:
 	ld a, [wIsInBattle]

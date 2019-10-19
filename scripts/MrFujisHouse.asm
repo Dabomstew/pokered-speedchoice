@@ -72,7 +72,9 @@ LavenderHouse1Text5:
 	jr nz, .asm_15ac2
 	ld hl, LavenderHouse1Text_1d94c
 	call PrintText
-	lb bc, POKE_FLUTE, 1
+	ldafarbyte KeyItemPokeFlute
+	ld b, a
+	ld c, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld hl, ReceivedFluteText

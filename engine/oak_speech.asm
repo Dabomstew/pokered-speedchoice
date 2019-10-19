@@ -45,6 +45,9 @@ OakSpeech:
 	call SetDefaultNames
 	predef InitPlayerData2
 	callab PermaOptionsMenu
+	ldafarbyte KeyItemRandoActive
+	and a
+	call nz, HideShowObjectsKeyItemRando
 	call ClearScreen
 	ld hl, wNumBoxItems
 	ld a, POTION
@@ -235,3 +238,12 @@ IntroDisplayPicCenteredOrUpperRight:
 	xor a
 	ld [hStartTileID], a
 	predef_jump CopyUncompressedPicToTilemap
+	
+HideShowObjectsKeyItemRando:
+; silph is open immediately
+	ld a, HS_SAFFRON_CITY_E
+	ld [wMissableObjectIndex], a
+	predef HideObject
+	ld a, HS_SAFFRON_CITY_F
+	ld [wMissableObjectIndex], a
+	predef_jump ShowObject
