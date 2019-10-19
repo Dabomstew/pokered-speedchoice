@@ -13,6 +13,8 @@ Mansion4Script_523cf:
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
+	ldafarbyte KeyItemSecretKey
+	ld [wMapSpriteExtraData + $0E], a
 	CheckEvent EVENT_MANSION_SWITCH_ON
 	jr nz, .asm_523ff
 	ld a, $e
