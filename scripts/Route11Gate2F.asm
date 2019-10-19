@@ -19,9 +19,14 @@ Route11GateUpstairsText2:
 	TX_ASM
 	CheckEvent EVENT_GOT_ITEMFINDER, 1
 	jr c, .asm_4949b
-	ld a, 30 ; pokemon needed
+	ldafarbyte KeyItemRandoActive
+	and a
+	ld a, 30
+	jr z, .continue
+	ld a, 12
+.continue
 	ld [hOaksAideRequirement], a
-	ld a, ITEMFINDER ; oak's aide reward
+	ldafarbyte KeyItemItemfinder
 	ld [hOaksAideRewardItem], a
 	ld [wd11e], a
 	call GetItemName

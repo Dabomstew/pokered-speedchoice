@@ -102,7 +102,7 @@ _OaksAideHiText::
 	text ""
 	line "kinds of #MON,"
 	cont "I'm supposed to"
-	cont "give you an"
+	cont "give you"
 	cont "@"
 	TX_RAM wOaksAideRewardItemName
 	text "!"
@@ -126,7 +126,7 @@ _OaksAideUhOhText::
 	para "You need @"
 	TX_NUM hOaksAideRequirement, 1, 3
 	text " kinds"
-	line "if you want the"
+	line "if you want"
 	cont "@"
 	TX_RAM wOaksAideRewardItemName
 	text "."
@@ -156,7 +156,7 @@ _OaksAideHereYouGoText::
 	prompt
 
 _OaksAideGotItemText::
-	text "<PLAYER> got the"
+	text "<PLAYER> got"
 	line "@"
 	TX_RAM wOaksAideRewardItemName
 	text "!@@"
@@ -164,7 +164,7 @@ _OaksAideGotItemText::
 _OaksAideNoRoomText::
 	text "Oh! I see you"
 	line "don't have any"
-	cont "room for the"
+	cont "room for"
 	cont "@"
 	TX_RAM wOaksAideRewardItemName
 	text "."

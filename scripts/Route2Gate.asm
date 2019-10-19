@@ -9,9 +9,14 @@ Route2GateText1:
 	TX_ASM
 	CheckEvent EVENT_GOT_HM05
 	jr nz, .asm_5d60d
-	ld a, 10 ; pokemon needed
+	ldafarbyte KeyItemRandoActive
+	and a
+	ld a, 10
+	jr z, .continue
+	ld a, 6
+.continue
 	ld [hOaksAideRequirement], a
-	ld a, HM_05 ; oak's aide reward
+	ldafarbyte KeyItemHM05
 	ld [hOaksAideRewardItem], a
 	ld [wd11e], a
 	call GetItemName
