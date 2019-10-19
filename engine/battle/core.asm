@@ -2916,8 +2916,8 @@ SwapMovesInMenu:
 PrintMenuItem:
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
-	coord hl, 0, 8
-	ld b, 3
+	coord hl, 0, 6
+	ld b, 5
 	ld c, 9
 	call TextBoxBorder
 	ld a, [wPlayerDisabledMove]
@@ -2932,7 +2932,7 @@ PrintMenuItem:
 	coord hl, 1, 10
 	ld de, DisabledText
 	call PlaceString
-	jr .moveDisabled
+	jp .moveDisabled
 .notDisabled
 	ld hl, wCurrentMenuItem
 	dec [hl]
@@ -2979,6 +2979,37 @@ PrintMenuItem:
 	call GetCurrentMove
 	coord hl, 2, 10
 	predef PrintMoveType
+	coord hl, 1, 8
+	ld de, AccText
+	call PlaceString
+	ld a, [wPlayerMoveAccuracy]
+	cp 2
+	jr nc, .printAcc
+	coord hl, 8, 8
+	ld de, PowerAccNone
+	call PlaceString
+	jr .power
+.printAcc
+	ld de, wPlayerMoveAccuracy
+	lb bc, 1, 3
+	coord hl, 7, 8
+	call PrintNumber
+.power
+	coord hl, 1, 7
+	ld de, PowerText
+	call PlaceString
+	ld a, [wPlayerMovePower]
+	cp 2
+	jr nc, .printPower
+	coord hl, 8, 7
+	ld de, PowerAccNone
+	call PlaceString
+	jr .moveDisabled
+.printPower
+	ld de, wPlayerMovePower
+	lb bc, 1, 3
+	coord hl, 7, 7
+	call PrintNumber
 .moveDisabled
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
@@ -2989,6 +3020,15 @@ DisabledText:
 
 TypeText:
 	db "TYPE@"
+	
+PowerText:
+	db "POW/ @"
+	
+AccText:
+	db "ACC/ @"
+	
+PowerAccNone:
+	db "--@"
 
 SelectEnemyMove:
 	ld a, [wLinkState]
