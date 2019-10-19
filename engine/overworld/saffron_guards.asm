@@ -1,5 +1,9 @@
 RemoveGuardDrink:
+	ldafarbyte KeyItemRandoActive
+	and a
 	ld hl, GuardDrinksList
+	jr z, .drinkLoop
+	ld hl, HealthierGuardDrinksList
 .drinkLoop
 	ld a, [hli]
 	ld [$ffdb], a
@@ -14,3 +18,6 @@ RemoveGuardDrink:
 
 GuardDrinksList:
 	db FRESH_WATER, SODA_POP, LEMONADE, $00
+	
+HealthierGuardDrinksList:
+	db TEA, $00

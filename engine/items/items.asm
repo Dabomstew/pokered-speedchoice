@@ -24,7 +24,7 @@ ItemUsePtrTable:
 	dw ItemUseBicycle    ; BICYCLE
 	dw ItemUseSurfboard  ; out-of-battle Surf effect
 	dw ItemUseBall       ; SAFARI_BALL
-	dw ItemUsePokedex    ; POKEDEX
+	dw UnusableItem      ; TEA
 	dw ItemUseEvoStone   ; MOON_STONE
 	dw ItemUseMedicine   ; ANTIDOTE
 	dw ItemUseMedicine   ; BURN_HEAL

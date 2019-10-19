@@ -7,7 +7,7 @@ ItemNames:
 	db "BICYCLE@"
 	db "?????@"
 	db "SAFARI BALL@"
-	db "POKéDEX@"
+	db "TEA@"
 	db "MOON STONE@"
 	db "ANTIDOTE@"
 	db "BURN HEAL@"

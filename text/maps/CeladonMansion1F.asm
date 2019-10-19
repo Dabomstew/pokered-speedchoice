@@ -21,3 +21,28 @@ _CeladonMansion1Text5::
 	text "CELADON MANSION"
 	line "Manager's Suite"
 	done
+
+_TeaPreGiveText::
+	text "You shouldn't spend"
+	line "all your money"
+	cont "on drinks."
+
+	para "Try this instead."
+	prompt
+	done
+	
+_TeaPostGiveText::
+	text "<PLAYER> received"
+	line "@"
+	TX_RAM wcf4b
+	text "!@"
+	TX_SFX_KEY_ITEM
+	text ""
+
+	para "Nothing beats"
+	line "thirst like some"
+	cont "hot TEA."
+
+	para "It really is"
+	line "the best."
+	done

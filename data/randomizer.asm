@@ -58,7 +58,7 @@ KeyItemSSTicket::
 KeyItemSuperRod::
 	db SUPER_ROD
 KeyItemTea::
-	db 0 ; db TEA - to be implemented
+	db TEA
 KeyItemTownMap::
 	db TOWN_MAP
 KeyItemRandoActive::

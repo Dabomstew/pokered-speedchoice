@@ -392,7 +392,7 @@ const_value = 0
 	const EVENT_185                                  ; 185, (D777, bit 5)
 	const EVENT_186                                  ; 186, (D777, bit 6)
 	const EVENT_187                                  ; 187, (D777, bit 7)
-	const EVENT_188                                  ; 188, (D778, bit 0)
+	const EVENT_GOT_TEA                              ; 188, (D778, bit 0)
 	const EVENT_189                                  ; 189, (D778, bit 1)
 	const EVENT_18A                                  ; 18A, (D778, bit 2)
 	const EVENT_18B                                  ; 18B, (D778, bit 3)
