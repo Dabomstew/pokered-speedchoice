@@ -1,5 +1,11 @@
 SafariZoneWest_Script:
+	call ReplaceGoldTeeth
 	jp EnableAutoTextBoxDrawing
+	
+ReplaceGoldTeeth:
+	ldafarbyte KeyItemGoldTeeth
+	ld [wMapSpriteExtraData + $06], a
+	ret
 
 SafariZoneWest_TextPointers:
 	dw PickUpItemText
