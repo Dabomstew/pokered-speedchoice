@@ -28,7 +28,14 @@ BluesHouseText1:
 	TX_ASM
 	CheckEvent EVENT_GOT_TOWN_MAP
 	jr nz, .GotMap
+	ldafarbyte KeyItemRandoActive
+	and a
+	jr z, .checkDex
+	CheckEvent EVENT_BATTLED_RIVAL_IN_OAKS_LAB
+	jr .reactToCheck
+.checkDex
 	CheckEvent EVENT_GOT_POKEDEX
+.reactToCheck
 	jr nz, .GiveMap
 	ld hl, DaisyInitialText
 	call PrintText
@@ -37,7 +44,9 @@ BluesHouseText1:
 .GiveMap
 	ld hl, DaisyOfferMapText
 	call PrintText
-	lb bc, TOWN_MAP, 1
+	ldafarbyte KeyItemTownMap
+	ld b, a
+	ld c, 1
 	call GiveItem
 	jr nc, .BagFull
 	ld a, HS_TOWN_MAP
