@@ -8,7 +8,6 @@ PermaOptions3String::
 
 PermaOptions3Pointers::
 	dw Options_NerfBrock
-	dw Options_Savescum
 	dw Options_BikeSlipRun
 	dw Options_Boat
 	dw Options_PermaOptionsPage
