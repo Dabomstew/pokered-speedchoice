@@ -246,4 +246,11 @@ HideShowObjectsKeyItemRando:
 	predef HideObject
 	ld a, HS_SAFFRON_CITY_F
 	ld [wMissableObjectIndex], a
-	predef_jump ShowObject
+	predef ShowObject
+; cerulean guard house is open immediately
+	ld a, HS_CERULEAN_GUARD_1
+	ld [wMissableObjectIndex], a
+	predef ShowObject
+	ld a, HS_CERULEAN_GUARD_2
+	ld [wMissableObjectIndex], a
+	predef_jump HideObject
