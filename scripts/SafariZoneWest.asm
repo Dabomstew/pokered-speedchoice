@@ -3,6 +3,10 @@ SafariZoneWest_Script:
 	jp EnableAutoTextBoxDrawing
 	
 ReplaceGoldTeeth:
+	ld hl, wCurrentMapScriptFlags
+	bit 5, [hl]
+	res 5, [hl]
+	ret z
 	ldafarbyte KeyItemGoldTeeth
 	ld [wMapSpriteExtraData + $06], a
 	ret
