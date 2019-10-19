@@ -1,5 +1,4 @@
 ViridianMart_Script:
-	call ViridianMartScript_1d47d
 	call EnableAutoTextBoxDrawing
 	ld hl, ViridianMart_ScriptPointers
 	ld a, [wViridianMartCurScript]
@@ -26,7 +25,7 @@ ViridianMartScript_1d47d:
 ViridianMart_ScriptPointers:
 	dw ViridianMartScript0
 	dw ViridianMartScript1
-	dw ViridianMartScript2
+	dw ViridianMartScript_1d47d
 
 ViridianMartScript0:
 	call UpdateSprites
@@ -53,11 +52,13 @@ ViridianMartScript1:
 	and a
 	ret nz
 	call Delay3
+	ldafarbyte KeyItemOaksParcel
+	ld b, a
+	ld c, 1
+	call GiveItem
 	ld a, $5
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	lb bc, OAKS_PARCEL, 1
-	call GiveItem
 	SetEvent EVENT_GOT_OAKS_PARCEL
 	ld a, $2
 	ld [wViridianMartCurScript], a

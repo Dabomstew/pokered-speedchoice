@@ -17,7 +17,9 @@ ViridianMartParcelQuestText::
 	cont "to him?"
 
 	para "<PLAYER> got"
-	line "OAK's PARCEL!@@"
+	line "@"
+	TX_RAM wcf4b
+	text "!@@"
 
 _ViridianMartText2::
 	text "This shop sells"
