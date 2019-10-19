@@ -9,10 +9,10 @@ ROM0
 	"BankswitchCommon"
 
 	org $0018
-	"rst 18"
+	"SetSRAMEnabled"
 
 	org $0020
-	"rst 20"
+	"SetSRAMBank"
 
 	org $0028
 	"rst 28"

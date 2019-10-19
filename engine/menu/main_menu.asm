@@ -390,7 +390,12 @@ PrintSaveScreenText:
 	call PrintPlayTime
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
+	ld a, [wPermanentOptions2]
+	and (1 << SHORT_DELAYS)
 	ld c, 30
+	jr z, .delay
+	ld c, 3
+.delay
 	jp DelayFrames
 
 PrintNumBadges:
@@ -437,10 +442,10 @@ CheckForPlayerNameInSRAM:
 ; (indicating that a name may have been saved there) and return whether it does
 ; in carry.
 	ld a, SRAM_ENABLE
-	ld [MBC1SRamEnable], a
+	rst SetSRAMEnabled
 	ld a, $1
 	ld [MBC1SRamBankingMode], a
-	ld [MBC1SRamBank], a
+	rst SetSRAMBank
 	ld b, NAME_LENGTH
 	ld hl, sPlayerName
 .loop
@@ -451,13 +456,13 @@ CheckForPlayerNameInSRAM:
 	jr nz, .loop
 ; not found
 	xor a
-	ld [MBC1SRamEnable], a
+	rst SetSRAMEnabled
 	ld [MBC1SRamBankingMode], a
 	and a
 	ret
 .found
 	xor a
-	ld [MBC1SRamEnable], a
+	rst SetSRAMEnabled
 	ld [MBC1SRamBankingMode], a
 	scf
 	ret

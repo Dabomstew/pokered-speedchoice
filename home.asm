@@ -7,10 +7,14 @@ SECTION "BankswitchCommon", ROM0
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	ret
-SECTION "rst 18", ROM0
-	rst $38
-SECTION "rst 20", ROM0
-	rst $38
+SECTION "SetSRAMEnabled", ROM0
+	ld [hSRAMEnabled], a
+	ld [MBC1SRamEnable], a
+	ret
+SECTION "SetSRAMBank", ROM0
+	ld [hSRAMBank], a
+	ld [MBC1SRamBank], a
+	ret
 SECTION "rst 28", ROM0
 	rst $38
 SECTION "rst 30", ROM0

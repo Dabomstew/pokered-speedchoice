@@ -7,9 +7,9 @@ UncompressSpriteData::
 	ld a, b
 	rst BankswitchCommon
 	ld a, SRAM_ENABLE
-	ld [MBC1SRamEnable], a
+	rst SetSRAMEnabled
 	xor a
-	ld [MBC1SRamBank], a
+	rst SetSRAMBank
 	call _UncompressSpriteData
 	pop af
 	jp BankswitchCommon

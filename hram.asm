@@ -329,3 +329,6 @@ hDisableJoypadPolling EQU $FFF9
 
 hJoyInput EQU $FFF8
 
+hSRAMEnabled EQU $FFFA
+hSRAMBank EQU $FFFB
+
