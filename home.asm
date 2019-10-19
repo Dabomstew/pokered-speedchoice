@@ -3,8 +3,10 @@ SECTION "rst 00", ROM0
 	rst $38
 SECTION "rst 08", ROM0
 	rst $38
-SECTION "rst 10", ROM0
-	rst $38
+SECTION "BankswitchCommon", ROM0
+	ld [H_LOADEDROMBANK], a
+	ld [MBC1RomBank], a
+	ret
 SECTION "rst 18", ROM0
 	rst $38
 SECTION "rst 20", ROM0
@@ -150,8 +152,7 @@ LoadDestinationWarpPosition::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wPredefParentBank]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld a, b
 	add a
 	add a
@@ -162,9 +163,7 @@ LoadDestinationWarpPosition::
 	ld de, wCurrentTileBlockMapViewPointer
 	call CopyData
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 
 DrawHPBar::
@@ -284,17 +283,14 @@ LoadFrontSpriteByMonIndex::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, Bank(CopyUncompressedPicToHL)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	xor a
 	ld [hStartTileID], a
 	call CopyUncompressedPicToHL
 	xor a
 	ld [wSpriteFlipped], a
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 
 PlayCry::
@@ -487,14 +483,11 @@ PrintStatusConditionNotFainted:
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(PrintStatusAilment)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call PrintStatusAilment ; print status condition
 	pop bc
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; function to print pokemon level, leaving off the ":L" if the level is at least 100
 ; INPUT:
@@ -535,8 +528,7 @@ GetMonHeader::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(BaseStats)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	push bc
 	push de
 	push hl
@@ -590,9 +582,7 @@ GetMonHeader::
 	pop de
 	pop bc
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; copy party pokemon's name to wcd6d
 GetPartyMonName2::
@@ -908,13 +898,10 @@ UpdateSprites::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, Bank(_UpdateSprites)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call _UpdateSprites
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 INCLUDE "data/mart_inventories.asm"
 
@@ -1154,8 +1141,7 @@ CloseTextDisplay::
 	dec c
 	jr nz, .restoreSpriteFacingDirectionLoop
 	ld a, BANK(InitMapSprites)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call InitMapSprites ; reload sprite tile pattern data (since it was partially overwritten by text tile patterns)
 	ld hl, wFontLoaded
 	res 0, [hl]
@@ -1164,8 +1150,7 @@ CloseTextDisplay::
 	call z, LoadPlayerSpriteGraphics
 	call LoadCurrentMapView
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	jp UpdateSprites
 
 DisplayPokemartDialogue::
@@ -1180,12 +1165,10 @@ DisplayPokemartDialogue::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, Bank(DisplayPokemartDialogue_)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call DisplayPokemartDialogue_
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	jp AfterDisplayingTextID
 
 PokemartGreetingText::
@@ -1215,12 +1198,10 @@ DisplayPokemonCenterDialogue::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, Bank(DisplayPokemonCenterDialogue_)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call DisplayPokemonCenterDialogue_
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	jp AfterDisplayingTextID
 
 DisplaySafariGameOverText::
@@ -1311,13 +1292,10 @@ RemoveItemFromInventory::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(RemoveItemFromInventory_)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call RemoveItemFromInventory_
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; function to add an item (in varying quantities) to the player's bag or PC box
 ; INPUT:
@@ -1330,13 +1308,11 @@ AddItemToInventory::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(AddItemToInventory_)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call AddItemToInventory_
 	pop bc
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	pop bc
 	ret
 
@@ -1394,7 +1370,12 @@ DisplayListMenuID::
 	ld [wTopMenuItemX], a
 	ld a, A_BUTTON | B_BUTTON | SELECT
 	ld [wMenuWatchedKeys], a
+	ld a, [wPermanentOptions2]
+	and (1 << SHORT_DELAYS)
 	ld c, 10
+	jr z, .call
+	ld c, 1
+.call
 	call DelayFrames
 
 DisplayListMenuIDLoop::
@@ -1872,8 +1853,7 @@ GetMonName::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(MonsterNames)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld a, [wd11e]
 	dec a
 	ld hl, MonsterNames
@@ -1888,8 +1868,7 @@ GetMonName::
 	ld [hl], "@"
 	pop de
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	pop hl
 	ret
 
@@ -2022,9 +2001,7 @@ ReloadMapData::
 	call LoadTilesetTilePatternData
 	call EnableLCD
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; reloads tileset tile patterns
 ReloadTilesetTilePatterns::
@@ -2036,9 +2013,7 @@ ReloadTilesetTilePatterns::
 	call LoadTilesetTilePatternData
 	call EnableLCD
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; shows the town map and lets the player choose a destination to fly to
 ChooseFlyDestination::
@@ -2076,14 +2051,11 @@ TossItem::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(TossItem_)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call TossItem_
 	pop de
 	ld a, d
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; checks if an item is a key item
 ; INPUT:
@@ -2110,14 +2082,11 @@ DisplayTextBoxID::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(DisplayTextBoxID_)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call DisplayTextBoxID_
 	pop bc
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; not zero if an NPC movement script is running, the player character is
 ; automatically stepping down from a door, or joypad states are being simulated
@@ -2152,14 +2121,11 @@ RunNPCMovementScript::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wNPCMovementScriptBank]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld a, [wNPCMovementScriptFunctionNum]
 	call CallFunctionInTable
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 .NPCMovementScriptPointerTables
 	dw PalletMovementScriptPointerTable
@@ -2521,16 +2487,14 @@ PrintEndBattleText::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, [wEndBattleTextRomBank]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	push hl
 	callba SaveTrainerName
 	ld hl, TrainerEndBattleText
 	call PrintText
 	pop hl
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	callba FreezeEnemyTrainerSprite
 	jp WaitForSoundToFinish
 
@@ -2914,16 +2878,12 @@ BankswitchHome::
 	ld a, [H_LOADEDROMBANK]
 	ld [wBankswitchHomeSavedROMBank], a
 	ld a, [wBankswitchHomeTemp]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 BankswitchBack::
 ; returns from BankswitchHome
 	ld a, [wBankswitchHomeSavedROMBank]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 Bankswitch::
 ; self-contained bankswitch, use this when not in the home bank
@@ -2931,17 +2891,14 @@ Bankswitch::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld bc, .Return
 	push bc
 	jp hl
 .Return
 	pop bc
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; displays yes/no choice
 ; yes -> set carry
@@ -3229,8 +3186,7 @@ GetName::
 .otherEntries
 	;2-7 = OTHER ENTRIES
 	ld a, [wPredefBank]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld a, [wNameListType]    ;VariousNames' entryID
 	dec a
 	add a
@@ -3277,9 +3233,7 @@ GetName::
 	pop bc
 	pop hl
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 GetItemPrice::
 ; Stores item's price as BCD at hItemPrice (3 bytes)
@@ -3292,8 +3246,7 @@ GetItemPrice::
 	jr nz, .ok
 	ld a, $f ; hardcoded Bank
 .ok
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld hl, wItemPrices
 	ld a, [hli]
 	ld h, [hl]
@@ -3316,15 +3269,12 @@ GetItemPrice::
 	jr .done
 .getTMPrice
 	ld a, Bank(GetMachinePrice)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call GetMachinePrice
 .done
 	ld de, hItemPrice
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; copies a string from [de] to [wcf4b]
 CopyStringToCF4B::
@@ -3472,12 +3422,10 @@ Divide::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, Bank(_Divide)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call _Divide
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	pop bc
 	pop de
 	pop hl
@@ -3775,27 +3723,21 @@ AddEnemyMonToPlayerParty::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(_AddEnemyMonToPlayerParty)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call _AddEnemyMonToPlayerParty
 	pop bc
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 MoveMon::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(_MoveMon)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call _MoveMon
 	pop bc
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; skips a text entries, each of size NAME_LENGTH (like trainer name, OT name, rival name, ...)
 ; hl: base pointer, will be incremented by NAME_LENGTH * a
@@ -4194,13 +4136,10 @@ PrintNumber::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, Bank(_PrintNumber)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call _PrintNumber
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 
 CallFunctionInTable::
@@ -4394,15 +4333,13 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor::
 	jr z, .nothingFound
 ; A button is pressed
 	ld a, Bank(CheckForHiddenObject)
-	ld [MBC1RomBank], a
-	ld [H_LOADEDROMBANK], a
+	rst BankswitchCommon
 	call CheckForHiddenObject
 	ld a, [$ffee]
 	and a
 	jr nz, .hiddenObjectNotFound
 	ld a, [wHiddenObjectFunctionRomBank]
-	ld [MBC1RomBank], a
-	ld [H_LOADEDROMBANK], a
+	rst BankswitchCommon
 	ld de, .returnAddress
 	push de
 	jp hl
@@ -4419,9 +4356,7 @@ CheckForHiddenObjectOrBookshelfOrCardKeyDoor::
 .done
 	ld [$ffeb], a
 	pop af
-	ld [MBC1RomBank], a
-	ld [H_LOADEDROMBANK], a
-	ret
+	jp BankswitchCommon
 
 PrintPredefTextID::
 	ld [hSpriteIndexOrTextID], a
@@ -4526,11 +4461,9 @@ GetFarByte::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld b, [hl]
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld a, b
 	ret

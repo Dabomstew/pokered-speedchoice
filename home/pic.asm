@@ -5,17 +5,14 @@ UncompressSpriteData::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, b
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld a, SRAM_ENABLE
 	ld [MBC1SRamEnable], a
 	xor a
 	ld [MBC1SRamBank], a
 	call _UncompressSpriteData
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
-	ret
+	jp BankswitchCommon
 
 ; initializes necessary data to load a sprite and runs UncompressSpriteDataLoop
 _UncompressSpriteData::

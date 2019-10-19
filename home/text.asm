@@ -709,16 +709,14 @@ TextCommand17::
 	ld a, [hli]
 	ld d, a
 	ld a, [hli]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	push hl
 	ld l, e
 	ld h, d
 	call TextCommandProcessor
 	pop hl
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	jp NextTextCommand
 
 TextCommandJumpTable::

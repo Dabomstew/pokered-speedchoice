@@ -90,8 +90,7 @@ rLCDC_DEFAULT EQU %11100011
 	call ClearSprites
 
 	ld a, Bank(WriteDMACodeToHRAM)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call WriteDMACodeToHRAM
 	
 	ld a, %1000000

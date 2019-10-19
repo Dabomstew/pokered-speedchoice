@@ -6,12 +6,10 @@ HBlank::
 	ld a, [H_LOADEDROMBANK]
 	push af
 	ld a, BANK(_HBlank)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call _HBlank
 	pop af
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	pop hl
 	pop de
 	pop bc

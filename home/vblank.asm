@@ -29,8 +29,7 @@ VBlank::
 	call WriteCGBPalettes
 	call $ff80 ; hOAMDMA
 	ld a, BANK(PrepareOAMData)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	call PrepareOAMData
 
 	; VBlank-sensitive operations end.
@@ -54,8 +53,7 @@ VBlank::
 	call FadeOutAudio
 
 	ld a, [wAudioROMBank] ; music ROM bank
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 
 	cp BANK(Audio1_UpdateMusic)
 	jr nz, .checkForAudio2
@@ -80,8 +78,7 @@ VBlank::
 	call z, ReadJoypad
 
 	ld a, [wVBlankSavedROMBank]
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 
 	pop hl
 	pop de
