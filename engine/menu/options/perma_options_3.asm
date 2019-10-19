@@ -1,8 +1,6 @@
 PermaOptions3String::
 	db "NERF BROCK<LNBRK>"
 	db "        :<LNBRK>"
-	db "SAVESCUM<LNBRK>"
-	db "        :<LNBRK>"
 	db "BIKESLIPRUN<LNBRK>"
 	db "        :<LNBRK>"
 	db "BOAT<LNBRK>"
@@ -21,11 +19,8 @@ Options_NerfBrock::
 	ld c, 3
 	jp Options_OnOff
 	
-Options_Savescum:: ; 5
+Options_BikeSlipRun:: ; 5
 	ret
 	
-Options_BikeSlipRun:: ; 7
-	ret
-	
-Options_Boat:: ; 9
+Options_Boat:: ; 7
 	ret

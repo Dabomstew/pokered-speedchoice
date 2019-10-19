@@ -25,7 +25,18 @@ PermaOptions2Pointers::
 	dw Options_PermaOptionsPage
 	
 Options_Delays:: ; 3
-	ret
+	ld hl, wPermanentOptions2
+	ld b, SHORT_DELAYS
+	ld c, 3
+	ld de, .NormalFast
+	jp Options_TrueFalse
+.NormalFast
+	dw .Off
+	dw .On
+.Off
+	db "NORMAL@"
+.On
+	db "FAST  @"
 	
 Options_MetronomeOnly:: ; 5
 	ret

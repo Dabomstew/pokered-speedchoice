@@ -4270,8 +4270,12 @@ GBPalWhiteOutWithDelay3::
 Delay3::
 ; The bg map is updated each frame in thirds.
 ; Wait three frames to let the bg map fully update.
+; only wait 1 with short delays
+	ld a, [wPermanentOptions2]
+	and (1 << SHORT_DELAYS)
 	ld c, 3
-	jp DelayFrames
+	jp z, DelayFrames
+	jp DelayFrame
 
 GBPalNormal::
 ; Reset BGP and OBP0.

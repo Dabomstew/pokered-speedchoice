@@ -2573,7 +2573,9 @@ wLastPalette::
 wCurPalette::
 	ds 1
 wPermanentOptions::
-	ds 2
+	ds 1
+wPermanentOptions2::
+	ds 1
 	
 wMainDataBlock1End::
 	ds 100
