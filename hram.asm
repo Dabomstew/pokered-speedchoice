@@ -210,36 +210,8 @@ H_AUTOBGTRANSFERDEST EQU $FFBC ; 2 bytes
 ; to increase speed
 H_SPTEMP EQU $FFBF ; 2 bytes
 
-; source address for VBlankCopyBgMap function
-; the first byte doubles as the byte that enabled the transfer.
-; if it is 0, the transfer is disabled
-; if it is not 0, the transfer is enabled
-; this means that XX00 is not a valid source address
-H_VBCOPYBGSRC EQU $FFC1 ; 2 bytes
-
-; destination address for VBlankCopyBgMap function
-H_VBCOPYBGDEST EQU $FFC3 ; 2 bytes
-
-; number of rows for VBlankCopyBgMap to copy
-H_VBCOPYBGNUMROWS EQU $FFC5
-
-; size of VBlankCopy transfer in 16-byte units
-H_VBCOPYSIZE EQU $FFC6
-
-; source address for VBlankCopy function
-H_VBCOPYSRC EQU $FFC7
-
-; destination address for VBlankCopy function
-H_VBCOPYDEST EQU $FFC9
-
-; size of source data for VBlankCopyDouble in 8-byte units
-H_VBCOPYDOUBLESIZE EQU $FFCB
-
-; source address for VBlankCopyDouble function
-H_VBCOPYDOUBLESRC EQU $FFCC
-
-; destination address for VBlankCopyDouble function
-H_VBCOPYDOUBLEDEST EQU $FFCE
+; temp for copyvideodatadouble
+H_COPYDOUBLETEMP EQU $FFC1
 
 ; controls whether a row or column of 2x2 tile blocks is redrawn in V-blank
 ; 00 = no redraw

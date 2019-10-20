@@ -21,10 +21,7 @@ VBlank::
 .ok
 
 	call AutoBgMapTransfer
-	call VBlankCopyBgMap
 	call RedrawRowOrColumn
-	call VBlankCopy
-	call VBlankCopyDouble
 	call UpdateMovingBgTiles
 	call WriteCGBPalettes
 	call $ff80 ; hOAMDMA
