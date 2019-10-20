@@ -2986,11 +2986,31 @@ PrintMenuItem:
 	cp 2
 	jr nc, .printAcc
 	coord hl, 8, 8
-	ld de, PowerAccNone
+	ld de, PowerAccNoneText
 	call PlaceString
 	jr .power
 .printAcc
-	ld de, wPlayerMoveAccuracy
+; acc*100/255
+	xor a
+	ld [H_MULTIPLICAND], a
+	ld [H_MULTIPLICAND + 1], a
+	ld a, [wPlayerMoveAccuracy]
+	ld [H_MULTIPLICAND + 2], a
+	ld a, 100
+	ld [H_MULTIPLIER], a
+	call Multiply
+	ld a, 255
+	ld [H_DIVISOR], a
+	ld b, 4
+	call Divide
+; increase displayed number by 1 if remainder is >=128
+	ld a, [H_REMAINDER]
+	cp $80
+	jr c, .noIncrease
+	ld hl, H_QUOTIENT + 3
+	inc [hl]
+.noIncrease
+	ld de, H_QUOTIENT + 3
 	lb bc, 1, 3
 	coord hl, 7, 8
 	call PrintNumber
@@ -3002,7 +3022,7 @@ PrintMenuItem:
 	cp 2
 	jr nc, .printPower
 	coord hl, 8, 7
-	ld de, PowerAccNone
+	ld de, PowerAccNoneText
 	call PlaceString
 	jr .moveDisabled
 .printPower
@@ -3027,7 +3047,7 @@ PowerText:
 AccText:
 	db "ACC/ @"
 	
-PowerAccNone:
+PowerAccNoneText:
 	db "--@"
 
 SelectEnemyMove:

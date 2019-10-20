@@ -4213,10 +4213,17 @@ GBPalWhiteOutWithDelay3::
 Delay3::
 ; The bg map is updated each frame in thirds.
 ; Wait three frames to let the bg map fully update.
-; only wait 1 with short delays
+; only wait 1 with short delays unless copy-in-thirds mode is on (non-zero H_AUTOBGTRANSFERDEST low byte)
+	ld c, 3
+	ld a, [H_AUTOBGTRANSFERENABLED]
+	and a
+	jr z, .optionsCheck
+	ld a, [H_AUTOBGTRANSFERDEST]
+	and a
+	jp nz, DelayFrames
+.optionsCheck
 	ld a, [wPermanentOptions2]
 	and (1 << SHORT_DELAYS)
-	ld c, 3
 	jp z, DelayFrames
 	jp DelayFrame
 
