@@ -129,6 +129,10 @@ rLCDC_DEFAULT EQU %11100011
 	ld a, 16
 	ld [hSoftReset], a
 	call StopAllSounds
+	
+; don't wait for artificial delays in the startup sequence
+	ld a, (1 << SHORT_DELAYS)
+	ld [wPermanentOptions2], a
 
 	ei
 
