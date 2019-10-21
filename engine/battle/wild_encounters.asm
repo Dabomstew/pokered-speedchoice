@@ -20,7 +20,7 @@ TryDoWildEncounter:
 	and a
 	jr z, .next
 	dec a
-	jr z, .lastRepelStep
+	jp z, .lastRepelStep
 	ld [wRepelRemainingSteps], a
 .next
 ; determine if wild pokemon can appear in the half-block we're standing in
@@ -80,6 +80,9 @@ TryDoWildEncounter:
 	ld a, [wPermanentOptions2]
 	and (1 << GOOD_EARLY_WILDS)
 	jr z, .noEvolve
+	ld a, [wCurEnemyLVL]
+	cp 10
+	jr nc, .noEvolve
 	callab FullyEvolveMonInCF91
 .noEvolve
 	ld a, [wcf91]
