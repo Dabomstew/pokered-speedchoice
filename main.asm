@@ -2118,3 +2118,7 @@ INCLUDE "engine/print_number.asm"
 SECTION "options", ROMX
 
 INCLUDE "engine/menu/options_menu.asm"
+
+SECTION "fully_evolve", ROMX
+
+INCLUDE "engine/fully_evolve_mon.asm"

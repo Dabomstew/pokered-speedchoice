@@ -128,7 +128,10 @@ endr
 	db "NONE  @"
 	
 Options_GoodEarlyWilds:: ; 11
-	ret
+	ld hl, wPermanentOptions2
+	ld b, GOOD_EARLY_WILDS
+	ld c, 11
+	jp Options_OnOff
 	
 Options_BetterMarts::
 	ld hl, wPermanentOptions
