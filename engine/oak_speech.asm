@@ -54,6 +54,7 @@ OakSpeech:
 	ld [wcf91], a
 	ld a, 1
 	ld [wItemQuantity], a
+	ld [H_INGAME], a ; hijack this to write the "use artificial delays now" flag
 	call AddItemToInventory  ; give one potion
 	ld a, [wDefaultMap]
 	ld [wDestinationMap], a

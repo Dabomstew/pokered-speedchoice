@@ -200,6 +200,9 @@ endr
 	
 ; simulates the original delay of CopyVideoData if short delays is off
 CopyVideoDataDelay::
+	ld a, [H_INGAME]
+	and a
+	ret z
 	ld a, [wPermanentOptions2]
 	and (1 << SHORT_DELAYS)
 	ret nz

@@ -22,4 +22,15 @@ Options_BikeSlipRun:: ; 5
 	ret
 	
 Options_Boat:: ; 7
-	ret
+	ld hl, wPermanentOptions2
+	ld b, BACKWARDS_BOAT
+	ld c, 7
+	ld de, .NormalMeme
+	jp Options_TrueFalse
+.NormalMeme
+	dw .Off
+	dw .On
+.Off
+	db "NORMAL@"
+.On
+	db "MEME  @"

@@ -78,7 +78,12 @@ VermilionDock_1db9b:
 	ld d, $0
 	ld e, $8
 .asm_1dbfa
+	ld a, [wPermanentOptions2]
+	and (1 << BACKWARDS_BOAT)
 	ld hl, $0002
+	jr z, .continue
+	ld hl, -$0002
+.continue
 	add hl, bc
 	ld a, l
 	ld [wMapViewVRAMPointer], a
@@ -86,7 +91,14 @@ VermilionDock_1db9b:
 	ld [wMapViewVRAMPointer + 1], a
 	push hl
 	push de
+	ld a, [wPermanentOptions2]
+	and (1 << BACKWARDS_BOAT)
+	jr z, .east
+	call ScheduleWestColumnRedraw
+	jr .continue2
+.east
 	call ScheduleEastColumnRedraw
+.continue2
 	call VermilionDock_EmitSmokePuff
 	pop de
 	ld b, $10
@@ -97,7 +109,14 @@ VermilionDock_1db9b:
 	call VermilionDock_1dc7c
 	dec c
 	jr nz, .asm_1dc16
+	ld a, [wPermanentOptions2]
+	and (1 << BACKWARDS_BOAT)
+	jr z, .inc
+	dec d
+	jr .continue3
+.inc
 	inc d
+.continue3
 	dec b
 	jr nz, .asm_1dc11
 	pop bc
@@ -141,8 +160,15 @@ VermilionDock_AnimSmokePuffDriftRight:
 
 VermilionDock_EmitSmokePuff:
 ; new smoke puff above the S.S. Anne's front smokestack
+	ld a, [wPermanentOptions2]
+	and (1 << BACKWARDS_BOAT)
 	ld a, [wSSAnneSmokeX]
+	jr z, .notbackwards
+	add 16
+	jr .continue
+.notbackwards
 	sub 16
+.continue
 	ld [wSSAnneSmokeX], a
 	ld c, a
 	ld b, 100 ; Y

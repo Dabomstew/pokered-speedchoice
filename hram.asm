@@ -213,6 +213,9 @@ H_SPTEMP EQU $FFBF ; 2 bytes
 ; temp for copyvideodatadouble
 H_COPYDOUBLETEMP EQU $FFC1
 
+; past permaoptions screen flag for enabling artificial copyvideodata delays
+H_INGAME EQU $FFC2
+
 ; controls whether a row or column of 2x2 tile blocks is redrawn in V-blank
 ; 00 = no redraw
 ; 01 = redraw column
