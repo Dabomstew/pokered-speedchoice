@@ -20,55 +20,18 @@ MainOptionsPointers::
 ; e42f5
 
 Options_TextSpeed:
-	call GetTextSpeed
-	ld a, [hJoyPressed]
-	bit BIT_D_LEFT, a
-	jr nz, .LeftPressed
-	bit BIT_D_RIGHT, a
-	jr z, .NonePressed
-	ld a, c ; right pressed
-	cp TEXT_SLOW
-	jr c, .Increase
-	ld c, TEXT_INSTANT +- 1
-
-.Increase
-	inc c
-	jr .Save
-
-.LeftPressed
-	ld a, c
-	and a
-	jr nz, .Decrease
-	ld c, TEXT_SLOW + 1
-
-.Decrease
-	dec c
-
-.Save
-	ld a, [wOptions]
-	and $ff ^ TEXT_SPEED_MASK
-	or c
-	ld [wOptions], a
-
-.NonePressed
-	ld b, 0
-	ld hl, .Strings
-rept 2
-	add hl, bc
-endr
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	hlcoord 11, 3
-	call PlaceString
-	and a
-	ret
+	ld hl, .Data
+	jp Options_Multichoice
+	
+.Data:
+	multichoiceoptiondata wOptions, TEXT_SPEED_SHIFT, TEXT_SPEED_SIZE, 3, NUM_OPTIONS, .Strings
 
 .Strings
 	dw .Inst
 	dw .Fast
 	dw .Mid
 	dw .Slow
+.Strings_End:
 	
 .Inst
 	db "INST@"
@@ -79,12 +42,6 @@ endr
 	db "MID @"
 .Slow
 	db "SLOW@"
-
-GetTextSpeed::
-	ld a, [wOptions]
-	and TEXT_SPEED_MASK
-	ld c, a
-	ret
 
 Options_BattleScene:
 	ld hl, wOptions
