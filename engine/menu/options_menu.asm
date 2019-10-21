@@ -362,6 +362,8 @@ OnOffStrings::
 	db "OFF@"
 .On:
 	db "ON @"
+	
+NUM_OPTIONS EQUS "((.Strings_End - .Strings)/2)"
 
 INCLUDE "engine/menu/options/main_options.asm"
 INCLUDE "engine/menu/options/perma_options.asm"

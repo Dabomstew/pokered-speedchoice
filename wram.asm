@@ -2576,9 +2576,11 @@ wPermanentOptions::
 	ds 1
 wPermanentOptions2::
 	ds 1
+wPermanentOptions3::
+	ds 1
 	
 wMainDataBlock1End::
-	ds 100
+	ds 99
 
 wMainDataBlock2Start::
 wNumSigns:: ; d4b0

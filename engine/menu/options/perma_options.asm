@@ -154,8 +154,78 @@ Options_RivalName:
 .NotSetString
 	db "NOT SET@"
 	
-Options_StartIn:: ; 9
+Options_StartIn::
+	ld hl, wPermanentOptions3
+	bit BIT_D_LEFT, a
+	jr nz, .LeftPressed
+	bit BIT_D_RIGHT, a
+	jr nz, .RightPressed
+	jr .UpdateDisplay
+
+.RightPressed
+	call .GetStartInVal
+	inc a
+	jr .Save
+
+.LeftPressed
+	call .GetStartInVal
+	dec a
+
+.Save
+	cp $ff
+	jr nz, .nextCheck
+	ld a, NUM_OPTIONS - 1
+	jr .store
+.nextCheck
+	cp NUM_OPTIONS
+	jr nz, .store
+	xor a
+.store
+	ld b, a
+	ld a, [hl]
+	and $ff ^ STARTIN_MASK
+	or b
+	ld [hl], a
+	
+.UpdateDisplay:
+	call .GetStartInVal
+	ld c, a
+	ld b, 0
+	ld hl, .Strings
+rept 2
+	add hl, bc
+endr
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	hlcoord 11, 9
+	call PlaceString
+	and a
 	ret
+	
+.GetStartInVal:
+	ld a, [hl]
+	and STARTIN_MASK
+	ret
+	
+.Strings:
+	dw .Normal
+	dw .Eevee
+	dw .Lapras
+	dw .Safari
+	dw .Tower
+.Strings_End:
+
+.Normal:
+	db "NORMAL@"
+.Eevee:
+	db "EEVEE @"
+.Lapras:
+	db "LAPRAS@"
+.Safari:
+	db "SAFARI@"
+.Tower:
+	db "TOWER @"
 	
 Options_RaceGoal:: ; 11
 	ret
@@ -180,10 +250,10 @@ Options_Spinners:
 .Save
 	cp $ff
 	jr nz, .nextCheck
-	ld a, 2
+	ld a, NUM_OPTIONS - 1
 	jr .store
 .nextCheck
-	cp $03
+	cp NUM_OPTIONS
 	jr nz, .store
 	xor a
 .store
@@ -218,6 +288,7 @@ endr
 	dw .Normal
 	dw .Hell
 	dw .Why
+.Strings_End:
 	
 .Normal
 	db "NORMAL@"

@@ -75,10 +75,10 @@ Options_EXP:
 .Save
 	cp $ff
 	jr nz, .nextCheck
-	ld a, 2
+	ld a, NUM_OPTIONS - 1
 	jr .store
 .nextCheck
-	cp $03
+	cp NUM_OPTIONS
 	jr nz, .store
 	xor a
 .store
@@ -119,6 +119,7 @@ endr
 	dw .Normal
 	dw .BW
 	dw .None
+.Strings_End:
 	
 .Normal
 	db "NORMAL@"

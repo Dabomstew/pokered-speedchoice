@@ -11,7 +11,6 @@ SpecialWarpIn:
 .next
 	bit 1, [hl]
 	jr z, .next3
-	call EmptyFunc
 .next3
 	ld a, 0
 .next2
@@ -54,7 +53,28 @@ LoadSpecialWarpData:
 	jr nz, .notFirstMap
 	bit 2, a
 	jr nz, .notFirstMap
+; first map - check "start in" choice
+	ld a, [wPermanentOptions3]
+	and STARTIN_MASK
 	ld hl, FirstMapSpec
+	jr z, .copyWarpData
+	ld hl, MapSpecPointers
+	add a
+	ld e, a
+	ld d, 0
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+; for a non-default startin, give the classic L2 magikarp starter
+	ld a, MAGIKARP
+	ld [wcf91], a
+	ld a, 2
+	ld [wCurEnemyLVL], a
+	ld a, $10 ; do not ask for nickname
+	ld [wMonDataLocation], a
+	call AddPartyMon
+; for now don't set the meme nickname
 .copyWarpData
 	ld de, wCurMap
 	ld c, $7
@@ -66,6 +86,10 @@ LoadSpecialWarpData:
 	jr nz, .copyWarpDataLoop
 	ld a, [hli]
 	ld [wCurMapTileset], a
+	ld a, [hli]
+	ld [wLastBlackoutMap], a
+	ld a, [hl]
+	ld [wLastMap], a
 	xor a
 	jr .done
 .notFirstMap

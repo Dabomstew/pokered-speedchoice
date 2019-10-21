@@ -29,3 +29,6 @@ SPINNERHELL_WHY_SPEED EQU %11
 SHORT_DELAYS EQU 0
 GOOD_EARLY_WILDS EQU 1
 BACKWARDS_BOAT EQU 2
+
+; wPermanentOptions3:
+STARTIN_MASK EQU %00001111 ; there are only 5 atm, but leaving space for up to 16
