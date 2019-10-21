@@ -300,6 +300,26 @@ Options_UpdateCursorPosition:
 	ld [hl], "▶"
 	ret
 	
+; b = x-coordinate
+; c = y-coordinate
+CoordHL:
+	push bc
+	ld h, 0
+	ld b, h
+	ld l, c
+	add hl, hl
+	add hl, hl ; *4
+	add hl, bc ; *5
+	add hl, hl
+	add hl, hl ; *20
+	ld bc, wTileMap
+	add hl, bc
+	pop bc
+	ld c, b
+	ld b, 0
+	add hl, bc
+	ret
+	
 ; hl = ram address
 ; b = bit number in ram address
 ; c = y-coordinate to draw at
@@ -341,16 +361,8 @@ Options_TrueFalse:
 	ld a, [de]
 	ld d, a
 	ld e, l
-	ld h, 0
-	ld b, h
-	ld l, c
-	add hl, hl
-	add hl, hl ; *4
-	add hl, bc ; *5
-	add hl, hl
-	add hl, hl ; *20
-	ld bc, wTileMap + 11
-	add hl, bc
+	ld b, 11 ; x-coord, y-coord is already in c
+	call CoordHL
 	call PlaceString
 	and a
 	ret
@@ -423,7 +435,7 @@ Options_Multichoice:
 	ld a, [hl]
 	ld c, a
 	ld a, [wBuffer + 3] ; bitmask for the option in question
-	xor $ff ; invert it so we clear the option
+	cpl ; invert it so we clear the option
 	and c ; bitmask AND current value
 	or b ; set new value
 	ld [hl], a
@@ -432,7 +444,7 @@ Options_Multichoice:
 	call .GetVal
 	ld c, a
 	ld b, 0
-	ld hl, wBuffer + 6
+	ld hl, wBuffer + 6 ; pointer to strings
 	rst UnHL
 rept 2
 	add hl, bc
@@ -443,16 +455,8 @@ endr
 	ld a, [wBuffer + 4] ; y-coordinate
 ; calculate ram address to put string at from y-coordinate
 	ld c, a
-	ld h, 0
-	ld b, h
-	ld l, c
-	add hl, hl
-	add hl, hl ; *4
-	add hl, bc ; *5
-	add hl, hl
-	add hl, hl ; *20
-	ld bc, wTileMap + 11
-	add hl, bc
+	ld b, 11 ; x-coordinate
+	call CoordHL
 	call PlaceString
 	and a
 	ret
@@ -463,7 +467,6 @@ endr
 	ld b, [hl]
 	ld a, [wBuffer + 3] ; bitmask
 	and b
-; todo bitshift appropriately
 	ld b, a
 ; bitshift as needed
 	ld a, [wBuffer + 2] ; bitshift
