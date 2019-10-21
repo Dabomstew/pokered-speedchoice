@@ -74,7 +74,13 @@ LoadSpecialWarpData:
 	ld a, $10 ; do not ask for nickname
 	ld [wMonDataLocation], a
 	call AddPartyMon
-; for now don't set the meme nickname
+; set a "nickname"
+	push hl
+	ld hl, MagikarpString
+	ld bc, 9
+	ld de, wPartyMonNicks
+	call CopyData
+	pop hl
 .copyWarpData
 	ld de, wCurMap
 	ld c, $7
@@ -169,5 +175,8 @@ LoadSpecialWarpData:
 	ld a, $ff ; the player's coordinates have already been updated using a special warp, so don't use any of the normal warps
 	ld [wDestinationWarpID], a
 	ret
+	
+MagikarpString:
+	db "MAGIKARP@"
 
 INCLUDE "data/special_warps.asm"
