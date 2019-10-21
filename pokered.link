@@ -15,7 +15,7 @@ ROM0
 	"SetSRAMBank"
 
 	org $0028
-	"rst 28"
+	"UnHL"
 
 	org $0030
 	"rst 30"

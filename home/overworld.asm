@@ -80,7 +80,7 @@ OverworldLoopLessDelay::
 	jp .displayDialogue
 .startButtonNotPressed
 	bit 0, a ; A button
-	jp z, .checkIfDownButtonIsPressed
+	jp z, .checkIfSelectButtonIsPressed
 ; if A is pressed
 	ld a, [wd730]
 	bit 2, a
@@ -112,17 +112,6 @@ OverworldLoopLessDelay::
 	dec a
 	ld a, 0
 	ld [wEnteringCableClub], a
-	jr z, .changeMap
-; XXX can this code be reached?
-	predef LoadSAV
-	ld a, [wCurMap]
-	ld [wDestinationMap], a
-	call SpecialWarpIn
-	ld a, [wCurMap]
-	call SwitchToMapRomBank ; switch to the ROM bank of the current map
-	ld hl, wCurMapTileset
-	set 7, [hl]
-.changeMap
 	jp EnterMap
 .checkForOpponent
 	ld a, [wCurOpponent]
@@ -143,7 +132,47 @@ OverworldLoopLessDelay::
 	xor a
 	ld [wPlayerMovingDirection], a ; zero the direction
 	jp OverworldLoop
-
+.checkIfSelectButtonIsPressed
+	bit 2, a
+	jr z, .checkIfDownButtonIsPressed
+	ld a, [wPermanentOptions2]
+	and SELECTTO_MASK
+	jr z, .checkIfDownButtonIsPressed
+	ld hl, wOverworldSelectFlags
+	swap a
+	dec a ; select to bike?
+	jr nz, .checkSelectToJack
+	push hl
+	ld b, BICYCLE
+	call IsItemInBag
+	pop hl
+	jr z, .checkIfDownButtonIsPressed
+	set SELECT_BICYCLE, [hl] ; deactivate bike texts
+	callab ItemUseBicycle
+	call LoadPlayerSpriteGraphics
+.afterSelectActivation
+	jp OverworldLoop
+.checkSelectToJack
+	dec a
+	jr nz, .checkIfDownButtonIsPressed ; not jack or bike, value 3 is unused, just do nothing atm
+	set SELECT_JACK, [hl] ; prepare for jack pkmn menu
+	ld a, POTION
+	ld [wcf91], a
+	call LoadFontTilePatterns
+	ld hl, wFontLoaded
+	set 0, [hl]
+	push hl
+	ld a, [hWY]
+	push af
+	xor a
+	ld [hWY], a
+	call UseItem
+	pop af
+	ld [hWY], a
+	callab InitMapSprites
+	pop hl
+	res 0, [hl]
+	jr .afterSelectActivation
 .checkIfDownButtonIsPressed
 	ld a, [hJoyHeld] ; current joypad state
 	bit 7, a ; down button
@@ -171,7 +200,7 @@ OverworldLoopLessDelay::
 
 .checkIfRightButtonIsPressed
 	bit 4, a ; right button
-	jr z, .noDirectionButtonsPressed
+	jp z, .noDirectionButtonsPressed
 	ld a, 1
 	ld [wSpriteStateData1 + 5], a ; delta X
 
@@ -189,44 +218,8 @@ OverworldLoopLessDelay::
 	ld a, [wPlayerLastStopDirection] ; old direction
 	cp b
 	jr z, .noDirectionChange
-; Check whether the player did a 180-degree turn.
-; It appears that this code was supposed to show the player rotate by having
-; the player's sprite face an intermediate direction before facing the opposite
-; direction (instead of doing an instantaneous about-face), but the intermediate
-; direction is only set for a short period of time. It is unlikely for it to
-; ever be visible because DelayFrame is called at the start of OverworldLoop and
-; normally not enough cycles would be executed between then and the time the
-; direction is set for V-blank to occur while the direction is still set.
-	swap a ; put old direction in upper half
-	or b ; put new direction in lower half
-	cp (PLAYER_DIR_DOWN << 4) | PLAYER_DIR_UP ; change dir from down to up
-	jr nz, .notDownToUp
-	ld a, PLAYER_DIR_LEFT
-	ld [wPlayerMovingDirection], a
-	jr .holdIntermediateDirectionLoop
-.notDownToUp
-	cp (PLAYER_DIR_UP << 4) | PLAYER_DIR_DOWN ; change dir from up to down
-	jr nz, .notUpToDown
-	ld a, PLAYER_DIR_RIGHT
-	ld [wPlayerMovingDirection], a
-	jr .holdIntermediateDirectionLoop
-.notUpToDown
-	cp (PLAYER_DIR_RIGHT << 4) | PLAYER_DIR_LEFT ; change dir from right to left
-	jr nz, .notRightToLeft
-	ld a, PLAYER_DIR_DOWN
-	ld [wPlayerMovingDirection], a
-	jr .holdIntermediateDirectionLoop
-.notRightToLeft
-	cp (PLAYER_DIR_LEFT << 4) | PLAYER_DIR_RIGHT ; change dir from left to right
-	jr nz, .holdIntermediateDirectionLoop
-	ld a, PLAYER_DIR_UP
-	ld [wPlayerMovingDirection], a
-.holdIntermediateDirectionLoop
-	ld hl, wFlags_0xcd60
-	set 2, [hl]
-	ld hl, wCheckFor180DegreeTurn
-	dec [hl]
-	jr nz, .holdIntermediateDirectionLoop
+	xor a
+	ld [wCheckFor180DegreeTurn], a
 	ld a, [wPlayerDirection]
 	ld [wPlayerMovingDirection], a
 	call NewBattle

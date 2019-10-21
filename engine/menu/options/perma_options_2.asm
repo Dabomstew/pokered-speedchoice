@@ -56,65 +56,11 @@ Options_ShakeMoves::
 	db "ALL   @"
 	
 Options_EXP:
-	ld hl, wPermanentOptions
-	bit BIT_D_LEFT, a
-	jr nz, .LeftPressed
-	bit BIT_D_RIGHT, a
-	jr nz, .RightPressed
-	jr .UpdateDisplay
-
-.RightPressed
-	call .GetEXPVal
-	inc a
-	jr .Save
-
-.LeftPressed
-	call .GetEXPVal
-	dec a
-
-.Save
-	cp $ff
-	jr nz, .nextCheck
-	ld a, NUM_OPTIONS - 1
-	jr .store
-.nextCheck
-	cp NUM_OPTIONS
-	jr nz, .store
-	xor a
-.store
-	ld b, a
-	sla b
-	sla b
-	sla b
-	ld a, [hl]
-	and $ff ^ EXP_MASK
-	or b
-	ld [hl], a
+	ld hl, .Data
+	jp Options_Multichoice
 	
-.UpdateDisplay:
-	call .GetEXPVal
-	ld c, a
-	ld b, 0
-	ld hl, .Strings
-rept 2
-	add hl, bc
-endr
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	hlcoord 11, 9
-	call PlaceString
-	and a
-	ret
-	
-.GetEXPVal:
-	ld a, [hl]
-	and EXP_MASK
-	srl a
-	srl a
-	srl a
-	ret
-	
+.Data:
+	multichoiceoptiondata wPermanentOptions, EXP_SHIFT, EXP_SIZE, 9, NUM_OPTIONS, .Strings
 .Strings:
 	dw .Normal
 	dw .BW
@@ -141,4 +87,20 @@ Options_BetterMarts::
 	jp Options_OnOff
 	
 Options_SelectTo:: ; 15
-	ret
+	ld hl, .Data
+	jp Options_Multichoice
+	
+.Data:
+	multichoiceoptiondata wPermanentOptions2, SELECTTO_SHIFT, SELECTTO_SIZE, 15, NUM_OPTIONS, .Strings
+.Strings:
+	dw .None
+	dw .Bike
+	dw .Jack
+.Strings_End:
+	
+.None
+	db "NONE@"
+.Bike
+	db "BIKE@"
+.Jack
+	db "JACK@"

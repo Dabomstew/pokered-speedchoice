@@ -363,6 +363,120 @@ OnOffStrings::
 .On:
 	db "ON @"
 	
+; arguments = ram address, start bit, size in bits, y-coord, number of choices, pointer to choices
+multichoiceoptiondata: macro
+	dw \1 ; ram address
+	db \2 ; bit number that data STARTS at
+	db (1 << (\2 + \3)) - (1 << \2) ; bitmask for data
+	db \4 ; y-coordinate
+	db \5 ; number of choices
+	dw \6 ; pointer to choices
+endm
+
+; hl = pointer to options multichoice struct	
+Options_Multichoice:
+	; load multichoice data to ram
+	push af
+	ld bc, 8
+	ld de, wBuffer
+	call CopyData
+	pop af
+	bit BIT_D_LEFT, a
+	jr nz, .LeftPressed
+	bit BIT_D_RIGHT, a
+	jr nz, .RightPressed
+	jr .UpdateDisplay
+.RightPressed
+	call .GetVal
+	inc a
+	jr .Save
+
+.LeftPressed
+	call .GetVal
+	dec a
+
+.Save
+	cp $ff
+	jr nz, .nextCheck
+	ld a, [wBuffer + 5] ; max value
+	dec a
+	jr .store
+.nextCheck
+	ld b, a
+	ld a, [wBuffer + 5] ; max value
+	cp b
+	jr nz, .storeskipmove
+	xor a
+.store
+	ld b, a
+.storeskipmove
+	ld a, [wBuffer + 2] ; bitshift required
+	inc a
+.shiftloop
+	dec a
+	jr z, .calcAndStore
+	sla b
+	jr .shiftloop
+.calcAndStore
+	ld hl, wBuffer
+	rst UnHL
+	ld a, [hl]
+	ld c, a
+	ld a, [wBuffer + 3] ; bitmask for the option in question
+	xor $ff ; invert it so we clear the option
+	and c ; bitmask AND current value
+	or b ; set new value
+	ld [hl], a
+	
+.UpdateDisplay:
+	call .GetVal
+	ld c, a
+	ld b, 0
+	ld hl, wBuffer + 6
+	rst UnHL
+rept 2
+	add hl, bc
+endr
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	ld a, [wBuffer + 4] ; y-coordinate
+; calculate ram address to put string at from y-coordinate
+	ld c, a
+	ld h, 0
+	ld b, h
+	ld l, c
+	add hl, hl
+	add hl, hl ; *4
+	add hl, bc ; *5
+	add hl, hl
+	add hl, hl ; *20
+	ld bc, wTileMap + 11
+	add hl, bc
+	call PlaceString
+	and a
+	ret
+	
+.GetVal:
+	ld hl, wBuffer
+	rst UnHL
+	ld b, [hl]
+	ld a, [wBuffer + 3] ; bitmask
+	and b
+; todo bitshift appropriately
+	ld b, a
+; bitshift as needed
+	ld a, [wBuffer + 2] ; bitshift
+	inc a
+.shiftloop2
+	dec a
+	jr z, .done
+	srl b
+	jr .shiftloop2
+.done
+	ld a, b
+	ret
+	
 NUM_OPTIONS EQUS "((.Strings_End - .Strings)/2)"
 
 INCLUDE "engine/menu/options/main_options.asm"

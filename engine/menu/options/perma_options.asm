@@ -155,58 +155,11 @@ Options_RivalName:
 	db "NOT SET@"
 	
 Options_StartIn::
-	ld hl, wPermanentOptions3
-	bit BIT_D_LEFT, a
-	jr nz, .LeftPressed
-	bit BIT_D_RIGHT, a
-	jr nz, .RightPressed
-	jr .UpdateDisplay
-
-.RightPressed
-	call .GetStartInVal
-	inc a
-	jr .Save
-
-.LeftPressed
-	call .GetStartInVal
-	dec a
-
-.Save
-	cp $ff
-	jr nz, .nextCheck
-	ld a, NUM_OPTIONS - 1
-	jr .store
-.nextCheck
-	cp NUM_OPTIONS
-	jr nz, .store
-	xor a
-.store
-	ld b, a
-	ld a, [hl]
-	and $ff ^ STARTIN_MASK
-	or b
-	ld [hl], a
+	ld hl, .Data
+	jp Options_Multichoice
 	
-.UpdateDisplay:
-	call .GetStartInVal
-	ld c, a
-	ld b, 0
-	ld hl, .Strings
-rept 2
-	add hl, bc
-endr
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	hlcoord 11, 9
-	call PlaceString
-	and a
-	ret
-	
-.GetStartInVal:
-	ld a, [hl]
-	and STARTIN_MASK
-	ret
+.Data:
+	multichoiceoptiondata wPermanentOptions3, STARTIN_SHIFT, STARTIN_SIZE, 9, NUM_OPTIONS, .Strings
 	
 .Strings:
 	dw .Normal
@@ -231,58 +184,11 @@ Options_RaceGoal:: ; 11
 	ret
 	
 Options_Spinners:
-	ld hl, wPermanentOptions
-	bit BIT_D_LEFT, a
-	jr nz, .LeftPressed
-	bit BIT_D_RIGHT, a
-	jr nz, .RightPressed
-	jr .UpdateDisplay
-
-.RightPressed
-	call .GetSpinnerVal
-	inc a
-	jr .Save
-
-.LeftPressed
-	call .GetSpinnerVal
-	dec a
-
-.Save
-	cp $ff
-	jr nz, .nextCheck
-	ld a, NUM_OPTIONS - 1
-	jr .store
-.nextCheck
-	cp NUM_OPTIONS
-	jr nz, .store
-	xor a
-.store
-	ld b, a
-	ld a, [hl]
-	and $ff ^ SPINNERS_MASK
-	or b
-	ld [hl], a
+	ld hl, .Data
+	jp Options_Multichoice
 	
-.UpdateDisplay: ; e4512
-	call .GetSpinnerVal
-	ld c, a
-	ld b, 0
-	ld hl, .Strings
-rept 2
-	add hl, bc
-endr
-	ld e, [hl]
-	inc hl
-	ld d, [hl]
-	hlcoord 11, 13
-	call PlaceString
-	and a
-	ret
-	
-.GetSpinnerVal:
-	ld a, [hl]
-	and SPINNERS_MASK
-	ret
+.Data:
+	multichoiceoptiondata wPermanentOptions, SPINNERS_SHIFT, SPINNERS_SIZE, 13, NUM_OPTIONS, .Strings
 	
 .Strings:
 	dw .Normal

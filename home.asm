@@ -15,8 +15,11 @@ SECTION "SetSRAMBank", ROM0
 	ld [hSRAMBank], a
 	ld [MBC1SRamBank], a
 	ret
-SECTION "rst 28", ROM0
-	rst $38
+SECTION "UnHL", ROM0
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ret
 SECTION "rst 30", ROM0
 	rst $38
 SECTION "rst 38", ROM0
@@ -397,8 +400,20 @@ HandlePartyMenuInput::
 	ld [wMenuWrappingEnabled], a
 	ld a, $40
 	ld [wPartyMenuAnimMonEnabled], a
+; for select to jack: do NOT allow them to actually use the item!
+	ld hl, wOverworldSelectFlags
+	bit SELECT_JACK, [hl]
+	res SELECT_JACK, [hl]
+	jr z, .handleRealInput
+	xor a
+	ld [wCurrentMenuItem], a
+	ld [wMenuItemToSwap], a
+	ld a, B_BUTTON
+	jr .inputInjection
+.handleRealInput
 	call HandleMenuInput_
 	call PlaceUnfilledArrowMenuCursor
+.inputInjection
 	ld b, a
 	xor a
 	ld [wPartyMenuAnimMonEnabled], a
@@ -446,7 +461,7 @@ HandlePartyMenuInput::
 	ld a, [wCurrentMenuItem]
 	ld [wWhichPokemon], a
 	callba SwitchPartyMon
-	jr HandlePartyMenuInput
+	jp HandlePartyMenuInput
 
 DrawPartyMenu::
 	ld hl, DrawPartyMenu_

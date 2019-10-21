@@ -2291,7 +2291,12 @@ wPseudoItemID:: ; d152
 wUnusedD153:: ; d153
 	ds 1
 
-	ds 2
+; bit 0: activating select to jack (immediately exit pkmn menu)
+; bit 1: select to bike active (skip bike-related texts)
+wOverworldSelectFlags::
+	ds 1
+	
+	ds 1
 
 wEvoStoneItemID:: ; d156
 	ds 1

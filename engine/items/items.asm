@@ -662,6 +662,12 @@ ItemUseBicycle:
 	ld hl, GotOnBicycleText
 	call PlayDefaultMusic ; play bike riding music
 .printText
+; no text if select to bike
+	ld a, [wOverworldSelectFlags]
+	bit SELECT_BICYCLE, a
+	res SELECT_BICYCLE, a
+	ld [wOverworldSelectFlags], a
+	ret nz
 	jp PrintText
 
 ; used for Surf out-of-battle effect
@@ -2279,6 +2285,11 @@ ThrowBallAtTrainerMon:
 	jr RemoveUsedItem
 
 NoCyclingAllowedHere:
+; still no text if select to bike
+	ld hl, wOverworldSelectFlags
+	bit SELECT_BICYCLE, [hl]
+	res SELECT_BICYCLE, [hl]
+	ret nz
 	ld hl, NoCyclingAllowedHereText
 	jr ItemUseFailed
 
