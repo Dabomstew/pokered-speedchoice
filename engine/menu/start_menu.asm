@@ -1,7 +1,8 @@
 DisplayStartMenu::
+	ld a, TIMER_MENUS
+	ld [hTimerType], a
 	ld a, BANK(StartMenu_Pokedex)
-	ld [H_LOADEDROMBANK], a
-	ld [MBC1RomBank], a
+	rst BankswitchCommon
 	ld a, [wWalkBikeSurfState] ; walking/biking/surfing
 	ld [wWalkBikeSurfStateCopy], a
 	ld a, SFX_START_MENU

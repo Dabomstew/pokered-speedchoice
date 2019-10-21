@@ -6919,6 +6919,8 @@ DetermineWildOpponent:
 	callab TryDoWildEncounter
 	ret nz
 InitBattleCommon:
+	ld a, TIMER_BATTLE
+	ld [hTimerType], a
 	ld a, [wMapPalOffset]
 	push af
 	ld hl, wLetterPrintingDelayFlags

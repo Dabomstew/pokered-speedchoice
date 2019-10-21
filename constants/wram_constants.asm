@@ -47,3 +47,9 @@ STARTIN_MASK EQU %00001111 ; there are only 5 atm, but leaving space for up to 1
 ; wOverworldSelectFlags:
 SELECT_JACK EQU 0
 SELECT_BICYCLE EQU 1
+
+; hTimerType:
+TIMER_OVERWORLD EQU 0
+TIMER_BATTLE EQU 1
+TIMER_MENUS EQU 2
+TIMER_INTROS EQU 3

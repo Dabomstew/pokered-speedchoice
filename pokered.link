@@ -265,6 +265,9 @@ SRAM 0
 
 SRAM 1
 	org $a000
+	"Speedchoice Stats"
+
+	org $a598
 	"Save Data"
 
 SRAM 2

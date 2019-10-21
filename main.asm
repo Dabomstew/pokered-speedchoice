@@ -2122,3 +2122,7 @@ INCLUDE "engine/menu/options_menu.asm"
 SECTION "fully_evolve", ROMX
 
 INCLUDE "engine/fully_evolve_mon.asm"
+
+SECTION "stat_tracking", ROMX
+
+INCLUDE "engine/stat_tracking.asm"

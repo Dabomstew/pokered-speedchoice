@@ -133,6 +133,9 @@ rLCDC_DEFAULT EQU %11100011
 ; don't wait for artificial delays in the startup sequence
 	ld a, (1 << SHORT_DELAYS)
 	ld [wPermanentOptions2], a
+	
+	ld a, TIMER_INTROS
+    ld [hTimerType], a
 
 	ei
 

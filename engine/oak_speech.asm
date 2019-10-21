@@ -45,6 +45,7 @@ OakSpeech:
 	call SetDefaultNames
 	predef InitPlayerData2
 	callab PermaOptionsMenu
+	callab SetupStats
 	ldafarbyte KeyItemRandoActive
 	and a
 	call nz, HideShowObjectsKeyItemRando

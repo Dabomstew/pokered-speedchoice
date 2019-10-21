@@ -285,3 +285,17 @@ ClearScreen::
 	dec b
 	jr nz, .loop
 	jp Delay3
+	
+ByteFill::
+; fill bc bytes with the value of a, starting at hl
+	inc b  ; we bail the moment b hits 0, so include the last run
+	inc c  ; same thing; include last byte
+	jr .HandleLoop
+.PutByte
+	ld [hli], a
+.HandleLoop
+	dec c
+	jr nz, .PutByte
+	dec b
+	jr nz, .PutByte
+	ret

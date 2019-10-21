@@ -32,6 +32,7 @@ VBlank::
 	; VBlank-sensitive operations end.
 
 	call Random
+	callab SRAMStatsFrameCount
 
 	ld a, [H_VBLANKOCCURRED]
 	and a
