@@ -288,6 +288,7 @@ OverworldLoopLessDelay::
 	bit 7, a
 	jr nz, .doneStepCounting ; if button presses are being simulated, don't count steps
 ; step counting
+	callab SRAMStatsStepCount
 	ld hl, wStepCounter
 	dec [hl]
 	ld a, [wd72c]
@@ -1242,6 +1243,9 @@ CollisionCheckOnLand::
 	jr z, .setCarry
 	ld a, SFX_COLLISION
 	call PlaySound ; play collision sound (if it's not already playing)
+; only track 1 bonk per sound effect for sanity reasons
+	ld de, sStatsBonks
+	callab SRAMStatsIncrement2Byte
 .setCarry
 	scf
 	ret
@@ -1943,6 +1947,9 @@ CollisionCheckOnWater::
 	jr z, .setCarry
 	ld a, SFX_COLLISION
 	call PlaySound ; play collision sound (if it's not already playing)
+; only track 1 bonk per sound effect for sanity reasons
+	ld de, sStatsBonks
+	callab SRAMStatsIncrement2Byte
 .setCarry
 	scf
 	jr .done

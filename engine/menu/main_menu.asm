@@ -110,6 +110,8 @@ MainMenu:
 .pressedA
 	ld a, 1
 	ld [H_INGAME], a
+	ld de, sStatsReloadCount
+	callab SRAMStatsIncrement2Byte
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	ld a, PLAYER_DIR_DOWN

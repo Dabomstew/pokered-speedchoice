@@ -19,8 +19,8 @@ sStatsSaveCount:: ds 2
 sStatsReloadCount:: ds 2
 sStatsStepCount:: ds 4
 sStatsStepCountWalk:: ds 4
+sStatsStepCountBike:: ds 4 ; reordered to match wWalkBikeSurfState
 sStatsStepCountSurf:: ds 4
-sStatsStepCountBike:: ds 4
 sStatsBonks:: ds 2
 sStatsTotalDamageDealt:: ds 4
 sStatsActualDamageDealt:: ds 4

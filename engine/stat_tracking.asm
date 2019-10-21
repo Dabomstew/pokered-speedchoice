@@ -11,6 +11,7 @@ SRAMStatsFrameCount_::
     call FourByteIncrement
     ld hl, sStatsOWFrameCount
     ld a, [hTimerType]
+SRAMStatsFourByteIndexCommon::
     sla a
     sla a
     add l
@@ -20,6 +21,16 @@ SRAMStatsFrameCount_::
 .noOverflow
     call FourByteIncrement
     jp SRAMStatsEnd
+	
+	sramstatmethod SRAMStatsStepCount
+	
+SRAMStatsStepCount_::
+	ld hl, sStatsStepCount
+	call FourByteIncrement
+	ld hl, sStatsStepCountWalk
+	ld a, [wWalkBikeSurfState]
+	jr SRAMStatsFourByteIndexCommon
+	
 
     sramstatmethod SRAMStatsIncrement2Byte
     

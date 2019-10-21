@@ -290,6 +290,8 @@ SaveSAVtoSRAM2:
 	ret
 
 SaveSAVtoSRAM:
+	ld de, sStatsSaveCount
+	callab SRAMStatsIncrement2Byte
 	ld a, $2
 	ld [wSaveFileStatus], a
 	call SaveSAVtoSRAM0
