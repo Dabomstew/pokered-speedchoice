@@ -17,6 +17,8 @@ FullyEvolveMonInCF91:
 	ret
 .Eeveelutions
 	ldafarbyte RandomizerCheckValue
+	ld hl, wCurMap
+	xor [hl]
 	and $1C ; $7 << 2
 	srl a
 	srl a
@@ -31,12 +33,12 @@ EeveelutionsTable::
 ; there are only 3 eeveelutions but that's an awkward value to seed.
 ; so give 3/8 jolteon 3/8 vaporeon 2/8 flareon
 	db JOLTEON
+	db VAPOREON
 	db JOLTEON
-	db JOLTEON
-	db VAPOREON
-	db VAPOREON
-	db VAPOREON
 	db FLAREON
+	db VAPOREON
+	db VAPOREON
+	db JOLTEON
 	db FLAREON
 	
 	
