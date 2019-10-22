@@ -36,7 +36,11 @@ SRAMStatsStepCount_::
 SRAMStatsBoughtItem_::
 ; first record the quantity
 	ld hl, sStatsItemsBought
-	call TwoByteIncrement
+	ld a, [wItemQuantity]
+	add [hl]
+	ld [hli], a
+	jr nc, .recordMoney
+	inc [hl]
 .recordMoney
 	call ConverthMoneyToBytes
 	ld hl, sStatsMoneySpent
@@ -77,11 +81,7 @@ SRAMStatsSoldItem_::
 SRAMStatsUsedVendingMachine_::
 ; first record the quantity
 	ld hl, sStatsItemsBought
-	inc [hl]
-	jr nz, .recordMoney
-	inc hl
-	inc [hl]
-.recordMoney
+	call TwoByteIncrement
 	ld de, hVendingMachinePrice
 	call ConvertBCDToBytes
 	ld hl, sStatsMoneySpent
