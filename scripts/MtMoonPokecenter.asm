@@ -46,6 +46,7 @@ MagikarpSalesmanText:
 	lb bc, MAGIKARP, 5
 	call GivePokemon
 	jr nc, .done
+	callab SRAMStatsOtherPurchase
 	xor a
 	ld [wPriceTemp], a
 	ld [wPriceTemp + 2], a

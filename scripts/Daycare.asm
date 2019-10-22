@@ -149,6 +149,7 @@ DayCareMText1:
 	jp .leaveMonInDayCare
 
 .enoughMoney
+	callab SRAMStatsOtherPurchase
 	xor a
 	ld [wDayCareInUse], a
 	ld hl, wDayCareNumLevelsGrown

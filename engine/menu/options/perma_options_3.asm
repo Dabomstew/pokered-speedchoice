@@ -1,14 +1,14 @@
 PermaOptions3String::
 	db "NERF BROCK<LNBRK>"
 	db "        :<LNBRK>"
-	db "BIKESLIPRUN<LNBRK>"
+	db "BETTER GAMECORNER<LNBRK>"
 	db "        :<LNBRK>"
 	db "BOAT<LNBRK>"
 	db "        :@"
 
 PermaOptions3Pointers::
 	dw Options_NerfBrock
-	dw Options_BikeSlipRun
+	dw Options_BetterGameCorner
 	dw Options_Boat
 	dw Options_PermaOptionsPage
 
@@ -18,10 +18,13 @@ Options_NerfBrock::
 	ld c, 3
 	jp Options_OnOff
 	
-Options_BikeSlipRun:: ; 5
-	ret
+Options_BetterGameCorner::
+	ld hl, wPermanentOptions2
+	ld b, BETTER_GAME_CORNER
+	ld c, 5
+	jp Options_OnOff
 	
-Options_Boat:: ; 7
+Options_Boat::
 	ld hl, wPermanentOptions2
 	ld b, BACKWARDS_BOAT
 	ld c, 7

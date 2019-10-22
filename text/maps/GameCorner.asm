@@ -23,6 +23,11 @@ _CeladonGameCornerText_48d27::
 	text "Thanks! Here are"
 	line "your 50 coins!"
 	done
+	
+_CeladonGameCornerText_Buy500::
+	text "Thanks! Here are"
+	line "your 500 coins!"
+	done
 
 _CeladonGameCornerText_48d2c::
 	text "No? Please come"

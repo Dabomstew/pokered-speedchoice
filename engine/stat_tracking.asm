@@ -32,6 +32,7 @@ SRAMStatsStepCount_::
 	jr SRAMStatsFourByteIndexCommon
 	
 	sramstatmethod SRAMStatsBoughtItem
+	sramstatmethod SRAMStatsOtherPurchase
 	
 SRAMStatsBoughtItem_::
 ; first record the quantity
@@ -39,9 +40,9 @@ SRAMStatsBoughtItem_::
 	ld a, [wItemQuantity]
 	add [hl]
 	ld [hli], a
-	jr nc, .recordMoney
+	jr nc, SRAMStatsOtherPurchase_
 	inc [hl]
-.recordMoney
+SRAMStatsOtherPurchase_::
 	call ConverthMoneyToBytes
 	ld hl, sStatsMoneySpent
 SRAMStatsAddMoneyCommon:

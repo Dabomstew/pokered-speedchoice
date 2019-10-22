@@ -137,16 +137,21 @@ CeladonGameCornerText1:
 
 CeladonGameCornerText2:
 	TX_ASM
-	call CeladonGameCornerScript_48f1e
+	ld a, [wPermanentOptions2]
+	and (1 << BETTER_GAME_CORNER)
+	jr z, .normal
+	jp .better
+.normal
+	call GameCorner_DrawMoneyAndCoins
 	ld hl, CeladonGameCornerText_48d22
 	call PrintText
 	call YesNoChoice
 	ld a, [wCurrentMenuItem]
 	and a
-	jr nz, .asm_48d0f
+	jr nz, .cancel
 	ld b, COIN_CASE
 	call IsItemInBag
-	jr z, .asm_48d19
+	jr z, .noCase
 	call Has9990Coins
 	jr nc, .asm_48d14
 	xor a
@@ -164,6 +169,7 @@ CeladonGameCornerText2:
 	ld [hMoney + 2], a
 	ld a, $10
 	ld [hMoney + 1], a
+	callab SRAMStatsOtherPurchase
 	ld hl, hMoney + 2
 	ld de, wPlayerMoney + 2
 	ld c, $3
@@ -177,20 +183,147 @@ CeladonGameCornerText2:
 	ld hl, hCoins + 1
 	ld c, $2
 	predef AddBCDPredef
-	call CeladonGameCornerScript_48f1e
+	call GameCorner_DrawMoneyAndCoins
 	ld hl, CeladonGameCornerText_48d27
 	jr .asm_48d1c
-.asm_48d0f
+.cancel
 	ld hl, CeladonGameCornerText_48d2c
 	jr .asm_48d1c
 .asm_48d14
 	ld hl, CeladonGameCornerText_48d36
 	jr .asm_48d1c
-.asm_48d19
+.noCase
 	ld hl, CeladonGameCornerText_48d3b
 .asm_48d1c
 	call PrintText
 	jp TextScriptEnd
+.better
+	ld b, COIN_CASE
+	call IsItemInBag
+	jr z, .noCase
+	call GameCorner_DrawMoneyAndCoins
+	ld hl, CeladonGameCornerText_48d22
+	call PrintText
+.betterloop
+	call SaveScreenTilesToBuffer2
+	xor a
+	ld [wCurrentMenuItem], a
+	ld [wLastMenuItem], a
+	ld a, A_BUTTON | B_BUTTON
+	ld [wMenuWatchedKeys], a
+	ld a, $2
+	ld [wMaxMenuItem], a
+	ld a, $6
+	ld [wTopMenuItemY], a
+	ld a, $1
+	ld [wTopMenuItemX], a
+	ld hl, wd730
+	set 6, [hl]
+	coord hl, 0, 4
+	lb bc, $6, $0e
+	call TextBoxBorder
+	call UpdateSprites
+	coord hl, 2, 6
+	ld de, GameCorner50CoinsText
+	call PlaceString
+	coord hl, 2, 8
+	ld de, GameCorner500CoinsText
+	call PlaceString
+	coord hl, 2, 10
+	ld de, GameCornerCancelText
+	call PlaceString
+	call HandleMenuInput
+	ld hl, wd730
+	res 6, [hl]
+	bit 1, a
+	jr nz, .cancel
+	ld a, [wCurrentMenuItem]
+	cp 2
+	jr nc, .cancel
+; common stuff for actually buying
+	call LoadScreenTilesFromBuffer2
+	call UpdateSprites
+	ld a, [wCurrentMenuItem]
+	and a
+	jr z, .buy50
+; 500 coins
+	call Has9500Coins
+	jp nc, .asm_48d14
+	xor a
+	ld [hMoney + 1], a
+	ld [hMoney + 2], a
+	inc a ; a = $01 for 10k money
+	ld [hMoney], a
+	ld [wBuffer], a ; mark that this is 500 coins
+	jr .common
+.buy50
+	call Has9990Coins
+	jp nc, .asm_48d14
+	xor a
+	ld [hMoney], a
+	ld [hMoney + 2], a
+	ld [wBuffer], a ; mark that this is 50 coins
+	ld a, $10
+	ld [hMoney + 1], a
+.common
+	call HasEnoughMoney
+	jr nc, .purchase
+	ld hl, CeladonGameCornerText_48d31
+	jp .asm_48d1c
+.purchase
+	callab SRAMStatsOtherPurchase
+	ld hl, hMoney + 2
+	ld de, wPlayerMoney + 2
+	ld c, $3
+	predef SubBCDPredef
+	ld a, [wBuffer]
+	and a
+	jr nz, .write500
+; reuse a being 0 for 50 coins case
+	ld [hUnusedCoinsByte], a
+	ld [hCoins], a
+	ld a, $50
+	ld [hCoins + 1], a
+	ld hl, CeladonGameCornerText_48d27
+	jr .addcoins
+.write500
+	xor a
+	ld [hUnusedCoinsByte], a
+	ld [hCoins + 1], a
+	ld a, $05
+	ld [hCoins], a
+	ld hl, CeladonGameCornerText_Buy500
+.addcoins
+	push hl
+	ld de, wPlayerCoins + 1
+	ld hl, hCoins + 1
+	ld c, $2
+	predef AddBCDPredef
+	call GameCorner_DrawMoneyAndCoins
+	pop hl
+	call PrintText
+	call WaitForTextScrollButtonPress_DisableHTM
+	jp .betterloop
+	
+WaitForTextScrollButtonPress_DisableHTM:
+	ld a, [wOptions]
+	push af
+	and $ff ^ (1 << HOLD_TO_MASH)
+	ld [wOptions], a
+	call WaitForTextScrollButtonPress
+	pop af
+	ld [wOptions], a
+	ret
+	
+	
+GameCorner50CoinsText:
+	db " 50 :  ¥1000@"
+
+GameCorner500CoinsText:
+	db "500 : ¥10000@"
+	
+GameCornerCancelText:
+	db "CANCEL@"
 
 CeladonGameCornerText_48d22:
 	TX_FAR _CeladonGameCornerText_48d22
@@ -198,6 +331,10 @@ CeladonGameCornerText_48d22:
 
 CeladonGameCornerText_48d27:
 	TX_FAR _CeladonGameCornerText_48d27
+	db "@"
+	
+CeladonGameCornerText_Buy500:
+	TX_FAR _CeladonGameCornerText_Buy500
 	db "@"
 
 CeladonGameCornerText_48d2c:
@@ -471,35 +608,28 @@ CeladonGameCornerText_48f19:
 	TX_FAR _CeladonGameCornerText_48f19
 	db "@"
 
-CeladonGameCornerScript_48f1e:
+GameCorner_DrawMoneyAndCoins:
 	ld hl, wd730
 	set 6, [hl]
-	coord hl, 11, 0
-	ld b, $5
-	ld c, $7
+	coord hl, 5, 0
+	lb bc, 3, 13 ; dimensions
 	call TextBoxBorder
 	call UpdateSprites
-	coord hl, 12, 1
-	ld b, 4
-	ld c, 7
+	coord hl, 6, 1
+	ld b, 2
+	ld c, 13
 	call ClearScreenArea
-	coord hl, 12, 2
+	coord hl, 6, 1
 	ld de, GameCornerMoneyText
 	call PlaceString
-	coord hl, 12, 3
-	ld de, GameCornerBlankText1
-	call PlaceString
-	coord hl, 12, 3
+	coord hl, 12, 1
 	ld de, wPlayerMoney
 	ld c, $a3
 	call PrintBCDNumber
-	coord hl, 12, 4
+	coord hl, 6, 3
 	ld de, GameCornerCoinText
 	call PlaceString
-	coord hl, 12, 5
-	ld de, GameCornerBlankText2
-	call PlaceString
-	coord hl, 15, 5
+	coord hl, 15, 3
 	ld de, wPlayerCoins
 	ld c, $82
 	call PrintBCDNumber
@@ -523,5 +653,12 @@ Has9990Coins:
 	ld a, $99
 	ld [hCoins], a
 	ld a, $90
+	ld [hCoins + 1], a
+	jp HasEnoughCoins
+	
+Has9500Coins:
+	ld a, $95
+	ld [hCoins], a
+	ld a, $00
 	ld [hCoins + 1], a
 	jp HasEnoughCoins
