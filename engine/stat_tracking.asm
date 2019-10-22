@@ -31,6 +31,65 @@ SRAMStatsStepCount_::
 	ld a, [wWalkBikeSurfState]
 	jr SRAMStatsFourByteIndexCommon
 	
+	sramstatmethod SRAMStatsBoughtItem
+	
+SRAMStatsBoughtItem_::
+; first record the quantity
+	ld hl, sStatsItemsBought
+	ld a, [wItemQuantity]
+	add [hl]
+	ld [hli], a
+	jr nc, .recordMoney
+	inc [hl]
+.recordMoney
+	call ConverthMoneyToBytes
+	ld hl, sStatsMoneySpent
+SRAMStatsAddMoneyCommon:
+	ld de, H_MULTIPLICAND + 2
+	ld a, [de]
+	add [hl]
+	ld [hli], a
+	dec de
+	ld a, [de]
+	adc [hl]
+	ld [hli], a
+	dec de
+	ld a, [de]
+	adc [hl]
+	ld [hli], a
+	jp nc, SRAMStatsEnd
+	inc [hl]
+	jp SRAMStatsEnd
+	
+	sramstatmethod SRAMStatsSoldItem
+	
+SRAMStatsSoldItem_::
+; first record the quantity
+	ld hl, sStatsItemsSold
+	ld a, [wItemQuantity]
+	add [hl]
+	ld [hli], a
+	jr nc, .recordMoney
+	inc [hl]
+.recordMoney
+	call ConverthMoneyToBytes
+	ld hl, sStatsMoneyMade
+	jr SRAMStatsAddMoneyCommon
+	
+	sramstatmethod SRAMStatsUsedVendingMachine
+	
+SRAMStatsUsedVendingMachine_::
+; first record the quantity
+	ld hl, sStatsItemsBought
+	inc [hl]
+	jr nz, .recordMoney
+	inc hl
+	inc [hl]
+.recordMoney
+	ld de, hVendingMachinePrice
+	call ConvertBCDToBytes
+	ld hl, sStatsMoneySpent
+	jr SRAMStatsAddMoneyCommon
 
     sramstatmethod SRAMStatsIncrement2Byte
     
@@ -109,3 +168,60 @@ TwoByteIncrement::
     inc hl
     inc [hl]
     ret
+	
+ConverthMoneyToBytes:
+	ld de, hMoney
+ConvertBCDToBytes:
+	; input: de = address of first byte of a 3-byte big-endian BCD number
+	; output: 3 byte big-endian money in H_MULTIPLICAND
+	ld a, [de]
+	call .ConvertByte
+	ld c, a
+	xor a
+	ld hl, H_MULTIPLICAND
+	ld [hli], a
+	ld [hli], a
+	ld a, c
+	ld [hli], a
+	ld [hl], 100
+	push de
+	call Multiply
+	pop de
+	inc de
+	ld a, [de]
+	call .ConvertByte
+	call .AddByteToResult
+	ld a, 100
+	ld [H_MULTIPLIER], a
+	push de
+	call Multiply
+	pop de
+	inc de
+	ld a, [de]
+	call .ConvertByte
+	jp .AddByteToResult
+.ConvertByte
+	ld b, a
+	and $F0
+	swap a
+	add a
+	ld c, a
+	add a
+	add a
+	add c
+	ld c, a
+	ld a, b
+	and $0F
+	add c
+	ret
+.AddByteToResult
+	ld hl, H_MULTIPLICAND + 2
+	add [hl]
+	ld [hld], a
+	ret nc
+	inc [hl]
+	ret nz
+	dec hl
+	inc [hl]
+	ret
+	

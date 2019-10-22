@@ -6928,9 +6928,14 @@ InitBattleCommon:
 	push af
 	res 1, [hl]
 	callab InitBattleVariables
+	ld de, sStatsBattles
+	callab SRAMStatsIncrement2Byte
 	ld a, [wEnemyMonSpecies2]
 	sub OPP_ID_OFFSET
 	jp c, InitWildBattle
+; trainer only from here onwards
+	ld de, sStatsTrainerBattles
+	callab SRAMStatsIncrement2Byte
 	ld [wTrainerClass], a
 	call GetTrainerInformation
 	callab ReadTrainer
@@ -6950,6 +6955,8 @@ InitBattleCommon:
 	jp _InitBattleCommon
 
 InitWildBattle:
+	ld de, sStatsWildBattles
+	callab SRAMStatsIncrement2Byte
 	ld a, $1
 	ld [wIsInBattle], a
 	call LoadEnemyMonData

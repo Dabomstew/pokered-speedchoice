@@ -47,6 +47,7 @@ VendingMachineMenu:
 	jp PrintText
 .enoughMoney
 	call LoadVendingMachineItem
+	callab SRAMStatsUsedVendingMachine
 	ld a, [hVendingMachineItem]
 	ld b, a
 	ld c, 1

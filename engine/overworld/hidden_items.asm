@@ -28,6 +28,8 @@ FoundHiddenItemText:
 	ld c, 1
 	call GiveItem
 	jr nc, .bagFull
+	ld de, sStatsItemsPickedUp
+	callab SRAMStatsIncrement2Byte
 	ld hl, wObtainedHiddenItemsFlags
 	ld a, [wHiddenItemOrCoinsIndex]
 	ld c, a

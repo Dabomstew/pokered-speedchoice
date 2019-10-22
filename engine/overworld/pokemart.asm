@@ -100,6 +100,7 @@ DisplayPokemartDialogue_:
 	ld [wBoughtOrSoldItemInMart], a
 .skipSettingFlag1
 	call AddAmountSoldToMoney
+	callab SRAMStatsSoldItem
 	ld hl, wNumBagItems
 	call RemoveItemFromInventory
 	jp .sellMenuLoop
@@ -176,6 +177,7 @@ DisplayPokemartDialogue_:
 	ld hl, wNumBagItems
 	call AddItemToInventory
 	jr nc, .bagFull
+	callab SRAMStatsBoughtItem
 	call SubtractAmountPaidFromMoney
 	ld a, [wBoughtOrSoldItemInMart]
 	and a

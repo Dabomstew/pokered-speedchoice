@@ -29,6 +29,9 @@ PickUpItem:
 	ld c, 1 ; quantity
 	call GiveItem
 	jr nc, .BagFull
+	
+	ld de, sStatsItemsPickedUp
+	callab SRAMStatsIncrement2Byte
 
 	ld a, [$ffdb]
 	ld [wMissableObjectIndex], a

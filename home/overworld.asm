@@ -1987,9 +1987,7 @@ RunMapScript::
 	ld a, [wCurMap] ; current map number
 	call SwitchToMapRomBank ; change to the ROM bank the map's data is in
 	ld hl, wMapScriptPtr
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
+	rst UnHL
 	ld de, .return
 	push de
 	jp hl ; jump to script
