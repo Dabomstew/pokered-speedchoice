@@ -34,6 +34,10 @@ EndOfBattle:
 	inc hl
 	or [hl]
 	jr z, .evolution ; if pay day money is 0, jump
+	ld de, wTotalPayDayMoney
+	push hl
+	callab SRAMStatsRecordMoneyMade
+	pop hl
 	ld de, wPlayerMoney + 2
 	ld c, $3
 	predef AddBCDPredef

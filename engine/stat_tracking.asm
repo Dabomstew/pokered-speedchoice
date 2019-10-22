@@ -73,9 +73,8 @@ SRAMStatsSoldItem_::
 	jr nc, .recordMoney
 	inc [hl]
 .recordMoney
-	call ConverthMoneyToBytes
-	ld hl, sStatsMoneyMade
-	jr SRAMStatsAddMoneyCommon
+	ld de, hMoney
+	jr SRAMStatsRecordMoneyMade_
 	
 	sramstatmethod SRAMStatsUsedVendingMachine
 	
@@ -86,6 +85,36 @@ SRAMStatsUsedVendingMachine_::
 	ld de, hVendingMachinePrice
 	call ConvertBCDToBytes
 	ld hl, sStatsMoneySpent
+	jr SRAMStatsAddMoneyCommon
+	
+	sramstatmethod SRAMStatsBlackedOut
+	
+SRAMStatsBlackedOut_::
+	ld hl, sStatsBlackouts
+	call TwoByteIncrement
+; record money lost (note this is called BEFORE the game deducts it, so we halve it ourselves)
+	ld de, wPlayerMoney
+	call ConvertBCDToBytes
+	ld hl, H_MULTIPLICAND
+	srl [hl]
+	inc hl
+	rr [hl]
+	inc hl
+	rr [hl]
+; carry now contains the least significant bit of their money
+; if it's on, they actually lost $1 more than the halved amount, so do an extra increment in addition to this amount
+	jr nc, .addamount
+	ld hl, sStatsMoneyLost
+	call FourByteIncrement
+.addamount
+	ld hl, sStatsMoneyLost
+	jr SRAMStatsAddMoneyCommon
+	
+	sramstatmethod SRAMStatsRecordMoneyMade
+    
+SRAMStatsRecordMoneyMade_::
+    call ConvertBCDToBytes
+	ld hl, sStatsMoneyMade
 	jr SRAMStatsAddMoneyCommon
 
     sramstatmethod SRAMStatsIncrement2Byte

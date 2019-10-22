@@ -1,5 +1,6 @@
 ResetStatusAndHalveMoneyOnBlackout::
 ; Reset player status on blackout.
+	callab SRAMStatsBlackedOut
 	xor a
 	ld [wBattleResult], a
 	ld [wWalkBikeSurfState], a

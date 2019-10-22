@@ -58,6 +58,7 @@ sStatsItemsSold:: ds 2
 sStatsMovesLearnt:: ds 2
 sStatsBallsThrown:: ds 2
 sStatsPokemonCaughtInBalls:: ds 2
+sStatsBlackouts:: ds 2
 sStatsEnd::
 
 SECTION "Save Data", SRAM ; BANK 1

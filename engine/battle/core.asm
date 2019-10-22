@@ -1033,6 +1033,8 @@ TrainerBattleVictory:
 ; win money
 	ld hl, MoneyForWinningText
 	call PrintText
+	ld de, wAmountMoneyWon
+	callab SRAMStatsRecordMoneyMade
 	ld de, wPlayerMoney + 2
 	ld hl, wAmountMoneyWon + 2
 	ld c, $3
@@ -6934,8 +6936,10 @@ InitBattleCommon:
 	sub OPP_ID_OFFSET
 	jp c, InitWildBattle
 ; trainer only from here onwards
+	push af
 	ld de, sStatsTrainerBattles
 	callab SRAMStatsIncrement2Byte
+	pop af
 	ld [wTrainerClass], a
 	call GetTrainerInformation
 	callab ReadTrainer
