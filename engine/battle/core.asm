@@ -1595,7 +1595,7 @@ TryRunningFromBattle:
 	jp z, .canEscape
 	ld a, [wIsInBattle]
 	dec a
-	jr nz, .trainerBattle ; jump if it's a trainer battle
+	jp nz, .trainerBattle ; jump if it's a trainer battle
 	ld a, [wNumRunAttempts]
 	inc a
 	ld [wNumRunAttempts], a
@@ -1659,6 +1659,8 @@ TryRunningFromBattle:
 	jr nc, .canEscape ; if the random value was less than or equal to the quotient
 	                  ; plus 30 times the number of attempts, the player can escape
 ; can't escape
+	ld de, sStatsFailedRuns
+	callab SRAMStatsIncrement2Byte
 	ld a, $1
 	ld [wActionResultOrTookBattleTurn], a ; you lose your turn when you can't escape
 	ld hl, CantEscapeText
@@ -1673,6 +1675,8 @@ TryRunningFromBattle:
 	and a ; reset carry
 	ret
 .canEscape
+	ld de, sStatsBattlesFled
+	callab SRAMStatsIncrement2Byte
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ld a, $2
