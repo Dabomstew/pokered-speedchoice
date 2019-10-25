@@ -19,8 +19,7 @@ SRAMStatsFourByteIndexCommon::
     jr nc, .noOverflow
     inc h
 .noOverflow
-    call FourByteIncrement
-    jp SRAMStatsEnd
+    jp FourByteIncrement
 	
 	sramstatmethod SRAMStatsStepCount
 	
@@ -58,9 +57,9 @@ SRAMStatsAddMoneyCommon:
 	ld a, [de]
 	adc [hl]
 	ld [hli], a
-	jp nc, SRAMStatsEnd
+	ret nc
 	inc [hl]
-	jp SRAMStatsEnd
+	ret
 	
 	sramstatmethod SRAMStatsSoldItem
 	
@@ -153,10 +152,9 @@ SRAMStatsDamageCommon:
 	ld a, [de]
 	adc [hl]
 	ld [hli], a
-	jr nc, .end
+	ret nc
 	inc [hl]
-.end
-	jp SRAMStatsEnd
+	ret
 	
 	sramstatmethod SRAMStatsDamageTaken
 
@@ -165,22 +163,88 @@ SRAMStatsDamageTaken_::
 	ld hl, sStatsTotalDamageTaken
 	ld de, wBattleMonHP
 	jr SRAMStatsDamageCommon
+	
+	sramstatmethod SRAMStatsHitCritOHKO
+	
+SRAMStatsHitCritOHKO_::
+; start with hit/miss
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .checkHit
+	ld a, 4
+.checkHit
+	ld b, a ; store WHOSETURN*4 in b for all the 
+	ld a, [wMoveMissed]
+	and a
+	jr z, .recordHit
+	ld a, 2
+.recordHit
+	ld hl, sStatsOwnMovesHit
+	call .incrementHLPlusAPlusB
+; none of the others should be recorded if it missed
+	and a
+	ret nz
+; now critical/ohko
+	ld a, [wCriticalHitOrOHKO]
+	and a
+	jr z, .effectiveness ; do nothing if there was no critical hit or successful OHKO
+	dec a
+	add a
+	ld hl, sStatsCriticalsDealt
+	call .incrementHLPlusAPlusB
+.effectiveness
+; gen 1 doesn't have a record of true type effectiveness in ram, so sadly we have to recalculate it
+	push bc
+	callab StatsGetEffectiveness
+	pop bc
+	ld a, d
+	cp 10
+	ret z
+	ld a, 0
+	jr nc, .recordEff ; super effective
+	ld a, 2
+.recordEff
+	ld hl, sStatsOwnMovesSE
+	jp .incrementHLPlusAPlusB
+.incrementHLPlusAPlusB
+	add b
+SRAMStatsIncrementHLPlusA:
+	ld e, a
+	ld d, 0
+	add hl, de
+	jp TwoByteIncrement
+	
+	sramstatmethod SRAMStatsStatMoveHit
+	
+SRAMStatsStatMoveHit_::
+	ld hl, sStatsOwnMovesHit
+SRAMStatsStatMoveCommon:
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .record
+	ld a, 4
+.record
+	jp SRAMStatsIncrementHLPlusA
+	
+	sramstatmethod SRAMStatsStatMoveMissed
+	
+SRAMStatsStatMoveMissed_::
+	ld hl, sStatsOwnMovesMissed
+	jr SRAMStatsStatMoveCommon
 
     sramstatmethod SRAMStatsIncrement2Byte
     
 SRAMStatsIncrement2Byte_::
     ld h, d
     ld l, e
-    call TwoByteIncrement
-    jp SRAMStatsEnd
+    jp TwoByteIncrement
     
     sramstatmethod SRAMStatsIncrement4Byte
     
 SRAMStatsIncrement4Byte_::
     ld h, d
     ld l, e
-    call FourByteIncrement
-    jp SRAMStatsEnd
+    jp FourByteIncrement
     
 SRAMStatsStart::
 ; takes return address in hl
@@ -202,10 +266,12 @@ SRAMStatsStart::
 ; switch to correct bank
     ld a, BANK(sStatsStart)
 	rst SetSRAMBank
-; done, move to actual code
+; done, set return address and move to actual code
+; bc is safe to use because Bankswitch already clobbered it
+	ld bc, .Return
+	push bc
     jp hl
-    
-SRAMStatsEnd::
+.Return
 ; restore old sram bank
     pop af
     rst SetSRAMBank

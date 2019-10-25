@@ -3341,6 +3341,7 @@ MirrorMoveCheck:
 	ld de, 1
 	call IsInArray
 	jp c, JumpMoveEffect ; done here after executing effects of ResidualEffects2
+	callab SRAMStatsHitCritOHKO
 	ld a, [wMoveMissed]
 	and a
 	jr z, .moveDidNotMiss
@@ -5462,6 +5463,67 @@ AdjustDamageForMoveType:
 	jp .loop
 .done
 	ret
+	
+; calculate actual effectiveness of [wMoveType] against opponent, store in d
+; (b is used to store it in the function itself)
+StatsGetEffectiveness::
+	ld hl, wEnemyMonType
+	ld a, [H_WHOSETURN]
+	and a
+	ld a, [wPlayerMoveType]
+	jr z, .calcEff
+	ld hl, wBattleMonType
+	ld a, [wEnemyMoveType]
+.calcEff
+	ld c, a
+	ld a, [hli]
+	ld e, [hl]
+	ld d, a
+	ld b, 10
+	ld hl, TypeEffects
+.loop
+	ld a, [hli] ; a = "attacking type" of the current type pair
+	cp $ff
+	jr z, .done
+	cp c ; does move type match "attacking type"?
+	jr nz, .nextTypePair
+	ld a, [hl] ; a = "defending type" of the current type pair
+	cp d ; does type 1 of defender match "defending type"?
+	jr z, .matchingPairFound
+	cp e ; does type 2 of defender match "defending type"?
+	jr z, .matchingPairFound
+	jr .nextTypePair
+.matchingPairFound
+	inc hl
+	ld a, b
+	cp 10
+	jr nz, .mult
+	ld b, [hl]
+	jr .nppPartial
+.mult
+	xor a
+	ld [H_MULTIPLICAND], a
+	ld [H_MULTIPLICAND + 1], a
+	ld a, b
+	ld [H_MULTIPLICAND + 2], a
+	ld a, [hli]
+	ld [H_MULTIPLIER], a
+	call Multiply
+	ld a, 10
+	ld [H_DIVISOR], a
+	ld b, $04
+	call Divide
+	ld a, [H_QUOTIENT + 3]
+	ld b, a
+	jr .loop
+.nextTypePair
+	inc hl
+.nppPartial
+	inc hl
+	jr .loop
+.done
+	ld d, b
+	ret
 
 ; function to tell how effective the type of an enemy attack is on the player's current pokemon
 ; this doesn't take into account the effects that dual types can have
@@ -5893,6 +5955,7 @@ EnemyCheckIfMirrorMoveEffect:
 	ld de, $1
 	call IsInArray
 	jp c, JumpMoveEffect
+	callab SRAMStatsHitCritOHKO
 	ld a, [wMoveMissed]
 	and a
 	jr z, .moveDidNotMiss
@@ -7857,6 +7920,11 @@ StatModifierDownEffect:
 	ld a, [bc]
 	bit INVULNERABLE, a ; fly/dig
 	jp nz, MoveMissed
+	push de
+	push hl
+	callab SRAMStatsStatMoveHit
+	pop hl
+	pop de
 	ld a, [de]
 	sub ATTACK_DOWN1_EFFECT
 	cp EVASION_DOWN1_EFFECT + $3 - ATTACK_DOWN1_EFFECT ; covers all -1 effects
@@ -7992,6 +8060,9 @@ MoveMissed:
 	ld a, [de]
 	cp $44
 	ret nc
+	push de
+	callab SRAMStatsStatMoveMissed
+	pop de
 	jp ConditionalPrintButItFailed
 
 MonsStatsFellText:
