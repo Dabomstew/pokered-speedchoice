@@ -790,6 +790,8 @@ CheckNumAttacksLeft:
 	ret
 
 HandleEnemyMonFainted:
+	ld de, sStatsEnemyPokemonFainted
+	callab SRAMStatsIncrement2Byte
 	xor a
 	ld [wInHandlePlayerMonFainted], a
 	call FaintEnemyPokemon
@@ -1062,6 +1064,8 @@ PlayBattleVictoryMusic:
 	jp Delay3
 
 HandlePlayerMonFainted:
+	ld de, sStatsPlayerPokemonFainted
+	callab SRAMStatsIncrement2Byte
 	ld a, 1
 	ld [wInHandlePlayerMonFainted], a
 	call RemoveFaintedPlayerMon

@@ -259,6 +259,26 @@ SRAMStatsPoisonBurnLeechSeed_::
 	pop af
 	ld [wDamage], a
 	ret
+	
+	sramstatmethod SRAMStatsExperienceGain
+	
+SRAMStatsExperienceGain_::
+	ld hl, sStatsExperienceGained
+	ld de, wExpAmountGained + 2
+	ld a, [de]
+	add [hl]
+	ld [hli], a
+	dec de
+	ld a, [de]
+	adc [hl]
+	ld [hli], a
+	dec de
+	ld a, [de]
+	adc [hl]
+	ld [hli], a
+	ret nc
+	inc [hl]
+	ret
 
     sramstatmethod SRAMStatsIncrement2Byte
     

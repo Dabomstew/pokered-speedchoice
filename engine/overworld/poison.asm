@@ -39,6 +39,12 @@ ApplyOutOfBattlePoisonDamage:
 	jr nz, .nextMon ; didn't faint from damage
 ; the mon fainted from the damage
 	push hl
+	push de
+	ld de, sStatsPlayerPokemonFainted
+	callab SRAMStatsIncrement2Byte
+	pop de
+	pop hl
+	push hl
 	inc hl
 	inc hl
 	ld [hl], a

@@ -120,6 +120,7 @@ ExperiencePartyLoop ; loop over each mon and add gained exp
 	inc hl
 ExperienceReturnPoint::
 	push hl
+	callab SRAMStatsExperienceGain
 	ld a, [wWhichPokemon]
 	ld c, a
 	ld b, 0

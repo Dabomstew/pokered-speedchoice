@@ -2,6 +2,8 @@ IncrementDayCareMonExp:
 	ld a, [wDayCareInUse]
 	and a
 	ret z
+	ld de, sStatsExperienceGained
+	callab SRAMStatsIncrement4Byte
 	ld hl, wDayCareMonExp + 2
 	inc [hl]
 	ret nz
