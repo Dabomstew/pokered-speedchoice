@@ -182,6 +182,7 @@ SRAMStatsHitCritOHKO_::
 	ld hl, sStatsOwnMovesHit
 	call .incrementHLPlusAPlusB
 ; none of the others should be recorded if it missed
+	ld a, [wMoveMissed]
 	and a
 	ret nz
 ; now critical/ohko
