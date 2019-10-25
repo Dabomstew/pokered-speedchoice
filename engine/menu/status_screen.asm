@@ -172,7 +172,7 @@ StatusScreen:
 	call LoadFlippedFrontSpriteByMonIndex ; draw Pokémon picture
 	ld a, [wcf91]
 	call PlayCry ; play Pokémon cry
-	call WaitForTextScrollButtonPress ; wait for button
+	call WaitForTextScrollButtonPressNoHTM ; wait for button
 	pop af
 	ld [hTilesetType], a
 	ret
@@ -426,7 +426,7 @@ StatusScreen2:
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
 	call Delay3
-	call WaitForTextScrollButtonPress ; wait for button
+	call WaitForTextScrollButtonPressNoHTM ; wait for button
 	pop af
 	ld [hTilesetType], a
 	ld hl, wd72c

@@ -1,181 +1,265 @@
 _PrintNumber::
-; Print the c-digit, b-byte value at de.
+; Print c digits of the b-byte value from de to hl.
 ; Allows 2 to 7 digits. For 1-digit numbers, add
-; the value to char "0" instead of calling PrintNumber.
-; Flags LEADING_ZEROES and LEFT_ALIGN can be given
-; in bits 7 and 6 of b respectively.
+; the value to char "0" instead of calling PrintNum.
+; The high nybble of the c register specifies how many of the total amount of
+; digits will be in front of the decimal point.
+; Some extra flags can be given in bits 5-7 of b.
+; Bit 5: money if set (unless left-aligned without leading zeros)
+; Bit 6: right-aligned if set
+; Bit 7: print leading zeros if set
+
 	push bc
+
+	bit 5, b
+	jr z, .main
+	bit 7, b
+	jr nz, .moneyflag
+	bit 6, b
+	jr z, .main
+
+.moneyflag ; 101xxxxx or 011xxxxx
+	ld a, "¥"
+	ld [hli], a
+	res 5, b ; 100xxxxx or 010xxxxx
+
+.main
 	push de
 
 	ld d, b
 	ld a, c
+	swap a
+	and $f
+	ld e, a
+	ld a, c
+	and $f
 	ld b, a
-	xor a
-	ld c, a
-	ld a, b
-
-	cp 2
-	jr z, .tens
-	cp 3
-	jr z, .hundreds
-	cp 4
-	jr z, .thousands
-	cp 5
-	jr z, .ten_thousands
-	cp 6
-	jr z, .hundred_thousands
-
-print_digit: macro
-
-if (\1) / $10000
-	ld a, \1 / $10000 % $100
-else	xor a
-endc
-	ld [H_POWEROFTEN + 0], a
-
-if (\1) / $100
-	ld a, \1 / $100   % $100
-else	xor a
-endc
-	ld [H_POWEROFTEN + 1], a
-
-	ld a, \1 / $1     % $100
-	ld [H_POWEROFTEN + 2], a
-
-	call .PrintDigit
-	call .NextDigit
-endm
-
-.millions          print_digit 1000000
-.hundred_thousands print_digit 100000
-.ten_thousands     print_digit 10000
-.thousands         print_digit 1000
-.hundreds          print_digit 100
-
-.tens
 	ld c, 0
-	ld a, [H_NUMTOPRINT + 2]
-.mod
+	cp 2
+	jr z, .two
+	cp 3
+	jr z, .three
+	cp 4
+	jr z, .four
+	cp 5
+	jr z, .five
+	cp 6
+	jr z, .six
+
+.seven
+	ld a, HIGH(1000000 >> 8)
+	ldh [hPrintNumBuffer + 4], a
+	ld a, HIGH(1000000) ; mid
+	ldh [hPrintNumBuffer + 5], a
+	ld a, LOW(1000000)
+	ldh [hPrintNumBuffer + 6], a
+	call .PrintDigit
+	call .AdvancePointer
+
+.six
+	ld a, HIGH(100000 >> 8)
+	ldh [hPrintNumBuffer + 4], a
+	ld a, HIGH(100000) ; mid
+	ldh [hPrintNumBuffer + 5], a
+	ld a, LOW(100000)
+	ldh [hPrintNumBuffer + 6], a
+	call .PrintDigit
+	call .AdvancePointer
+
+.five
+	xor a ; HIGH(10000 >> 8)
+	ldh [hPrintNumBuffer + 4], a
+	ld a, HIGH(10000) ; mid
+	ldh [hPrintNumBuffer + 5], a
+	ld a, LOW(10000)
+	ldh [hPrintNumBuffer + 6], a
+	call .PrintDigit
+	call .AdvancePointer
+
+.four
+	xor a ; HIGH(1000 >> 8)
+	ldh [hPrintNumBuffer + 4], a
+	ld a, HIGH(1000) ; mid
+	ldh [hPrintNumBuffer + 5], a
+	ld a, LOW(1000)
+	ldh [hPrintNumBuffer + 6], a
+	call .PrintDigit
+	call .AdvancePointer
+
+.three
+	xor a ; HIGH(100 >> 8)
+	ldh [hPrintNumBuffer + 4], a
+	xor a ; HIGH(100) ; mid
+	ldh [hPrintNumBuffer + 5], a
+	ld a, LOW(100)
+	ldh [hPrintNumBuffer + 6], a
+	call .PrintDigit
+	call .AdvancePointer
+
+.two
+	dec e
+	jr nz, .two_skip
+	ld a, "0"
+	ldh [hPrintNumBuffer + 0], a
+.two_skip
+
+	ld c, 0
+	ldh a, [hPrintNumBuffer + 3]
+.mod_10
 	cp 10
-	jr c, .ok
+	jr c, .modded_10
 	sub 10
 	inc c
-	jr .mod
-.ok
+	jr .mod_10
+.modded_10
 
 	ld b, a
-	ld a, [H_PASTLEADINGZEROES]
+	ldh a, [hPrintNumBuffer + 0]
 	or c
-	ld [H_PASTLEADINGZEROES], a
-	jr nz, .past
+	jr nz, .money
 	call .PrintLeadingZero
-	jr .next
-.past
+	jr .money_leading_zero
+
+.money
+	call .PrintYen
+	push af
 	ld a, "0"
 	add c
 	ld [hl], a
-.next
+	pop af
+	ldh [hPrintNumBuffer + 0], a
+	inc e
+	dec e
+	jr nz, .money_leading_zero
+	inc hl
+	ld [hl], "."
 
-	call .NextDigit
-.ones
+.money_leading_zero
+	call .AdvancePointer
+	call .PrintYen
 	ld a, "0"
 	add b
 	ld [hli], a
+
 	pop de
-	dec de
 	pop bc
 	ret
 
+.PrintYen:
+	push af
+	ldh a, [hPrintNumBuffer + 0]
+	and a
+	jr nz, .stop
+	bit 5, d
+	jr z, .stop
+	ld a, "¥"
+	ld [hli], a
+	res 5, d
+
+.stop
+	pop af
+	ret
+
 .PrintDigit:
-; Divide by the current decimal place.
-; Print the quotient, and keep the modulus.
+	dec e
+	jr nz, .ok
+	ld a, "0"
+	ldh [hPrintNumBuffer + 0], a
+.ok
 	ld c, 0
 .loop
-	ld a, [H_POWEROFTEN]
+	ldh a, [hPrintNumBuffer + 4]
 	ld b, a
-	ld a, [H_NUMTOPRINT]
-	ld [H_SAVEDNUMTOPRINT], a
+	ldh a, [hPrintNumBuffer + 1]
+	ldh [hPrintNumBuffer + 7], a
 	cp b
-	jr c, .underflow0
+	jr c, .skip1
 	sub b
-	ld [H_NUMTOPRINT], a
-	ld a, [H_POWEROFTEN + 1]
+	ldh [hPrintNumBuffer + 1], a
+	ldh a, [hPrintNumBuffer + 5]
 	ld b, a
-	ld a, [H_NUMTOPRINT + 1]
-	ld [H_SAVEDNUMTOPRINT + 1], a
+	ldh a, [hPrintNumBuffer + 2]
+	ldh [hPrintNumBuffer + 8], a
 	cp b
-	jr nc, .noborrow1
-
-	ld a, [H_NUMTOPRINT]
+	jr nc, .skip2
+	ldh a, [hPrintNumBuffer + 1]
 	or 0
-	jr z, .underflow1
+	jr z, .skip3
 	dec a
-	ld [H_NUMTOPRINT], a
-	ld a, [H_NUMTOPRINT + 1]
-.noborrow1
-
+	ldh [hPrintNumBuffer + 1], a
+	ldh a, [hPrintNumBuffer + 2]
+.skip2
 	sub b
-	ld [H_NUMTOPRINT + 1], a
-	ld a, [H_POWEROFTEN + 2]
+	ldh [hPrintNumBuffer + 2], a
+	ldh a, [hPrintNumBuffer + 6]
 	ld b, a
-	ld a, [H_NUMTOPRINT + 2]
-	ld [H_SAVEDNUMTOPRINT + 2], a
+	ldh a, [hPrintNumBuffer + 3]
+	ldh [hPrintNumBuffer + 9], a
 	cp b
-	jr nc, .noborrow2
-
-	ld a, [H_NUMTOPRINT + 1]
+	jr nc, .skip4
+	ldh a, [hPrintNumBuffer + 2]
 	and a
-	jr nz, .borrowed
-
-	ld a, [H_NUMTOPRINT]
+	jr nz, .skip5
+	ldh a, [hPrintNumBuffer + 1]
 	and a
-	jr z, .underflow2
+	jr z, .skip6
 	dec a
-	ld [H_NUMTOPRINT], a
+	ldh [hPrintNumBuffer + 1], a
 	xor a
-.borrowed
-
+.skip5
 	dec a
-	ld [H_NUMTOPRINT + 1], a
-	ld a, [H_NUMTOPRINT + 2]
-.noborrow2
+	ldh [hPrintNumBuffer + 2], a
+	ldh a, [hPrintNumBuffer + 3]
+.skip4
 	sub b
-	ld [H_NUMTOPRINT + 2], a
+	ldh [hPrintNumBuffer + 3], a
 	inc c
 	jr .loop
-
-.underflow2
-	ld a, [H_SAVEDNUMTOPRINT + 1]
-	ld [H_NUMTOPRINT + 1], a
-.underflow1
-	ld a, [H_SAVEDNUMTOPRINT]
-	ld [H_NUMTOPRINT], a
-.underflow0
-	ld a, [H_PASTLEADINGZEROES]
+.skip6
+	ldh a, [hPrintNumBuffer + 8]
+	ldh [hPrintNumBuffer + 2], a
+.skip3
+	ldh a, [hPrintNumBuffer + 7]
+	ldh [hPrintNumBuffer + 1], a
+.skip1
+	ldh a, [hPrintNumBuffer + 0]
 	or c
 	jr z, .PrintLeadingZero
-
+	ldh a, [hPrintNumBuffer + 0]
+	and a
+	jr nz, .done
+	bit 5, d
+	jr z, .done
+	ld a, "¥"
+	ld [hli], a
+	res 5, d
+.done
 	ld a, "0"
 	add c
 	ld [hl], a
-	ld [H_PASTLEADINGZEROES], a
+	ldh [hPrintNumBuffer + 0], a
+	inc e
+	dec e
+	ret nz
+	inc hl
+	ld [hl], "."
 	ret
 
 .PrintLeadingZero:
-	bit BIT_LEADING_ZEROES, d
+; prints a leading zero unless they are turned off in the flags
+	bit 7, d ; print leading zeroes?
 	ret z
 	ld [hl], "0"
 	ret
 
-.NextDigit:
-; Increment unless the number is left-aligned,
-; leading zeroes are not printed, and no digits
-; have been printed yet.
-	bit BIT_LEADING_ZEROES, d
+.AdvancePointer:
+; increments the pointer unless leading zeroes are not being printed,
+; the number is left-aligned, and no nonzero digits have been printed yet
+	bit 7, d ; print leading zeroes?
 	jr nz, .inc
-	bit BIT_LEFT_ALIGN, d
+	bit 6, d ; left alignment or right alignment?
 	jr z, .inc
-	ld a, [H_PASTLEADINGZEROES]
+	ldh a, [hPrintNumBuffer + 0]
 	and a
 	ret z
 .inc

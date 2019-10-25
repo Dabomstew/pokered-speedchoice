@@ -227,21 +227,26 @@ charmap "w", $B6
 charmap "x", $B7
 charmap "y", $B8
 charmap "z", $B9
-charmap "é", $BA
-charmap "'d", $BB
-charmap "'l", $BC
-charmap "'s", $BD
-charmap "'t", $BE
-charmap "'v", $BF
 
+charmap "'d", $D0
+charmap "'l", $D1
+charmap "'m", $D2
+charmap "'r", $D3
+charmap "'s", $D4
+charmap "'t", $D5
+charmap "'v", $D6
+charmap "←", $DF
+
+charmap "→", $eb
 charmap "'", $E0
-
+charmap "<PK>", $E1
+charmap "<MN>", $E2
 charmap "-", $E3
-charmap "'r", $E4
-charmap "'m", $E5
 charmap "?", $E6
 charmap "!", $E7
 charmap ".", $E8
+charmap "&", $E9
+charmap "é", $EA
 
 charmap "▷", $EC
 charmap "▶", $ED

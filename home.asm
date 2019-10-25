@@ -3362,6 +3362,16 @@ JoypadLowSensitivity::
 	ld a, 5 ; 1/12 of a second delay
 	ld [H_FRAMECOUNTER], a
 	ret
+	
+WaitForTextScrollButtonPressNoHTM::
+	ld a, [wOptions]
+	push af
+	and $ff ^ (1 << HOLD_TO_MASH)
+	ld [wOptions], a
+	call WaitForTextScrollButtonPress
+	pop af
+	ld [wOptions], a
+	ret
 
 WaitForTextScrollButtonPress::
 	ld a, [H_DOWNARROWBLINKCNT1]
@@ -4128,9 +4138,9 @@ PrintText_NoCreatingTextBox::
 PrintNumber::
 ; copy data into buffers before bankswitching for actual printing
 	xor a
-	ld [H_PASTLEADINGZEROES], a
-	ld [H_NUMTOPRINT], a
-	ld [H_NUMTOPRINT + 1], a
+	ld [hPrintNumBuffer], a
+	ld [hPrintNumBuffer + 1], a
+	ld [hPrintNumBuffer + 2], a
 	ld a, b
 	and $f
 	cp 1
@@ -4139,17 +4149,17 @@ PrintNumber::
 	jr z, .word
 .long
 	ld a, [de]
-	ld [H_NUMTOPRINT], a
+	ld [hPrintNumBuffer + 1], a
 	inc de
 
 .word
 	ld a, [de]
-	ld [H_NUMTOPRINT + 1], a
+	ld [hPrintNumBuffer + 2], a
 	inc de
 
 .byte
 	ld a, [de]
-	ld [H_NUMTOPRINT + 2], a
+	ld [hPrintNumBuffer + 3], a
 
 .start
 	ld a, [H_LOADEDROMBANK]

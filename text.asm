@@ -24,6 +24,11 @@ INCLUDE "hram.asm"
 
 SECTION "Text 1", ROMX ; BANK $20
 
+_ReallyDoneText::
+	text "Have you really"
+	line "finished the race?"
+	done
+
 _CardKeySuccessText1::
 	text "Bingo!@@"
 

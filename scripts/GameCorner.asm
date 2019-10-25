@@ -302,18 +302,8 @@ CeladonGameCornerText2:
 	call GameCorner_DrawMoneyAndCoins
 	pop hl
 	call PrintText
-	call WaitForTextScrollButtonPress_DisableHTM
+	call WaitForTextScrollButtonPressNoHTM
 	jp .betterloop
-	
-WaitForTextScrollButtonPress_DisableHTM:
-	ld a, [wOptions]
-	push af
-	and $ff ^ (1 << HOLD_TO_MASH)
-	ld [wOptions], a
-	call WaitForTextScrollButtonPress
-	pop af
-	ld [wOptions], a
-	ret
 	
 	
 GameCorner50CoinsText:

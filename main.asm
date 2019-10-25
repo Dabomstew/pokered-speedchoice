@@ -2126,3 +2126,7 @@ INCLUDE "engine/fully_evolve_mon.asm"
 SECTION "stat_tracking", ROMX
 
 INCLUDE "engine/stat_tracking.asm"
+
+SECTION "stats_screen", ROMX
+
+INCLUDE "engine/menu/playthrough_stats_screen.asm"

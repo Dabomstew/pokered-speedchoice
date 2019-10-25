@@ -509,7 +509,28 @@ StartMenu_TrainerInfo:
 	ld b, SET_PAL_TRAINER_CARD
 	call RunPaletteCommand
 	call GBPalNormal
-	call WaitForTextScrollButtonPress ; wait for button press
+.inputloop
+	call Delay3
+	call Joypad
+	ld a, [hJoyPressed]
+	bit BIT_START, a
+	jr z, .exitCheck
+	ld hl, ReallyDoneText
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .exit
+	call GBPalWhiteOut
+	call LoadFontTilePatterns
+	call LoadTextBoxTilePatterns
+	call GBPalNormal
+	callab PlaythroughStatsScreen
+	jr .exit
+.exitCheck
+	and (A_BUTTON | B_BUTTON)
+	jr z, .inputloop
+.exit
 	call GBPalWhiteOut
 	call LoadFontTilePatterns
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
@@ -519,6 +540,10 @@ StartMenu_TrainerInfo:
 	pop af
 	ld [hTilesetType], a
 	jp RedisplayStartMenu
+	
+ReallyDoneText:
+	TX_FAR _ReallyDoneText
+	db "@"
 
 ; loads tile patterns and draws everything except for gym leader faces / badges
 DrawTrainerInfo:
@@ -536,13 +561,13 @@ DrawTrainerInfo:
 	ld bc, $70 * 4
 	call CopyData
 	ld hl, TrainerInfoTextBoxTileGraphics ; trainer info text box tile patterns
-	ld de, vChars2 + $770
+	ld de, vChars2 + $600
 	ld bc, $0080
 	push bc
 	call TrainerInfo_FarCopyData
-	ld hl, BlankLeaderNames
-	ld de, vChars2 + $600
-	ld bc, $0170
+	ld hl, CircleTile
+	ld de, vChars2 + $680
+	ld bc, $0010
 	call TrainerInfo_FarCopyData
 	pop bc
 	ld hl, BadgeNumbersTileGraphics  ; badge number tile patterns
@@ -621,7 +646,7 @@ TrainerInfo_NameMoneyTimeText:
 
 ; $76 is a circle tile
 TrainerInfo_BadgesText:
-	db $76,"BADGES",$76,"@"
+	db $68,"BADGES",$68,"@"
 
 ; draws a text box on the trainer info screen
 ; height is always 6
@@ -631,8 +656,8 @@ TrainerInfo_BadgesText:
 ; [wTrainerInfoTextBoxWidth] = width - 1
 ; [wTrainerInfoTextBoxNextRowOffset] = distance from the end of a text box row to the start of the next
 TrainerInfo_DrawTextBox:
-	ld a, $79 ; upper left corner tile ID
-	lb de, $7a, $7b ; top edge and upper right corner tile ID's
+	ld a, $62 ; upper left corner tile ID
+	lb de, $63, $64 ; top edge and upper right corner tile ID's
 	call TrainerInfo_DrawHorizontalEdge ; draw top edge
 	call TrainerInfo_NextTextBoxRow
 	ld a, [wTrainerInfoTextBoxWidthPlus1]
@@ -640,14 +665,14 @@ TrainerInfo_DrawTextBox:
 	ld d, 0
 	ld c, 6 ; height of the text box
 .loop
-	ld [hl], $7c ; left edge tile ID
+	ld [hl], $65 ; left edge tile ID
 	add hl, de
-	ld [hl], $78 ; right edge tile ID
+	ld [hl], $61 ; right edge tile ID
 	call TrainerInfo_NextTextBoxRow
 	dec c
 	jr nz, .loop
-	ld a, $7d ; lower left corner tile ID
-	lb de, $77, $7e ; bottom edge and lower right corner tile ID's
+	ld a, $66 ; lower left corner tile ID
+	lb de, $60, $67 ; bottom edge and lower right corner tile ID's
 
 TrainerInfo_DrawHorizontalEdge:
 	ld [hli], a ; place left corner tile
