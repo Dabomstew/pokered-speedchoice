@@ -417,6 +417,40 @@ Copy4ByteValueIntoPrintScratch:
 	ld [wBuffer + 1], a
 	ld a, [hl]
 	ld [wBuffer], a
+	ld hl, wBuffer
+	jp Cap4ByteValue
+	ret
+	
+; cap 4 byte value at hl to 9999999 because that's all the space we give it on screen
+Cap4ByteValue:
+	ld a, [hli]
+	and a
+	jr nz, .cap
+	ld a, [hli]
+	cp 9999999 / $10000
+	ret c
+	jr nz, .cap2
+	ld a, [hli]
+	cp (9999999 / $100) & $ff
+	ret c
+	jr nz, .cap3
+	ld a, [hl]
+	cp 9999999 & $ff
+	ret c
+	ret z
+.cap3
+	dec hl
+.cap2
+	dec hl
+.cap
+	dec hl
+	xor a
+	ld [hli], a
+	ld a, 9999999 / $10000
+	ld [hli], a
+	ld a, (9999999 / $100) & $ff
+	ld [hli], a
+	ld [hl], 9999999 & $ff
 	ret
 	
 Copy2ByteComparesIntoPrintScratch:
@@ -467,7 +501,10 @@ Copy4ByteComparesIntoPrintScratch:
 	ld [wBuffer + 5], a
 	ld a, [hl]
 	ld [wBuffer + 4], a
-	ret
+	ld hl, wBuffer
+	call Cap4ByteValue
+	ld hl, wBuffer + 4
+	jp Cap4ByteValue
 	
 	
 	
