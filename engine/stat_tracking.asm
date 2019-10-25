@@ -206,7 +206,6 @@ SRAMStatsHitCritOHKO_::
 	ld a, 2
 .recordEff
 	ld hl, sStatsOwnMovesSE
-	jp .incrementHLPlusAPlusB
 .incrementHLPlusAPlusB
 	add b
 SRAMStatsIncrementHLPlusA:
