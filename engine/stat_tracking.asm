@@ -231,6 +231,34 @@ SRAMStatsStatMoveCommon:
 SRAMStatsStatMoveMissed_::
 	ld hl, sStatsOwnMovesMissed
 	jr SRAMStatsStatMoveCommon
+	
+	sramstatmethod SRAMStatsPoisonBurnLeechSeed
+	
+SRAMStatsPoisonBurnLeechSeed_::
+; read the damage from where we pushed it to the stack then continue as "normal"
+; 6 layers before what we want: SRAMStatsStart.Return, sram bank, sram enabled, Bankswitch.Return, bank, true return address, *bc with damage*
+	ld hl, sp + $0C 
+	ld a, [wDamage]
+	push af
+	ld a, [wDamage + 1]
+	push af
+	ld a, [hli]
+	ld [wDamage + 1], a
+	ld a, [hl]
+	ld [wDamage], a
+	ld a, [H_WHOSETURN]
+	and a
+	jr z, .ourTurn
+	call SRAMStatsDamageDealt_
+	jr .finish
+.ourTurn
+	call SRAMStatsDamageTaken_
+.finish
+	pop af
+	ld [wDamage + 1], a
+	pop af
+	ld [wDamage], a
+	ret
 
     sramstatmethod SRAMStatsIncrement2Byte
     

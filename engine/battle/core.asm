@@ -680,6 +680,9 @@ HandlePoisonBurnLeechSeed_DecreaseOwnHP:
 	ld b, h       ; bc = damage * toxic counter
 	ld c, l
 .noToxic
+	push bc
+	callab SRAMStatsPoisonBurnLeechSeed
+	pop bc
 	pop hl
 	inc hl
 	ld a, [hl]    ; subtract total damage from current HP
@@ -5464,7 +5467,7 @@ AdjustDamageForMoveType:
 .done
 	ret
 	
-; calculate actual effectiveness of [wMoveType] against opponent, store in d
+; calculate actual effectiveness multiplier of [wMoveType] against opponent, store in d
 ; (b is used to store it in the function itself)
 StatsGetEffectiveness::
 	ld hl, wEnemyMonType
