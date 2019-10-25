@@ -4953,6 +4953,7 @@ ApplyAttackToEnemyPokemon:
 	ld [hl], a
 
 ApplyDamageToEnemyPokemon:
+	callab SRAMStatsDamageDealt
 	ld hl, wDamage
 	ld a, [hli]
 	ld b, a
@@ -5072,6 +5073,7 @@ ApplyAttackToPlayerPokemon:
 	ld [hl], a
 
 ApplyDamageToPlayerPokemon:
+	callab SRAMStatsDamageTaken
 	ld hl, wDamage
 	ld a, [hli]
 	ld b, a

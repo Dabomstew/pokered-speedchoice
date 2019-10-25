@@ -116,6 +116,55 @@ SRAMStatsRecordMoneyMade_::
     call ConvertBCDToBytes
 	ld hl, sStatsMoneyMade
 	jr SRAMStatsAddMoneyCommon
+	
+	sramstatmethod SRAMStatsDamageDealt
+
+SRAMStatsDamageDealt_::
+; raw damage
+	ld hl, sStatsTotalDamageDealt
+	ld de, wEnemyMonHP
+SRAMStatsDamageCommon:
+	ld a, [wDamage + 1]
+	add [hl]
+	ld [hli], a
+	ld a, [wDamage]
+	adc [hl]
+	ld [hli], a
+	jr nc, .actualdamage
+	inc [hl]
+.actualdamage
+	inc hl
+	inc hl ; hl now moved to "actual damage" directly after total damage
+	ld c, 2
+	push hl
+	push de
+	ld hl, wDamage
+	call StringCmp ; tests de < hl
+	pop de
+	pop hl
+	jr c, .record ; carry set means HP < damage so record HP
+	ld de, wDamage
+.record
+	inc de
+	ld a, [de]
+	add [hl]
+	ld [hli], a
+	dec de
+	ld a, [de]
+	adc [hl]
+	ld [hli], a
+	jr nc, .end
+	inc [hl]
+.end
+	jp SRAMStatsEnd
+	
+	sramstatmethod SRAMStatsDamageTaken
+
+SRAMStatsDamageTaken_::
+; raw damage
+	ld hl, sStatsTotalDamageTaken
+	ld de, wBattleMonHP
+	jr SRAMStatsDamageCommon
 
     sramstatmethod SRAMStatsIncrement2Byte
     
