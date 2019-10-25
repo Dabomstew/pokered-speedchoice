@@ -163,6 +163,8 @@ ItemUseBall:
 	jp .captured
 
 .notOldManBattle
+	ld de, sStatsBallsThrown
+	callab SRAMStatsIncrement2Byte
 ; If the player is fighting the ghost Marowak, set the value that indicates the
 ; Pokémon can't be caught and skip the capture calculations.
 	ld a, [wCurMap]
@@ -315,6 +317,8 @@ ItemUseBall:
 	jr c, .failedToCapture
 
 .captured
+	ld de, sStatsPokemonCaughtInBalls
+	callab SRAMStatsIncrement2Byte
 	jr .skipShakeCalculations
 
 .failedToCapture

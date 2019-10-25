@@ -2515,6 +2515,8 @@ PartyMenuOrRockOrRun:
 
 SwitchPlayerMon:
 	callab RetreatMon
+	ld de, sStatsSwitchouts
+	callab SRAMStatsIncrement2Byte
 	ld c, 50
 	call DelayFrames
 	call AnimateRetreatingPlayerMon
