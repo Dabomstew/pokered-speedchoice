@@ -419,14 +419,31 @@ MainInBattleLoop:
 	ld [wAnimationID], a
 	xor a
 	ld [wMenuItemToSwap], a
+	ld a, [wPermanentOptions2]
+	and (1 << METRONOME_ONLY)
+	jr z, .selectMenu
+	ld a, METRONOME
+	ld [wPlayerSelectedMove], a
+	xor a
+	jr .cont
+.selectMenu
 	call MoveSelectionMenu
+.cont
 	push af
 	call LoadScreenTilesFromBuffer1
 	call DrawHUDsAndHPBars
 	pop af
-	jr nz, MainInBattleLoop ; if the player didn't select a move, jump
+	jp nz, MainInBattleLoop ; if the player didn't select a move, jump
 .selectEnemyMove
+	ld a, [wPermanentOptions2]
+	and (1 << METRONOME_ONLY)
+	jr z, .selectEnemyReal
+	ld a, METRONOME
+	ld [wEnemySelectedMove], a
+	jr .cont2
+.selectEnemyReal
 	call SelectEnemyMove
+.cont2
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr nz, .noLinkBattle
@@ -5329,6 +5346,9 @@ MetronomePickMove:
 ; it's used to prevent moves that run another move within the same turn
 ; (like Mirror Move and Metronome) from losing 2 PP
 IncrementMovePP:
+	ld a, [wPermanentOptions2]
+	and (1 << METRONOME_ONLY)
+	ret nz
 	ld a, [H_WHOSETURN]
 	and a
 ; values for player turn

@@ -29,12 +29,12 @@ TEXT_SLOW    EQU %11
 
 ; wPermanentOptions:
 	optionbytestart
-	mboption SPINNERS, 2
-	sboption MAX_RANGE
-	mboption EXP, 2
-	sboption BETTER_MARTS
-	sboption NERF_PEWTER_GYM
-	sboption ALL_MOVES_SHAKE
+	mboption SPINNERS, 2 ; 0
+	sboption MAX_RANGE ; 2
+	mboption EXP, 2 ; 3
+	sboption BETTER_MARTS ; 5
+	sboption NERF_PEWTER_GYM ; 6
+	sboption ALL_MOVES_SHAKE ; 7
 
 EXP_NORMAL     EQU %00
 EXP_BLACKWHITE EQU %01
@@ -45,17 +45,17 @@ SPINNERHELL_WHY_SPEED EQU %11
 
 ; wPermanentOptions2:
 	optionbytestart
-	sboption SHORT_DELAYS
-	sboption GOOD_EARLY_WILDS
-	sboption BACKWARDS_BOAT
-	sboption METRONOME_ONLY
-	mboption SELECTTO, 2
-	sboption BETTER_GAME_CORNER
+	sboption SHORT_DELAYS ; 0
+	sboption GOOD_EARLY_WILDS ; 1
+	sboption BACKWARDS_BOAT ; 2
+	sboption METRONOME_ONLY ; 3
+	mboption SELECTTO, 2 ; 4
+	sboption BETTER_GAME_CORNER ; 6
 
 ; wPermanentOptions3:
 	optionbytestart
-	mboption STARTIN, 4 ; there are only 5 atm, but leaving space for up to 16
-	mboption RACEGOAL, 2
+	mboption STARTIN, 4 ; 0 - there are only 5 atm, but leaving space for up to 16
+	mboption RACEGOAL, 2 ; 4
 
 RACEGOAL_MANUAL    EQU %00
 RACEGOAL_ELITEFOUR EQU %01

@@ -39,7 +39,10 @@ Options_Delays:: ; 3
 	db "FAST  @"
 	
 Options_MetronomeOnly:: ; 5
-	ret
+	ld hl, wPermanentOptions2
+	ld b, METRONOME_ONLY
+	ld c, 5
+	jp Options_OnOff
 	
 Options_ShakeMoves::
 	ld hl, wPermanentOptions

@@ -1884,15 +1884,6 @@ SECTION "bank1A", ROMX
 
 INCLUDE "engine/battle/decrement_pp.asm"
 
-Version_GFX:
-IF DEF(_RED)
-	INCBIN "gfx/red/redgreenversion.1bpp" ; 10 tiles
-ENDC
-IF DEF(_BLUE)
-	INCBIN "gfx/blue/blueversion.1bpp" ; 8 tiles
-ENDC
-Version_GFXEnd:
-
 Dojo_GFX:
 Gym_GFX:           INCBIN "gfx/tilesets/gym.2bpp"
 Dojo_Block:
@@ -2134,3 +2125,14 @@ INCLUDE "engine/menu/playthrough_stats_screen.asm"
 SECTION "dex_check", ROMX
 
 INCLUDE "engine/check_full_dex.asm"
+
+SECTION "version_gfx", ROMX
+
+Version_GFX:
+IF DEF(_RED)
+	INCBIN "gfx/red/redgreenversion.1bpp" ; 10 tiles
+ENDC
+IF DEF(_BLUE)
+	INCBIN "gfx/blue/blueversion.1bpp" ; 8 tiles
+ENDC
+Version_GFXEnd:

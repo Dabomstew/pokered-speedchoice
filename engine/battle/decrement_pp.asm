@@ -1,5 +1,8 @@
 DecrementPP:
 ; after using a move, decrement pp in battle and (if not transformed?) in party
+	ld a, [wPermanentOptions2]
+	and (1 << METRONOME_ONLY)
+	ret nz
 	ld a, [de]
 	cp STRUGGLE
 	ret z                ; if the pokemon is using "struggle", there's nothing to do
