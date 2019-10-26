@@ -166,6 +166,20 @@ Options_RivalName:
 	db "NOT SET@"
 	
 Options_StartIn::
+	ldafarbyte KeyItemRandoActive
+	and a
+	jr z, .normal
+; with KeyItemRando on, disable startin and set it to normal (0)
+	ld a, [wPermanentOptions3]
+	and $ff ^ STARTIN_MASK
+	ld [wPermanentOptions3], a
+	ld de, .KIROn
+	coord hl, 11, 8
+	call PlaceString
+	ld de, .Normal
+	coord hl, 11, 9
+	jp PlaceString
+.normal
 	ld hl, .Data
 	jp Options_Multichoice
 	
@@ -190,6 +204,8 @@ Options_StartIn::
 	db "SAFARI@"
 .Tower:
 	db "TOWER @"
+.KIROn:
+	db "(KIR ON)@"
 	
 Options_RaceGoal:: ; 11
 	ld hl, .Data

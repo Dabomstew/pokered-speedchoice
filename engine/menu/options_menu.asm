@@ -388,11 +388,10 @@ endm
 ; hl = pointer to options multichoice struct	
 Options_Multichoice:
 	; load multichoice data to ram
-	push af
 	ld bc, 8
 	ld de, wBuffer
 	call CopyData
-	pop af
+	ld a, [hJoyPressed]
 	bit BIT_D_LEFT, a
 	jr nz, .LeftPressed
 	bit BIT_D_RIGHT, a
