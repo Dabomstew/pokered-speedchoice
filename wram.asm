@@ -2583,9 +2583,14 @@ wPermanentOptions2::
 	ds 1
 wPermanentOptions3::
 	ds 1
+; leave some space for more permaoptions to try to preserve save compat
+	ds 5
+wSpeedchoiceFlags::
+; bit 0: seen done screen for reaching 151 dex
+	ds 1
 	
 wMainDataBlock1End::
-	ds 99
+	ds 93
 
 wMainDataBlock2Start::
 wNumSigns:: ; d4b0

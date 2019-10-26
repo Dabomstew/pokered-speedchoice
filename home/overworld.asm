@@ -35,6 +35,12 @@ EnterMap::
 	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	set 6, [hl]
+	ld a, [wPermanentOptions3]
+	and RACEGOAL_MASK
+	cp RACEGOAL_151DEX << RACEGOAL_SHIFT
+	jr nz, .continue
+	callab Check151DexRaceGoal
+.continue
 	xor a
 	ld [wJoyIgnore], a
 

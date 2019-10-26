@@ -142,6 +142,7 @@ _PrintNumber::
 	ld [hli], a
 
 	pop de
+	dec de
 	pop bc
 	ret
 

@@ -1168,6 +1168,10 @@ CloseTextDisplay::
 	bit 3, a ; used fly warp
 	call z, LoadPlayerSpriteGraphics
 	call LoadCurrentMapView
+	ld hl, wSpeedchoiceFlags
+	bit DEX_RACEGOAL_EXITING, [hl]
+	res DEX_RACEGOAL_EXITING, [hl]
+	jp nz, UpdateSprites
 	pop af
 	rst BankswitchCommon
 	jp UpdateSprites
