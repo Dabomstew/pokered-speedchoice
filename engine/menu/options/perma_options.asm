@@ -181,7 +181,24 @@ Options_StartIn::
 	db "TOWER @"
 	
 Options_RaceGoal:: ; 11
-	ret
+	ld hl, .Data
+	jp Options_Multichoice
+	
+.Data:
+	multichoiceoptiondata wPermanentOptions3, RACEGOAL_SHIFT, RACEGOAL_SIZE, 11, NUM_OPTIONS, .Strings
+	
+.Strings:
+	dw .Manual
+	dw .E4
+	dw .FullDex
+.Strings_End:
+
+.Manual:
+	db "MANUAL @"
+.E4:
+	db "ELITE 4@"
+.FullDex:
+	db "151 DEX@"
 	
 Options_Spinners:
 	ld hl, .Data

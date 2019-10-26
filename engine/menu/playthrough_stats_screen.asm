@@ -85,6 +85,11 @@ PlaythroughStatsScreen::
 	call WaitForSoundToFinish
 	xor a
 	rst SetSRAMEnabled
+	ld hl, wSpeedchoiceFlags
+	bit HOF_STATS_SCREEN, [hl]
+	res HOF_STATS_SCREEN, [hl]
+	ld a, $ff
+	jp nz, PlaySound
 	jp PlayDefaultMusic
 .scrollLeft
 	ld a, [wOptionsMenuID]
