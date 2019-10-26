@@ -248,7 +248,12 @@ PrintSafariZoneSteps:
 	lb bc, 2, 3
 	call PrintNumber
 	coord hl, 4, 1
+	ld a, [wPermanentOptions2]
+	and EASY_SAFARI_VAL
 	ld de, SafariSteps
+	jr z, .place
+	ld de, ExtraSafariSteps
+.place
 	call PlaceString
 	coord hl, 1, 3
 	ld de, SafariBallText
@@ -267,6 +272,9 @@ PrintSafariZoneSteps:
 
 SafariSteps:
 	db "/500@"
+	
+ExtraSafariSteps:
+	db "/999@"
 
 SafariBallText:
 	db "BALL×× @"

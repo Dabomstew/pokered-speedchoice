@@ -21,7 +21,9 @@ SafariZoneEntranceText_9e747::
 	cont "here."
 
 	para "<PLAYER> received"
-	line "30 SAFARI BALLs!@@"
+	line "@"
+	TX_NUM wNumSafariBalls, 1, 2
+	text " SAFARI BALLs!@@"
 
 _SafariZoneEntranceText_75360::
 	text ""

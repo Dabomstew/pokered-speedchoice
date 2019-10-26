@@ -178,14 +178,21 @@ SafariZoneGate_TextPointers:
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
+	ld a, [wPermanentOptions2]
+	and EASY_SAFARI_VAL
+	ld a, 30
+	ld bc, 502
+	jr z, .set
+	ld a, 99
+	ld bc, 1001
+.set
+	ld [wNumSafariBalls], a
+	ld a, b
+	ld [wSafariSteps], a
+	ld a, c
+	ld [wSafariSteps + 1], a
 	ld hl, .MakePaymentText
 	call PrintText
-	ld a, 30
-	ld [wNumSafariBalls], a
-	ld a, 502 / $100
-	ld [wSafariSteps], a
-	ld a, 502 % $100
-	ld [wSafariSteps + 1], a
 	ld a, D_UP
 	ld c, 3
 	call SafariZoneEntranceAutoWalk

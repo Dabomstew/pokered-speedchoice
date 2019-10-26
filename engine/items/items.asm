@@ -194,7 +194,16 @@ ItemUseBall:
 ; The Master Ball always succeeds.
 	cp MASTER_BALL
 	jp z, .captured
-
+	
+	cp SAFARI_BALL
+	jr nz, .notSafari
+	
+	ld a, [wPermanentOptions2]
+	and EASY_SAFARI_VAL
+	ld a, SAFARI_BALL
+	jp nz, .captured
+	
+.notSafari
 ; Anything will do for the basic Poké Ball.
 	cp POKE_BALL
 	jr z, .checkForAilments

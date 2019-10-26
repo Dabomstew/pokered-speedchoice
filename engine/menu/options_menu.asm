@@ -145,7 +145,7 @@ OptionsMenuScreens:
 	; permaoptions page 1-3
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	options_menu 7, PermaOptions2String, PermaOptions2Pointers, START
-	options_menu 3, PermaOptions3String, PermaOptions3Pointers, START
+	options_menu 4, PermaOptions3String, PermaOptions3Pointers, START
 
 GetOptionPointer:
 	ld a, [wOptionsMenuCount]

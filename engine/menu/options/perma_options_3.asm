@@ -3,12 +3,15 @@ PermaOptions3String::
 	db "        :<LNBRK>"
 	db "BETTER GAMECORNER<LNBRK>"
 	db "        :<LNBRK>"
+	db "EASY SAFARI<LNBRK>"
+	db "        :<LNBRK>"
 	db "BOAT<LNBRK>"
 	db "        :@"
 
 PermaOptions3Pointers::
 	dw Options_NerfBrock
 	dw Options_BetterGameCorner
+	dw Options_EasySafari
 	dw Options_Boat
 	dw Options_PermaOptionsPage
 
@@ -24,10 +27,16 @@ Options_BetterGameCorner::
 	ld c, 5
 	jp Options_OnOff
 	
+Options_EasySafari::
+	ld hl, wPermanentOptions2
+	ld b, EASY_SAFARI
+	ld c, 7
+	jp Options_OnOff
+	
 Options_Boat::
 	ld hl, wPermanentOptions2
 	ld b, BACKWARDS_BOAT
-	ld c, 7
+	ld c, 9
 	ld de, .NormalMeme
 	jp Options_TrueFalse
 .NormalMeme
