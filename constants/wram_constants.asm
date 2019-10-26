@@ -1,10 +1,26 @@
+; macros for options
+optionbytestart: MACRO
+optionbit = 0
+ENDM
+
+sboption: MACRO
+\1 EQU optionbit
+optionbit = optionbit + 1
+ENDM
+
+mboption: MACRO
+\1_SHIFT EQU optionbit
+\1_SIZE EQU \2
+\1_MASK EQU (1 << (optionbit + \2)) - (1 << optionbit)
+optionbit = optionbit + \2
+ENDM
+
 ; wOptions:
-TEXT_SPEED_SHIFT EQU 0
-TEXT_SPEED_SIZE EQU 2
-TEXT_SPEED_MASK EQU %00000011
-BATTLE_SHIFT EQU 2
-BATTLE_SHOW_ANIMATIONS EQU 3
-HOLD_TO_MASH EQU 4
+	optionbytestart
+	mboption TEXT_SPEED, 2
+	sboption BATTLE_SHIFT
+	sboption BATTLE_SHOW_ANIMATIONS
+	sboption HOLD_TO_MASH
 
 TEXT_INSTANT EQU %00
 TEXT_FAST    EQU %01
@@ -12,16 +28,13 @@ TEXT_MEDIUM  EQU %10
 TEXT_SLOW    EQU %11
 
 ; wPermanentOptions:
-SPINNERS_SHIFT EQU 0
-SPINNERS_SIZE EQU 2
-SPINNERS_MASK EQU %00000011
-MAX_RANGE EQU 2
-EXP_SHIFT EQU 3
-EXP_SIZE EQU 2
-EXP_MASK EQU %00011000
-BETTER_MARTS EQU 5
-NERF_PEWTER_GYM EQU 6
-ALL_MOVES_SHAKE EQU 7
+	optionbytestart
+	mboption SPINNERS, 2
+	sboption MAX_RANGE
+	mboption EXP, 2
+	sboption BETTER_MARTS
+	sboption NERF_PEWTER_GYM
+	sboption ALL_MOVES_SHAKE
 
 EXP_NORMAL     EQU %00
 EXP_BLACKWHITE EQU %01
@@ -31,19 +44,22 @@ SPINNERHELL_NORMAL_SPEED EQU %1111
 SPINNERHELL_WHY_SPEED EQU %11
 
 ; wPermanentOptions2:
-SHORT_DELAYS EQU 0
-GOOD_EARLY_WILDS EQU 1
-BACKWARDS_BOAT EQU 2
-METRONOME_ONLY EQU 3
-SELECTTO_SHIFT EQU 4
-SELECTTO_SIZE EQU 2
-SELECTTO_MASK EQU %00110000
-BETTER_GAME_CORNER EQU 6
+	optionbytestart
+	sboption SHORT_DELAYS
+	sboption GOOD_EARLY_WILDS
+	sboption BACKWARDS_BOAT
+	sboption METRONOME_ONLY
+	mboption SELECTTO, 2
+	sboption BETTER_GAME_CORNER
 
 ; wPermanentOptions3:
-STARTIN_SHIFT EQU 0
-STARTIN_SIZE EQU 4
-STARTIN_MASK EQU %00001111 ; there are only 5 atm, but leaving space for up to 16
+	optionbytestart
+	mboption STARTIN, 4 ; there are only 5 atm, but leaving space for up to 16
+	mboption RACEGOAL, 2
+
+RACEGOAL_MANUAL    EQU %00
+RACEGOAL_ELITEFOUR EQU %01
+RACEGOAL_151DEX    EQU %10
 
 ; wOverworldSelectFlags:
 SELECT_JACK EQU 0
