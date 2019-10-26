@@ -615,6 +615,9 @@ DrawTrainerInfo:
 	coord hl, 6, 9
 	ld de, TrainerInfo_BadgesText
 	call PlaceString
+	coord hl, 2, 8
+	ld de, TrainerInfo_DoneText
+	call PlaceString
 	coord hl, 2, 2
 	ld de, TrainerInfo_NameMoneyTimeText
 	call PlaceString
@@ -647,6 +650,9 @@ TrainerInfo_NameMoneyTimeText:
 ; $76 is a circle tile
 TrainerInfo_BadgesText:
 	db $68,"BADGES",$68,"@"
+	
+TrainerInfo_DoneText:
+	db $68,"START TO .DONE",$68,"@"
 
 ; draws a text box on the trainer info screen
 ; height is always 6

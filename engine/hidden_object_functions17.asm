@@ -371,12 +371,20 @@ GymTrashScript:
 	and b
 	dec a
 	pop hl
-
+	
+	; code to preserve underflow behavior of giving topleft regardless of actual bank contents
+	; maybe implement a selector for this later instead
+	cp $ff
+	jr nz, .loadLockNormally
+	xor a
+	jr .setLock
+.loadLockNormally
 	ld d, 0
 	ld e, a
 	add hl, de
 	ld a, [hl]
 	and $f
+.setLock
 	ld [wSecondLockTrashCanIndex], a
 
 	tx_pre_id VermilionGymTrashSuccessText1
