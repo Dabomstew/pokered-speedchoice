@@ -2577,12 +2577,14 @@ wLastPalette::
 	ds 1
 wCurPalette::
 	ds 1
+wPermanentOptionsStart::
 wPermanentOptions::
 	ds 1
 wPermanentOptions2::
 	ds 1
 wPermanentOptions3::
 	ds 1
+wPermanentOptionsEnd::
 ; leave some space for more permaoptions to try to preserve save compat
 	ds 5
 wSpeedchoiceFlags::

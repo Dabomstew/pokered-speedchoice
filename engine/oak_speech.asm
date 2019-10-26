@@ -27,10 +27,7 @@ SetDefaultNames:
 	ld [wLetterPrintingDelayFlags], a
 	ld a, [wOptionsInitialized]
 	and a
-	call z, InitOptions
-	ld a, "@"
-	ld [wPlayerName], a
-	ld [wRivalName], a
+	jp z, InitOptions
 	ret
 
 OakSpeech:
@@ -44,8 +41,7 @@ OakSpeech:
 	call LoadTextBoxTilePatterns
 	call SetDefaultNames
 	predef InitPlayerData2
-	callab PermaOptionsMenu
-	callab SetupStats
+	callab IntroPermaOptions
 	ldafarbyte KeyItemRandoActive
 	and a
 	call nz, HideShowObjectsKeyItemRando

@@ -24,6 +24,19 @@ INCLUDE "hram.asm"
 
 SECTION "Text 1", ROMX ; BANK $20
 
+_PleaseSetOptions::
+	text "Please set the"
+	line "game settings."
+	
+	para "Press START when"
+	line "you're finished."
+	prompt
+	
+_AreOptionsAcceptable::
+	text "Are these options"
+	line "acceptable?"
+	done
+
 _ReallyDoneText::
 	text "Have you really"
 	line "finished the race?"

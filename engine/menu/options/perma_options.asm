@@ -23,14 +23,24 @@ PermaOptionsPointers::
 	dw Options_Spinners
 	dw Options_TrainerVision
 	dw Options_PermaOptionsPage
+	
+PERMAOPTIONS_NUM_BYTES EQU 3 ; wPermanentOptionsEnd - wPermanentOptionsStart
+	
+permaoptionspreset: MACRO
+	dw \1
+rept PERMAOPTIONS_NUM_BYTES
+	db \2
+	shift
+endr
+ENDM
 
 PermaOptionsPresets:
 	; Vanilla
-	dw 0 , Preset_VanillaName
+	permaoptionspreset Preset_VanillaName, 0, 0, 0
 	; Bingo
-	dw 0, Preset_BingoName
+	permaoptionspreset Preset_BingoName, (EXP_BLACKWHITE << EXP_SHIFT) | BETTER_MARTS_VAL | NERF_PEWTER_GYM_VAL | ALL_MOVES_SHAKE_VAL, SHORT_DELAYS_VAL | BACKWARDS_BOAT_VAL | BETTER_GAME_CORNER_VAL | (SELECTTO_BIKE << SELECTTO_SHIFT), 0
 	; 251
-	dw 0, Preset_CEAName
+	permaoptionspreset Preset_CEAName, (EXP_BLACKWHITE << EXP_SHIFT) | BETTER_MARTS_VAL | NERF_PEWTER_GYM_VAL | ALL_MOVES_SHAKE_VAL, SHORT_DELAYS_VAL | BACKWARDS_BOAT_VAL | BETTER_GAME_CORNER_VAL | (SELECTTO_BIKE << SELECTTO_SHIFT), (RACEGOAL_151DEX << RACEGOAL_SHIFT)
 PermaOptionsPresetsEnd:
 
 Preset_VanillaName:
@@ -50,12 +60,16 @@ Options_Preset::
 	bit BIT_A_BUTTON, a
 	jr z, .print
 	call .get_pointer
+	inc hl
+	inc hl
+	ld b, PERMAOPTIONS_NUM_BYTES
 	ld de, wPermanentOptions
+.setloop
 	ld a, [hli]
 	ld [de], a
 	inc de
-	ld a, [hl]
-	ld [de], a
+	dec b
+	jr nz, .setloop
 	ld a, SFX_PURCHASE
 	call PlaySound
 	call WaitForSoundToFinish
@@ -66,7 +80,7 @@ Options_Preset::
 .incr
 	inc c
 	ld a, c
-	cp (PermaOptionsPresetsEnd - PermaOptionsPresets) / 4
+	cp (PermaOptionsPresetsEnd - PermaOptionsPresets) / (PERMAOPTIONS_NUM_BYTES + 2)
 	jr c, .okay
 	ld c, 0
 	jr .okay
@@ -76,13 +90,11 @@ Options_Preset::
 	dec c
 	and a
 	jr nz, .okay
-	ld c, (PermaOptionsPresetsEnd - PermaOptionsPresets) / 4 - 1
+	ld c, (PermaOptionsPresetsEnd - PermaOptionsPresets) / (PERMAOPTIONS_NUM_BYTES + 2) - 1
 .okay
 	ld [hl], c
 .print
 	call .get_pointer
-	inc hl
-	inc hl
 	ld a, [hli]
 	ld d, [hl]
 	ld e, a
@@ -94,10 +106,9 @@ Options_Preset::
 .get_pointer
 	ld b, 0
 	ld hl, PermaOptionsPresets
+rept (PERMAOPTIONS_NUM_BYTES + 2)
 	add hl, bc
-	add hl, bc
-	add hl, bc
-	add hl, bc
+endr
 	ret
 
 Options_Name:

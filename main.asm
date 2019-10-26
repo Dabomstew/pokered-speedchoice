@@ -2098,6 +2098,8 @@ SECTION "randomizer", ROMX
 
 INCLUDE "data/randomizer.asm"
 
+INCLUDE "engine/intro_permaoptions.asm"
+
 SECTION "hblankfar", ROMX
 
 INCLUDE "engine/hblank.asm"

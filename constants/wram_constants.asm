@@ -5,6 +5,7 @@ ENDM
 
 sboption: MACRO
 \1 EQU optionbit
+\1_VAL EQU (1 << optionbit)
 optionbit = optionbit + 1
 ENDM
 
@@ -51,6 +52,10 @@ SPINNERHELL_WHY_SPEED EQU %11
 	sboption METRONOME_ONLY ; 3
 	mboption SELECTTO, 2 ; 4
 	sboption BETTER_GAME_CORNER ; 6
+	
+SELECTTO_NONE EQU %00
+SELECTTO_BIKE EQU %01
+SELECTTO_JACK EQU %10
 
 ; wPermanentOptions3:
 	optionbytestart
