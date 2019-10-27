@@ -83,5 +83,15 @@ RandomizerCheckValue::
 RandomizerSeed::
 	db "@"
 	ds 15 ; up to 15 numbers + terminator
+RandomizerGhostMarowak::
+	db MAROWAK
+RandomizerStarterCharmander::
+	db CHARMANDER
+RandomizerStarterSquirtle::
+	db SQUIRTLE
+RandomizerStarterBulbasaur::
+	db BULBASAUR
+RandomizerTrainersChanged::
+	db $00
 	
 RandomizerDataEnd::

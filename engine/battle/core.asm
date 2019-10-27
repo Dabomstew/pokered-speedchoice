@@ -7063,8 +7063,10 @@ InitWildBattle:
 	ld [wIsInBattle], a
 	call LoadEnemyMonData
 	call DoBattleTransitionAndInitBattleVariables
+	ldafarbyte RandomizerGhostMarowak
+	ld b, a
 	ld a, [wCurOpponent]
-	cp MAROWAK
+	cp b
 	jr z, .isGhost
 	call IsGhostBattle
 	jr nz, .isNoGhost

@@ -69,12 +69,15 @@ GaryScript2:
 
 	; select which team to use during the encounter
 	ld a, [wRivalStarter]
-	cp STARTER2
+	ld d, a
+	ldafarbyte RandomizerStarterSquirtle
+	cp d
 	jr nz, .NotStarter2
 	ld a, $1
 	jr .saveTrainerId
 .NotStarter2
-	cp STARTER3
+	ldafarbyte RandomizerStarterBulbasaur
+	cp d
 	jr nz, .NotStarter3
 	ld a, $2
 	jr .saveTrainerId

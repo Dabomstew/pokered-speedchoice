@@ -75,6 +75,7 @@ ViridianCityScript1:
 	ld [wBattleType], a
 	ld a, 5
 	ld [wCurEnemyLVL], a
+CatchingTutorialOpponentMon::
 	ld a, WEEDLE
 	ld [wCurOpponent], a
 	ld a, $2

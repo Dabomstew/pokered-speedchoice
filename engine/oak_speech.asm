@@ -47,6 +47,7 @@ OakSpeech:
 	call nz, HideShowObjectsKeyItemRando
 	call ClearScreen
 	ld hl, wNumBoxItems
+OakSpeechPCPotion::
 	ld a, POTION
 	ld [wcf91], a
 	ld a, 1
@@ -60,7 +61,7 @@ OakSpeech:
 	ld [hTilesetType], a
 	ld a, [wd732]
 	bit 1, a ; possibly a debug mode bit
-	jp nz, .skipChoosingNames
+	jp nz, OakSpeechSkipChoosingNames
 	ld de, ProfOakPic
 	lb bc, Bank(ProfOakPic), $00
 	call IntroDisplayPicCenteredOrUpperRight
@@ -69,6 +70,7 @@ OakSpeech:
 	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
+OakSpeechIntroPokemon::
 	ld a, NIDORINO
 	ld [wd0b5], a
 	ld [wcf91], a
@@ -96,7 +98,7 @@ OakSpeech:
 	ld hl, IntroduceRivalText
 	call PrintText
 	;call ChooseRivalName
-.skipChoosingNames
+OakSpeechSkipChoosingNames:
 	call GBFadeOutToWhite
 	call ClearScreen
 	ld de, RedPicFront

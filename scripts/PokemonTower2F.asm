@@ -147,12 +147,15 @@ PokemonTower2Text1:
 
 	; select which team to use during the encounter
 	ld a, [wRivalStarter]
-	cp STARTER2
+	ld d, a
+	ldafarbyte RandomizerStarterSquirtle
+	cp d
 	jr nz, .NotSquirtle
 	ld a, $4
 	jr .done
 .NotSquirtle
-	cp STARTER3
+	ldafarbyte RandomizerStarterBulbasaur
+	cp d
 	jr nz, .Charmander
 	ld a, $5
 	jr .done

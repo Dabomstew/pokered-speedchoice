@@ -53,7 +53,7 @@ ReadTrainer:
 .LoopTrainerData
 	ld a, [hli]
 	and a ; have we reached the end of the trainer data?
-	jr z, .FinishUp
+	jp z, .FinishUp
 	ld [wcf91], a ; write species somewhere (XXX why?)
 	ld a, ENEMY_PARTY_DATA
 	ld [wMonDataLocation], a
@@ -115,6 +115,14 @@ ReadTrainer:
 	jr nz, .IterateTeamMoves
 
 ; no matches found. is this trainer champion rival?
+; disable this stuff if it's a randomizer that changed trainers
+	push bc
+	push hl
+	ldafarbyte RandomizerTrainersChanged
+	pop hl
+	pop bc
+	and a
+	jr nz, .FinishUp
 	ld a, b
 	cp SONY3
 	jr z, .ChampionRival

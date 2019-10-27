@@ -186,12 +186,15 @@ SilphCo7Script3:
 	ld a, OPP_SONY2
 	ld [wCurOpponent], a
 	ld a, [wRivalStarter]
-	cp STARTER2
+	ld d, a
+	ldafarbyte RandomizerStarterSquirtle
+	cp d
 	jr nz, .asm_51cb6
 	ld a, $7
 	jr .asm_51cc0
 .asm_51cb6
-	cp STARTER3
+	ldafarbyte RandomizerStarterBulbasaur
+	cp d
 	jr nz, .asm_51cbe
 	ld a, $8
 	jr .asm_51cc0

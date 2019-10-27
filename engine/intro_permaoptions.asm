@@ -1,5 +1,7 @@
 VersionNumberText::
-    db "Beta 1@"
+    db "Beta 1-"
+	INCLUDE "git-revision.asm"
+VersionNumberTextEnd::
 
 IntroPermaOptions::
 	xor a
@@ -32,7 +34,9 @@ IntroPermaOptions::
     jpab SetupStats
 	
 PrintPermaOptionsToScreen::
-	coord hl, 14, 0
+	coord hl, 0, 1
+	ld de, (VersionNumberText - VersionNumberTextEnd) & $ffff
+	add hl, de
 	ld de, VersionNumberText
 	call PlaceString
 ; start in + race goal

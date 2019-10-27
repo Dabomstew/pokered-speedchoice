@@ -6,6 +6,7 @@ pokered_obj := audio_red.o main_red.o text_red.o wram_red.o
 ### Build tools
 
 MD5 := md5sum -c
+PYTHON3 := python3
 
 RGBDS ?=
 RGBASM  ?= $(RGBDS)rgbasm
@@ -20,10 +21,12 @@ RGBLINK ?= $(RGBDS)rgblink
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: all red clean tidy compare tools
+.PHONY: all red clean tidy compare tools config
 
-all: $(roms)
+all: $(roms) config
 red: pokered.gbc
+
+config: pokered.ini
 
 # For contributors to make sure a change didn't affect the contents of the rom.
 compare: $(roms)
@@ -48,6 +51,8 @@ ifeq (,$(filter clean tools,$(MAKECMDGOALS)))
 $(info $(shell $(MAKE) -C tools))
 endif
 
+# Echo current git revision into an include for the permaoptions screen to pick up
+$(shell echo "db \""$(shell git log -1 --format="%h")"@\"" > git-revision.asm)
 
 %.asm: ;
 
@@ -93,3 +98,6 @@ gfx/tilesets/%.2bpp: tools/gfx += --trim-whitespace
 
 %.pic:  %.2bpp
 	tools/pkmncompress $< $@
+	
+%.ini: %.gbc %.sym
+	$(PYTHON3) genrandoini.py $^ $@

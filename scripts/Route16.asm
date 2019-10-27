@@ -29,6 +29,7 @@ Route16Script0:
 	ld a, $a
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
+Route16Snorlax::
 	ld a, SNORLAX
 	ld [wCurOpponent], a
 	ld a, 30

@@ -193,6 +193,7 @@ EvosMovesPointerTable:
 	dw WeepinbellEvosMoves
 	dw VictreebelEvosMoves
 
+EvosMovesStart::
 RhydonEvosMoves:
 ; Evolutions
 	db 0
@@ -2132,3 +2133,5 @@ VictreebelEvosMoves:
 	db 15, POISONPOWDER
 	db 18, SLEEP_POWDER
 	db 0
+	
+EvosMovesEnd::

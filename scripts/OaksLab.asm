@@ -192,9 +192,12 @@ OaksLabScript7:
 
 OaksLabScript8:
 	ld a, [wPlayerStarter]
-	cp STARTER1
+	ld d, a
+	ldafarbyte RandomizerStarterCharmander
+	cp d
 	jr z, .Charmander
-	cp STARTER2
+	ldafarbyte RandomizerStarterSquirtle
+	cp d
 	jr z, .Squirtle
 	jr .Bulbasaur
 .Charmander
@@ -384,12 +387,15 @@ OaksLabScript11:
 	ld a, OPP_SONY1
 	ld [wCurOpponent], a
 	ld a, [wRivalStarter]
-	cp STARTER2
+	ld d, a
+	ldafarbyte RandomizerStarterSquirtle
+	cp d
 	jr nz, .NotSquirtle
 	ld a, $1
 	jr .done
 .NotSquirtle
-	cp STARTER3
+	ldafarbyte RandomizerStarterBulbasaur
+	cp d
 	jr nz, .Charmander
 	ld a, $2
 	jr .done
@@ -794,31 +800,31 @@ OaksLabText41:
 
 OaksLabText2:
 	TX_ASM
-	ld a, STARTER2
+	ldafarbyte RandomizerStarterSquirtle
 	ld [wRivalStarterTemp], a
 	ld a, $3
 	ld [wRivalStarterBallSpriteIndex], a
-	ld a, STARTER1
+	ldafarbyte RandomizerStarterCharmander
 	ld b, $2
 	jr OaksLabScript_1d133
 
 OaksLabText3:
 	TX_ASM
-	ld a, STARTER3
+	ldafarbyte RandomizerStarterBulbasaur
 	ld [wRivalStarterTemp], a
 	ld a, $4
 	ld [wRivalStarterBallSpriteIndex], a
-	ld a, STARTER2
+	ldafarbyte RandomizerStarterSquirtle
 	ld b, $3
 	jr OaksLabScript_1d133
 
 OaksLabText4:
 	TX_ASM
-	ld a, STARTER1
+	ldafarbyte RandomizerStarterCharmander
 	ld [wRivalStarterTemp], a
 	ld a, $2
 	ld [wRivalStarterBallSpriteIndex], a
-	ld a, STARTER3
+	ldafarbyte RandomizerStarterBulbasaur
 	ld b, $4
 
 OaksLabScript_1d133:

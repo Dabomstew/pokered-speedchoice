@@ -21,16 +21,24 @@ Route22Script_50ece:
 Route22Script7:
 	ret
 
-Route22Script_50ed6:
+Route22Script_PickParty:
 	ld a, [wRivalStarter]
-	ld b, a
-.asm_50eda
-	ld a, [hli]
-	cp b
-	jr z, .asm_50ee1
-	inc hl
-	jr .asm_50eda
-.asm_50ee1
+	ld d, a
+	push hl
+	ldafarbyte RandomizerStarterSquirtle
+	cp d
+	ld a, 0
+	jr z, .read
+	ldafarbyte RandomizerStarterBulbasaur
+	cp d
+	ld a, 1
+	jr z, .read
+	inc a ; a = 2
+.read
+	pop hl
+	ld e, a
+	ld d, 0
+	add hl, de
 	ld a, [hl]
 	ld [wTrainerNo], a
 	ret
@@ -134,16 +142,16 @@ Route22Script1:
 	ld a, OPP_SONY1
 	ld [wCurOpponent], a
 	ld hl, StarterMons_50faf
-	call Route22Script_50ed6
+	call Route22Script_PickParty
 	ld a, $2
 	ld [wRoute22CurScript], a
 	ret
 
 StarterMons_50faf:
-; starter the rival picked, rival trainer number
-	db STARTER2,$04
-	db STARTER3,$05
-	db STARTER1,$06
+; rival trainer number for each rival starter (order squirtle, bulbasaur, charmander)
+	db $04
+	db $05
+	db $06
 
 Route22Script2:
 	ld a, [wIsInBattle]
@@ -290,15 +298,15 @@ Route22Script4:
 	ld a, OPP_SONY2
 	ld [wCurOpponent], a
 	ld hl, StarterMons_510d9
-	call Route22Script_50ed6
+	call Route22Script_PickParty
 	ld a, $5
 	ld [wRoute22CurScript], a
 	ret
 
 StarterMons_510d9:
-	db STARTER2,$0a
-	db STARTER3,$0b
-	db STARTER1,$0c
+	db $0a
+	db $0b
+	db $0c
 
 Route22Script5:
 	ld a, [wIsInBattle]

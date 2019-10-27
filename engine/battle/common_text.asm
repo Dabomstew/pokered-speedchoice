@@ -33,7 +33,11 @@ PrintBeginningBattleText:
 	call IsItemInBag
 	ld a, [wEnemyMonSpecies2]
 	ld [wcf91], a
-	cp MAROWAK
+	ld d, a
+	push bc
+	ldafarbyte RandomizerGhostMarowak
+	pop bc
+	cp d
 	jr z, .isMarowak
 	ld a, b
 	and a
