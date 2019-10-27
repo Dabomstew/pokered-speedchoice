@@ -1133,6 +1133,9 @@ AfterDisplayingTextID::
 
 ; loop to hold the dialogue box open as long as the player keeps holding down the A button
 HoldTextDisplayOpen::
+	ld a, [wOptions]
+	and HOLD_TO_MASH_VAL
+	jr nz, CloseTextDisplay
 	call Joypad
 	ld a, [hJoyHeld]
 	bit 0, a ; is the A button being pressed?
