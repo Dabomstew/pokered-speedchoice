@@ -59,7 +59,7 @@ ItemUsePtrTable:
 	dw UnusableItem      ; DOME_FOSSIL
 	dw UnusableItem      ; HELIX_FOSSIL
 	dw UnusableItem      ; SECRET_KEY
-	dw UnusableItem
+	dw ItemUsePokedex    ; POKEDEX_NEW
 	dw UnusableItem      ; BIKE_VOUCHER
 	dw ItemUseXAccuracy  ; X_ACCURACY
 	dw ItemUseEvoStone   ; LEAF_STONE
@@ -775,6 +775,9 @@ SurfingNoPlaceToGetOffText:
 	db "@"
 
 ItemUsePokedex:
+	ld a, [wIsInBattle]
+	and a
+	jp nz, ItemUseNotTime
 	predef_jump ShowPokedexMenu
 
 ItemUseEvoStone:

@@ -46,14 +46,7 @@ OakSpeech:
 	and a
 	call nz, HideShowObjectsKeyItemRando
 	call ClearScreen
-	ld hl, wNumBoxItems
-OakSpeechPCPotion::
-	ld a, POTION
-	ld [wcf91], a
-	ld a, 1
-	ld [wItemQuantity], a
-	ld [H_INGAME], a ; hijack this to write the "use artificial delays now" flag
-	call AddItemToInventory  ; give one potion
+	call OakSpeechBoxItems
 	ld a, [wDefaultMap]
 	ld [wDestinationMap], a
 	call SpecialWarpIn
@@ -254,3 +247,19 @@ HideShowObjectsKeyItemRando:
 	ld a, HS_CERULEAN_GUARD_2
 	ld [wMissableObjectIndex], a
 	predef_jump HideObject
+	
+OakSpeechBoxItems::
+	ld a, POTION
+	ld hl, wNumBoxItems
+	call .giveItem
+; also give a pokedex if not normal startin
+	ld a, [wPermanentOptions3]
+	and STARTIN_MASK
+	ret z
+	ld a, POKEDEX_NEW
+.giveItem
+	ld [wcf91], a
+	ld a, 1
+	ld [wItemQuantity], a
+	ld [H_INGAME], a ; hijack this to write the "use artificial delays now" flag
+	jp AddItemToInventory  ; give one potion

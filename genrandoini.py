@@ -198,7 +198,7 @@ def main():
 	setconfig('TradeTableSize', '10')
 	setconfig('TradeNameLength', '11')
 	setconfig('TradesUnused', '[2]')
-	set_symbol('PCPotionOffset', 'OakSpeechPCPotion', 1)
+	set_symbol('PCPotionOffset', 'OakSpeechBoxItems', 1)
 	set_symbol('CatchingTutorialMonOffset', 'CatchingTutorialOpponentMon', 1)
 	set_symbol('MonPaletteIndicesOffset', 'MonsterPalettes')
 	set_symbol('SGBPalettesOffset', 'SuperPalettes')
