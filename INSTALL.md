@@ -1,6 +1,6 @@
 # Linux
 
-	sudo apt-get install make git gcc
+	sudo apt-get install make git gcc python3
 
 	sudo apt-get install byacc flex pkg-config libpng-dev
 	git clone https://github.com/rednex/rgbds
@@ -11,14 +11,9 @@
 	git clone https://github.com/pret/pokered
 	cd pokered
 
-To build **pokered.gbc** and **pokeblue.gbc**:
+To build **pokered.gbc**:
 
 	make
-
-To build them individually:
-
-	make red
-	make blue
 
 
 # Mac
@@ -33,7 +28,7 @@ Then in **Terminal**, run:
 	git clone https://github.com/pret/pokered
 	cd pokered
 
-To build **pokered.gbc** and **pokeblue.gbc**:
+To build **pokered.gbc**:
 
 	make
 
@@ -47,6 +42,7 @@ Run setup and leave the default settings. At "Select Packages", choose to instal
 - `make`
 - `git`
 - `gcc-core`
+- `python3`
 
 Then download [**rgbds**](https://github.com/rednex/rgbds/releases/): the latest **win64.tar.gz** or **win32.tar.gz** release. Extract it and put all the `exe` and `dll` files individually in **C:\cygwin64\usr\local\bin**.
 
@@ -55,6 +51,6 @@ In the **Cygwin terminal**, enter these commands:
 	git clone https://github.com/pret/pokered
 	cd pokered
 
-To build **pokered.gbc** and **pokeblue.gbc**:
+To build **pokered.gbc**:
 
 	make
