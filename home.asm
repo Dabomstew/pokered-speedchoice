@@ -3390,7 +3390,7 @@ WaitForTextScrollButtonPress::
 	push af
 	xor a
 	ld [H_DOWNARROWBLINKCNT1], a
-	ld a, $6
+	ld a, $0D
 	ld [H_DOWNARROWBLINKCNT2], a
 .loop
 	push hl
@@ -3598,26 +3598,31 @@ CalcStat::
 	and a
 	jr z, .statExpDone  ; consider stat exp?
 	add hl, bc          ; skip to corresponding stat exp value
-.statExpLoop            ; calculates ceil(Sqrt(stat exp)) in b
-	xor a
-	ld [H_MULTIPLICAND], a
-	ld [H_MULTIPLICAND+1], a
-	inc b               ; increment current stat exp bonus
-	ld a, b
-	cp $ff
-	jr z, .statExpDone
-	ld [H_MULTIPLICAND+2], a
-	ld [H_MULTIPLIER], a
-	call Multiply
+; calculate ceil(sqrt(stat exp)), properly adjusting for exact values & $FF limit
+    push de
 	ld a, [hld]
-	ld d, a
-	ld a, [$ff98]
-	sub d
-	ld a, [hli]
-	ld d, a
-	ld a, [$ff97]
-	sbc d               ; test if (current stat exp bonus)^2 < stat exp
-	jr c, .statExpLoop
+	ld h, [hl]
+	ld l, a
+	;ld b, $0 ; b is already 0 from above lookups
+	ld de, $0001
+.statExpLoop
+	inc b
+    ld a, b
+    cp $ff
+    jr z, .loopDone
+	dec e
+; workaround for 16bit OAM trash bug
+    jr nz, .noDdecrease
+    dec d
+.noDdecrease
+	dec e
+	add hl, de
+	jr nc, .loopDone
+    ld a, h
+    or l
+    jr nz, .statExpLoop
+.loopDone
+    pop de
 .statExpDone
 	srl c
 	pop hl
@@ -3635,30 +3640,20 @@ CalcStat::
 	cp $5
 	jr z, .getSpecialIV
 .getHpIV
-	push bc
-	ld a, [hl]  ; Atk IV
-	swap a
-	and $1
-	sla a
-	sla a
-	sla a
-	ld b, a
-	ld a, [hli] ; Def IV
-	and $1
-	sla a
-	sla a
-	add b
-	ld b, a
-	ld a, [hl] ; Spd IV
-	swap a
-	and $1
-	sla a
-	add b
-	ld b, a
-	ld a, [hl] ; Spc IV
-	and $1
-	add b      ; HP IV: LSB of the other 4 IVs
-	pop bc
+	ld a, [hli] ; read attack & defense IVs
+	and %00010001 ; keep only relevant bits
+	srl a ; moves attack & 1 into place, moves defense & 1 into carry
+	jr nc, .nodefense
+	or %00000100 ; if defense & 1, add 4 hp
+.nodefense
+; for speed and special it's faster to just use bit tests
+	bit 4, [hl]
+	jr z, .special
+	or %00000010
+.special
+	bit 0, [hl]
+	jr z, .calcStatFromIV
+	inc a ; equivalent to "or %00000001"
 	jr .calcStatFromIV
 .getAttackIV
 	ld a, [hl]
@@ -3860,7 +3855,7 @@ HandleMenuInput_::
 	push af ; save existing values on stack
 	xor a
 	ld [H_DOWNARROWBLINKCNT1], a ; blinking down arrow timing value 1
-	ld a, 6
+	ld a, $0D
 	ld [H_DOWNARROWBLINKCNT2], a ; blinking down arrow timing value 2
 .loop1
 	xor a
@@ -4090,9 +4085,9 @@ HandleDownArrowBlinkTiming::
 	ret nz
 	ld a, " "
 	ld [hl], a
-	ld a, $ff
+	ld a, $fe
 	ld [H_DOWNARROWBLINKCNT1], a
-	ld a, $06
+	ld a, $0D
 	ld [H_DOWNARROWBLINKCNT2], a
 	ret
 .downArrowOff
