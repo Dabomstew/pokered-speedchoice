@@ -59,6 +59,8 @@ EvolveMon:
 	dec c
 	dec c
 	jr nz, .animLoop
+	ld hl, wSpeedchoiceFlags
+	set DEX_RACEGOAL_CHECK, [hl]
 	xor a
 	ld [wEvoCancelled], a
 	ld a, $31

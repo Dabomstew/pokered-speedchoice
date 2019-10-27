@@ -51,6 +51,16 @@ OverworldLoopLessDelay::
 	call LoadGBPal
 	ld a, TIMER_OVERWORLD
 	ld [hTimerType], a
+	ld a, [wPermanentOptions3]
+	and RACEGOAL_MASK
+	cp RACEGOAL_151DEX << RACEGOAL_SHIFT
+	jr nz, .no151
+	ld hl, wSpeedchoiceFlags
+	bit DEX_RACEGOAL_CHECK, [hl]
+	res DEX_RACEGOAL_CHECK, [hl]
+	jr z, .no151
+	callab Check151DexRaceGoal
+.no151
 	ld a, [wd736]
 	bit 6, a ; jumping down a ledge?
 	call nz, HandleMidJump

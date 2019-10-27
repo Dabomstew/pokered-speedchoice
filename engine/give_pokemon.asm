@@ -18,6 +18,8 @@ _GivePokemon:
 	callab LoadEnemyMonData
 	call SetPokedexOwnedFlag
 	callab SendNewMonToBox
+	ld hl, wSpeedchoiceFlags
+	set DEX_RACEGOAL_CHECK, [hl]
 	ld hl, wcf4b
 	ld a, [wCurrentBoxNum]
 	and $7f
