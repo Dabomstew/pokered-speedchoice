@@ -3294,11 +3294,12 @@ GetItemPrice::
 	ld [hItemPrice + 1], a
 	jr .done
 .normal
-	ld bc, $3
-.loop
+; this used to loop, replaced with more efficient method
+	ld c, a
+	ld b, 0
 	add hl, bc
-	dec a
-	jr nz, .loop
+	add hl, bc
+	add hl, bc
 	dec hl
 	ld a, [hld]
 	ld [hItemPrice + 2], a
@@ -4524,3 +4525,5 @@ GetFarByte::
 	rst BankswitchCommon
 	ld a, b
 	ret
+	
+HomeBankFreeSpace::
