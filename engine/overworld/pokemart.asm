@@ -30,13 +30,6 @@ DisplayPokemartDialogue_:
 	jp z, .done
 .sellMenu
 
-; the same variables are set again below, so this code has no effect
-	xor a
-	ld [wPrintItemPrices], a
-	ld a, INIT_BAG_ITEM_LIST
-	ld [wInitListType], a
-	callab InitList
-
 	ld a, [wNumBagItems]
 	and a
 	jp z, .bagEmpty
@@ -114,14 +107,6 @@ DisplayPokemartDialogue_:
 	call SaveScreenTilesToBuffer1
 	jp .returnToMainPokemartMenu
 .buyMenu
-
-; the same variables are set again below, so this code has no effect
-	ld a, 1
-	ld [wPrintItemPrices], a
-	ld a, INIT_OTHER_ITEM_LIST
-	ld [wInitListType], a
-	callab InitList
-
 	ld hl, PokemartBuyingGreetingText
 	call PrintText
 	call SaveScreenTilesToBuffer1

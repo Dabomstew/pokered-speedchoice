@@ -3251,10 +3251,6 @@ GetName::
 	ld bc, $0014
 	call CopyData
 .gotPtr
-	ld a, e
-	ld [wUnusedCF8D], a
-	ld a, d
-	ld [wUnusedCF8D + 1], a
 	pop de
 	pop bc
 	pop hl
@@ -3266,17 +3262,9 @@ GetItemPrice::
 ; Input: [wcf91] = item id
 	ld a, [H_LOADEDROMBANK]
 	push af
-	ld a, [wListMenuID]
-	cp MOVESLISTMENU
 	ld a, BANK(ItemPrices)
-	jr nz, .ok
-	ld a, $f ; hardcoded Bank
-.ok
 	rst BankswitchCommon
-	ld hl, wItemPrices
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
+	ld hl, ItemPrices
 	ld a, [wcf91] ; a contains item id
 	cp HM_01
 	jr nc, .getTMPrice
