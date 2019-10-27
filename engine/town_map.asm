@@ -161,6 +161,13 @@ LoadTownMap_Fly:
 	call DrawPlayerOrBirdSprite
 	ld hl, wFlyLocationsList
 	coord de, 18, 0
+.townMapFlyLoop_checkForSafeFlyLocation
+	ld hl, wFlyLocationsList
+.getSafeFlyLocationLoop
+	ld a, [hli]
+	cp $fe
+	jr z, .getSafeFlyLocationLoop
+	dec hl
 .townMapFlyLoop
 	ld a, " "
 	ld [de], a
@@ -229,7 +236,7 @@ LoadTownMap_Fly:
 	jp .townMapFlyLoop
 .wrapToStartOfList
 	ld hl, wFlyLocationsList
-	jp .townMapFlyLoop
+	jp .townMapFlyLoop_checkForSafeFlyLocation
 .pressedDown
 	coord de, 19, 0
 	dec hl

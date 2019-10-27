@@ -9,10 +9,9 @@ SpecialWarpIn:
 	ld a, [wDestinationMap]
 	jr .next2
 .next
-	bit 1, [hl]
-	jr z, .next3
-.next3
-	ld a, 0
+	bit 1, [hl] ; not startin?
+	ret z
+	xor a
 .next2
 	ld b, a
 	ld a, [wd72d]
@@ -74,6 +73,11 @@ LoadSpecialWarpData:
 	ld a, $10 ; do not ask for nickname
 	ld [wMonDataLocation], a
 	call AddPartyMon
+; uncomment the following for easier debug
+;	ld a, FLY
+;	ld [wPartyMon1Moves], a
+;	ld a, $ff
+;	ld [wObtainedBadges], a
 ; set a "nickname"
 	push hl
 	ld hl, MagikarpString
