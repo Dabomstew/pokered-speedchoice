@@ -1,17 +1,13 @@
-# Pokémon Red and Blue
+# Pokémon Red Speedchoice
 
-This is a disassembly of Pokémon Red and Blue.
-
-It builds the following roms:
-
-* Pokemon Red (UE) [S][!].gb  `md5: 3d45c1ee9abd5738df46d2bdda8b57dc`
-* Pokemon Blue (UE) [S][!].gb `md5: 50927e843568814f7ed45ec4f944bd8b`
+This is a disassembly of a randomizer speedrun-oriented ROM hack of Pokemon Red.
 
 To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 
 ## See also
 
+* Disassembly of [**Pokémon Red**][pokered]
 * Disassembly of [**Pokémon Yellow**][pokeyellow]
 * Disassembly of [**Pokémon Gold**][pokegold]
 * Disassembly of [**Pokémon Crystal**][pokecrystal]
@@ -23,6 +19,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * Discord: [**pret**][Discord]
 * irc: **irc.freenode.net** [**#pret**][irc]
 
+[pokered]: https://github.com/pret/pokered
 [pokeyellow]: https://github.com/pret/pokeyellow
 [pokegold]: https://github.com/pret/pokegold
 [pokecrystal]: https://github.com/pret/pokecrystal
