@@ -3280,6 +3280,20 @@ GetItemPrice::
 	ld a, [wcf91] ; a contains item id
 	cp HM_01
 	jr nc, .getTMPrice
+	cp MOON_STONE
+	jr nz, .normal
+	ld a, [wPermanentOptions]
+	and BETTER_MARTS_VAL
+	ld a, MOON_STONE
+	jr z, .normal
+; moon stone costs 2100 if better marts is on
+	xor a
+	ld [hItemPrice + 2], a
+	ld [hItemPrice], a
+	ld a, $21
+	ld [hItemPrice + 1], a
+	jr .done
+.normal
 	ld bc, $3
 .loop
 	add hl, bc
