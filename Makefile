@@ -101,3 +101,4 @@ gfx/tilesets/%.2bpp: tools/gfx += --trim-whitespace
 	
 %.ini: %.gbc %.sym
 	$(PYTHON3) genrandoini.py $^ $@
+	echo "MD5Hash="$(shell md5sum $< | cut -d' ' -f1) >> $@

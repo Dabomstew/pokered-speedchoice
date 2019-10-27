@@ -131,7 +131,7 @@ def main():
 	setconfig('NonJapanese', str(jap))
 
 	setconfig('Type', 'RBSpeedchoice')
-	setconfig('ExtraTableFile', 'rby_english')
+	setconfig('ExtraTableFile', 'gsc_english') # font/charmap have been changed to match crystal
 	
 	# speedchoice-exclusive stuff goes first because wynaut
 	args.rom.seek(syms["RandomizerVanillaEncounterSlots"])
