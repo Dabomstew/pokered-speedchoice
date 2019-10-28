@@ -2591,10 +2591,15 @@ wPermanentOptionsEnd::
 	ds 5
 wSpeedchoiceFlags::
 ; bit 0: seen done screen for reaching 151 dex
+; bit 1: exiting 151 done screen, don't pop bank in CloseTextDisplay
+; bit 2: in HoF done screen, kill music instead of playing default map music
+; bit 3: evolution or giftmon just happened, check 151 dex on next overworld frame
+	ds 1
+wOptions2::
 	ds 1
 	
 wMainDataBlock1End::
-	ds 93
+	ds 92
 
 wMainDataBlock2Start::
 wNumSigns:: ; d4b0

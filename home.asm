@@ -3043,20 +3043,7 @@ LoadFontTilePatterns::
 	jp CopyVideoDataDouble ; if LCD is on, transfer during V-blank
 
 LoadTextBoxTilePatterns::
-	ld a, [rLCDC]
-	bit 7, a ; is the LCD enabled?
-	jr nz, .on
-.off
-	ld hl, TextBoxGraphics
-	ld de, vChars2 + $600
-	ld bc, TextBoxGraphicsEnd - TextBoxGraphics
-	ld a, BANK(TextBoxGraphics)
-	jp FarCopyData2 ; if LCD is off, transfer all at once
-.on
-	ld de, TextBoxGraphics
-	ld hl, vChars2 + $600
-	lb bc, BANK(TextBoxGraphics), (TextBoxGraphicsEnd - TextBoxGraphics) / $10
-	jp CopyVideoData ; if LCD is on, transfer during V-blank
+	jpab _LoadTextBoxTilePatterns
 
 LoadHpBarAndStatusTilePatterns::
 	ld a, [rLCDC]
@@ -3067,12 +3054,17 @@ LoadHpBarAndStatusTilePatterns::
 	ld de, vChars2 + $620
 	ld bc, HpBarAndStatusGraphicsEnd - HpBarAndStatusGraphics
 	ld a, BANK(HpBarAndStatusGraphics)
-	jp FarCopyData2 ; if LCD is off, transfer all at once
+	call FarCopyData2 ; if LCD is off, transfer all at once
+	jr LoadTextBoxFrame
 .on
 	ld de, HpBarAndStatusGraphics
 	ld hl, vChars2 + $620
 	lb bc, BANK(HpBarAndStatusGraphics), (HpBarAndStatusGraphicsEnd - HpBarAndStatusGraphics) / $10
-	jp CopyVideoData ; if LCD is on, transfer during V-blank
+	call CopyVideoData ; if LCD is on, transfer during V-blank
+; fallthrough
+
+LoadTextBoxFrame::
+	jpab _LoadTextBoxFrame
 
 
 FillMemory::

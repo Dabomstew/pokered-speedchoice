@@ -180,8 +180,6 @@ BattleHudTiles3End:
 NintendoCopyrightLogoGraphics:  INCBIN "gfx/copyright.2bpp"
 GamefreakLogoGraphics:          INCBIN "gfx/gamefreak.2bpp"
 GamefreakLogoGraphicsEnd:
-TextBoxGraphics:                INCBIN "gfx/text_box.2bpp"
-TextBoxGraphicsEnd:
 PokedexTileGraphics:            INCBIN "gfx/pokedex.2bpp"
 PokedexTileGraphicsEnd:
 WorldMapTileGraphics:           INCBIN "gfx/town_map.2bpp"
@@ -2138,3 +2136,20 @@ IF DEF(_BLUE)
 	INCBIN "gfx/blue/blueversion.1bpp" ; 8 tiles
 ENDC
 Version_GFXEnd:
+
+SECTION "textbox_frames", ROMX
+
+INCLUDE "engine/load_textbox_tiles.asm"
+
+DefaultTextBoxGraphics:                INCBIN "gfx/text_box.2bpp"
+DefaultTextBoxGraphicsEnd:
+
+CrystalFrame1: INCBIN "gfx/frames/1.1bpp"
+CrystalFrame2: INCBIN "gfx/frames/2.1bpp"
+CrystalFrame3: INCBIN "gfx/frames/3.1bpp"
+CrystalFrame4: INCBIN "gfx/frames/4.1bpp"
+CrystalFrame5: INCBIN "gfx/frames/5.1bpp"
+CrystalFrame6: INCBIN "gfx/frames/6.1bpp"
+CrystalFrame7: INCBIN "gfx/frames/7.1bpp"
+CrystalFrame8: INCBIN "gfx/frames/8.1bpp"
+CrystalFrame9: INCBIN "gfx/frames/9.1bpp"

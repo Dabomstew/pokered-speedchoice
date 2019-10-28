@@ -28,6 +28,10 @@ TEXT_FAST    EQU %01
 TEXT_MEDIUM  EQU %10
 TEXT_SLOW    EQU %11
 
+; wOptions2:
+	optionbytestart
+	mboption FRAME, 4
+
 ; wPermanentOptions:
 	optionbytestart
 	mboption SPINNERS, 2 ; 0

@@ -7,14 +7,18 @@ MainOptionsString::
 	db "        :<LNBRK>"
 	db "BATTLE STYLE<LNBRK>"
 	db "        :<LNBRK>"
+	db "FRAME<LNBRK>"
+	db "        :TYPE <LNBRK>"
 	db "PALETTE<LNBRK>"
 	db " :@"
+	
 
 MainOptionsPointers::
 	dw Options_TextSpeed
 	dw Options_HoldToMash
 	dw Options_BattleScene
 	dw Options_BattleStyle
+	dw Options_Frame
 	dw Options_Palette
 	dw Options_OptionsPage
 ; e42f5
@@ -115,7 +119,7 @@ Options_Palette:
 	add hl, bc
 	ld e, l
 	ld d, h
-	hlcoord 4, 11
+	hlcoord 4, 13
 	call PlaceString
 	and a
 	ret
@@ -138,4 +142,56 @@ Options_Palette:
 	db "TRUE INVERTED @"
 	db "CHEATER PASTEL@"
 	db "HOT PINK      @"
+	
+NUM_TEXTBOX_FRAMES EQUS "((TextBoxFramesEnd - TextBoxFrames)/2 + 1)"
+	
+Options_Frame:
+	ld a, [wOptions2]
+	and FRAME_MASK
+	ld c, a
+	ld a, [hJoyPressed]
+	bit BIT_D_LEFT, a
+	jr nz, .LeftPressed
+	bit BIT_D_RIGHT, a
+	jr z, .NonePressed
+	ld a, c ; right pressed
+	cp NUM_TEXTBOX_FRAMES - 1
+	jr c, .Increase
+	ld c, $ff
+
+.Increase
+	inc c
+	jr .Save
+
+.LeftPressed
+	ld a, c
+	and a
+	jr nz, .Decrease
+	ld c, NUM_TEXTBOX_FRAMES
+
+.Decrease
+	dec c
+
+.Save
+	ld a, [wOptions2]
+	and $ff ^ FRAME_MASK
+	or c
+	ld [wOptions2], a
+	push bc
+	call LoadTextBoxTilePatterns
+	pop bc
+.NonePressed
+	inc c
+	ld a, c
+	ld [wBuffer], a
+	ld de, wBuffer
+	coord hl, 16, 11
+; empty the space for the new number
+	ld a, " "
+	ld [hli], a
+	ld [hld], a
+	lb bc, PRINTNUM_RIGHTALIGN | 1, 2
+	call PrintNumber
+	and a
+	ret
 
