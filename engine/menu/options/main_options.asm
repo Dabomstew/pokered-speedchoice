@@ -190,7 +190,7 @@ Options_Frame:
 	ld a, " "
 	ld [hli], a
 	ld [hld], a
-	lb bc, PRINTNUM_RIGHTALIGN | 1, 2
+	lb bc, PRINTNUM_LEFTALIGN | 1, 2
 	call PrintNumber
 	and a
 	ret
