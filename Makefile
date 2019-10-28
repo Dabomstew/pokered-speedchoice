@@ -52,7 +52,7 @@ $(info $(shell $(MAKE) -C tools))
 endif
 
 # Echo current git revision into an include for the permaoptions screen to pick up
-$(shell echo "db \""$(shell git log -1 --format="%h")"@\"" > git-revision.asm)
+$(shell echo "db \"-"$(shell git log -1 --format="%h")"\"" > git-revision.asm)
 
 %.asm: ;
 

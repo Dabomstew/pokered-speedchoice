@@ -46,4 +46,3 @@ _LoadTextBoxFrame::
 	jp CopyVideoDataDouble ; if LCD is on, transfer during V-blank
 	
 INCLUDE "data/textbox_frames.asm"
-	
