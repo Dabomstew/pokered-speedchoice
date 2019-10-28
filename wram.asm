@@ -1215,10 +1215,12 @@ wOptionsStringPtr:: ds 2
 wPlayStatsConfigPtr:: 
 wOptionsJumptablePtr:: ds 2
 wPlayStatsConfigEnds:: 
+wPlayStatsMovesUsedOffset::
 wOptionsExitButtons:: ds 1
 wPlayStatsStatNum:: 
 wOptionsNextMenuID:: ds 1
 wOptionsMenuID:: ds 1
+wPlayStatsPageType:: ; 0 = normal, 1 = moves used
 wOptionsMenuPreset:: ds 1
 
 wActionResultOrTookBattleTurn:: ; cd6a

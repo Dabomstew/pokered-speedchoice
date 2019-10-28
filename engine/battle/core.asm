@@ -3252,6 +3252,7 @@ ExecutePlayerMove:
 	jp z, ExecutePlayerMoveDone
 
 CheckIfPlayerNeedsToChargeUp:
+	callab SRAMStatsPlayerMoveUsed ; deliberately double record metronome
 	ld a, [wPlayerMoveEffect]
 	cp CHARGE_EFFECT
 	jp z, JumpMoveEffect
@@ -5857,6 +5858,7 @@ ExecuteEnemyMove:
 	call GetCurrentMove
 
 CheckIfEnemyNeedsToChargeUp:
+	callab SRAMStatsEnemyMoveUsed ; deliberately double record metronome
 	ld a, [wEnemyMoveEffect]
 	cp CHARGE_EFFECT
 	jp z, JumpMoveEffect

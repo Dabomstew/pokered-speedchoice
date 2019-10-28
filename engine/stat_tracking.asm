@@ -279,6 +279,28 @@ SRAMStatsExperienceGain_::
 	ret nc
 	inc [hl]
 	ret
+	
+	sramstatmethod SRAMStatsPlayerMoveUsed
+
+SRAMStatsPlayerMoveUsed_::
+	ld a, [wPlayerSelectedMove]
+	ld hl, sStatsPlayerMovesUsed
+SRAMStatsMoveUsedCommon:
+	cp STRUGGLE + 1
+	ret nc ; don't record anything above struggle, including $ff
+	dec a
+	ld e, a
+	ld d, 0
+	add hl, de
+	add hl, de
+	jp TwoByteIncrement
+	
+	sramstatmethod SRAMStatsEnemyMoveUsed
+
+SRAMStatsEnemyMoveUsed_::
+	ld a, [wEnemySelectedMove]
+	ld hl, sStatsEnemyMovesUsed
+	jr SRAMStatsMoveUsedCommon
 
     sramstatmethod SRAMStatsIncrement2Byte
     

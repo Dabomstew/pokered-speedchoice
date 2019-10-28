@@ -59,6 +59,8 @@ sStatsMovesLearnt:: ds 2
 sStatsBallsThrown:: ds 2
 sStatsPokemonCaughtInBalls:: ds 2
 sStatsBlackouts:: ds 2
+sStatsPlayerMovesUsed:: ds 2*(NUM_ATTACKS+1)
+sStatsEnemyMovesUsed:: ds 2*(NUM_ATTACKS+1)
 sStatsEnd::
 
 SECTION "Save Data", SRAM ; BANK 1

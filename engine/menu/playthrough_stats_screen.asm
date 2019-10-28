@@ -12,8 +12,10 @@ PlaythroughStatsScreen::
 	call PlayMusic
 	xor a
 	ld [wOptionsMenuID], a
+	ld [wPlayStatsPageType], a
 ; stop stats (mainly frame counter) actually being counted
 	inc a
+	ld [wPlayStatsMovesUsedOffset], a
 	ld [hStatsDisabled], a
 ; Open SRAM for stats
 	ld a, SRAM_ENABLE
@@ -49,19 +51,25 @@ PlaythroughStatsScreen::
 	ld [hl], "←"
 	hlcoord 18, 16
 	ld [hl], "→"
-	hlcoord 4, 16
+	hlcoord 3, 16
 	ld de, PSPageStartString
 	call PlaceString
 	ld a, [wOptionsMenuID]
-	add a, "1"
-	hlcoord 9, 16
-	ld [hli], a
-	inc hl
+	inc a
+	ld [wBuffer], a
+	hlcoord 8, 16
+	lb bc, 1, 2
+	ld de, wBuffer
+	call PrintNumber
+	hlcoord 11, 16
 	ld de, PSPageOfString
 	call PlaceString
 	hlcoord 14, 16
-	ld a, NUM_STAT_SCREENS + "0"
-	ld [hl], a
+	ld a, NUM_STAT_SCREENS
+	ld [wBuffer], a
+	lb bc, 1, 2
+	ld de, wBuffer
+	call PrintNumber
 .joypad_loop
 	ld c, 3
 	call DelayFrames
@@ -73,6 +81,9 @@ PlaythroughStatsScreen::
 	ld a, b
 	and D_RIGHT
 	jr nz, .scrollRight
+	ld a, b
+	and D_UP | D_DOWN | SELECT
+	jr nz, .movesUsedControls
 	ld a, b
 	and START
 	jr z, .joypad_loop
@@ -108,6 +119,37 @@ PlaythroughStatsScreen::
 	jr nz, .scrollDone
 	xor a
 	jr .scrollDone
+.movesUsedControls
+	ld a, [wPlayStatsPageType]
+	and a
+	jr z, .joypad_loop
+	ld a, b
+	and D_UP
+	jr nz, .goUp
+	ld a, b
+	and D_DOWN
+	jr nz, .goDown
+; SELECT: go to metronome
+	ld a, (METRONOME - 1)/6*6 + 1
+.writeAndReload
+	ld [wPlayStatsMovesUsedOffset], a
+	jp .pageLoad
+.goUp
+	ld a, [wPlayStatsMovesUsedOffset]
+	sub 6
+	jr z, .goToBottom
+	jr nc, .writeAndReload
+.goToBottom
+	ld a, (STRUGGLE - 1)/6*6 + 1
+	jr .writeAndReload
+.goDown
+	ld a, [wPlayStatsMovesUsedOffset]
+	add 6
+	cp STRUGGLE + 1
+	jr c, .writeAndReload
+	ld a, 1
+	jr .writeAndReload
+	
 	
 RenderStats::
 ; render stats themselves
@@ -115,8 +157,12 @@ RenderStats::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
+	ld a, h
+	cp $fe
+	jp nc, RenderMovesUsed
 	xor a
 	ld [wPlayStatsStatNum], a
+	ld [wPlayStatsPageType], a
 .loop
 	ld a, [hli]
 	ld e, a
@@ -219,6 +265,58 @@ RenderStats::
 	inc hl
 	inc hl
 	jr .next_loop_nopop
+	
+RenderMovesUsed::
+	inc a
+	ld hl, sStatsEnemyMovesUsed
+	jr z, .render
+	inc a
+	ld hl, sStatsPlayerMovesUsed
+.render
+; a = 0 when entering
+	ld [wPlayStatsStatNum], a
+	inc a ; a = 1
+	ld [wPlayStatsPageType], a
+	xor a
+.loop
+	cp 6
+	ret nc
+	ld b, a
+	ld a, [wPlayStatsMovesUsedOffset]
+	add b
+	cp STRUGGLE + 1
+	ret nc
+	ld [wd11e], a
+	push hl
+	ld c, a
+	ld b, 0
+	dec c
+	add hl, bc
+	add hl, bc
+; reverse the stat endianness for PrintNumber
+	ld a, [hli]
+	ld [wBuffer+1], a
+	ld a, [hl]
+	ld [wBuffer], a
+	call GetMoveName
+	hlcoord 1, 4
+	ld a, [wPlayStatsStatNum]
+	sla a
+	ld bc, SCREEN_WIDTH
+	call AddNTimes
+	push hl
+	call PlaceString
+	pop hl
+	ld bc, SCREEN_WIDTH*2 - 7
+	add hl, bc
+	ld de, wBuffer
+	lb bc, 2, 5
+	call PrintNumber
+	pop hl
+	ld a, [wPlayStatsStatNum]
+	inc a
+	ld [wPlayStatsStatNum], a
+	jr .loop
 	
 Print2ByteCompare:
 	ld bc, SCREEN_WIDTH - 3
@@ -544,6 +642,8 @@ PlaythroughStatsScreens::
 	stat_screen PSBattle4TitleString, PSBattle4Config
 	stat_screen PSMoneyItemsTitleString, PSMoneyItemsConfig
 	stat_screen PSMiscTitleString, PSMiscConfig
+	stat_screen PSPlayerMovesTitleString, $FE00
+	stat_screen PSEnemyMovesTitleString, $FF00
 PlaythroughStatsScreensEnd::
 	
 PSTimersConfig::
@@ -709,6 +809,11 @@ PSMiscSavesString:
 	db "TIMES SAVED:@"
 PSMiscReloadsString:
 	db "SAVE RELOADS:@"
+	
+PSPlayerMovesTitleString:
+	db "PLAYER MOVES USED@"
+PSEnemyMovesTitleString:
+	db " ENEMY MOVES USED@"
 
 PSPageStartString:
 	db "PAGE@"
