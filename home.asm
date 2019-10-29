@@ -556,14 +556,15 @@ GetMonHeader::
 	ld a, [wd0b5]
 	ld [wd11e], a
 	ld de, FossilKabutopsPic
-	ld b, $66 ; size of Kabutops fossil and Ghost sprites
+	lb bc, $66, BANK(FossilKabutopsPic) ; size of Kabutops fossil and Ghost sprites, bank of FK
 	cp FOSSIL_KABUTOPS ; Kabutops fossil
 	jr z, .specialID
 	ld de, GhostPic
+	ld c, BANK(GhostPic)
 	cp MON_GHOST ; Ghost
 	jr z, .specialID
 	ld de, FossilAerodactylPic
-	ld b, $77 ; size of Aerodactyl fossil sprite
+	lb bc, $77, BANK(FossilAerodactylPic) ; size and bank of Aerodactyl fossil sprite
 	cp FOSSIL_AERODACTYL ; Aerodactyl fossil
 	jr z, .specialID
 	cp MEW
@@ -585,6 +586,8 @@ GetMonHeader::
 	ld [hl], e ; write front sprite pointer
 	inc hl
 	ld [hl], d
+	ld a, c
+	ld [wMonHPicBank], a
 	jr .done
 .mew
 	ld hl, MewBaseStats
@@ -710,41 +713,8 @@ UncompressMonSprite::
 	ld [wSpriteInputPtr], a    ; fetch sprite input pointer
 	ld a, [hl]
 	ld [wSpriteInputPtr+1], a
-; define (by index number) the bank that a pokemon's image is in
-; index = Mew, bank 1
-; index = Kabutops fossil, bank $B
-; index < $1F, bank 9
-; $1F ≤ index < $4A, bank $A
-; $4A ≤ index < $74, bank $B
-; $74 ≤ index < $99, bank $C
-; $99 ≤ index,       bank $D
-	ld a, [wcf91] ; XXX name for this ram location
-	ld b, a
-	cp MEW
-	ld a, BANK(MewPicFront)
-	jr z, .GotBank
-	ld a, b
-	cp FOSSIL_KABUTOPS
-	ld a, BANK(FossilKabutopsPic)
-	jr z, .GotBank
-	ld a, b
-	cp TANGELA + 1
-	ld a, BANK(TangelaPicFront)
-	jr c, .GotBank
-	ld a, b
-	cp MOLTRES + 1
-	ld a, BANK(MoltresPicFront)
-	jr c, .GotBank
-	ld a, b
-	cp BEEDRILL + 2
-	ld a, BANK(BeedrillPicFront)
-	jr c, .GotBank
-	ld a, b
-	cp STARMIE + 1
-	ld a, BANK(StarmiePicFront)
-	jr c, .GotBank
-	ld a, BANK(VictreebelPicFront)
-.GotBank
+; define by mon header the bank of the image
+	ld a, [wMonHPicBank]
 	jp UncompressSpriteData
 
 ; de: destination location
