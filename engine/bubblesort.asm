@@ -4,22 +4,22 @@ BubbleSortMovesUsed::
 	ld [rSVBK], a
 ; create the initial list, assuming the pointer to the moves used list we want to sort is at de
 ; it's easier to swap these to big endian at the same time as well
-	ld hl, $d002
+; assumes de is 0 mod 2
+	ld hl, $d000
 	ld b, 1
 	ld c, STRUGGLE
+	inc e
 .createLoop
-	ld a, [de]
-	ld [hld], a
-	inc de
-	ld a, [de]
-	ld [hld], a
-	inc de
 	ld a, b
 	ld [hli], a
-	inc hl
-	inc hl
-	inc hl
-	inc hl
+	ld a, [de]
+	ld [hli], a
+	dec e
+	ld a, [de]
+	ld [hli], a
+	inc e
+	inc de
+	inc e
 	inc b
 	dec c
 	jr nz, .createLoop
