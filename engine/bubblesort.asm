@@ -25,63 +25,63 @@ BubbleSortMovesUsed::
 	jr nz, .createLoop
 ; with the initial list made, now we bubble sort it
 ; the order we want is [hl] < [de]
-
+	ld a, STRUGGLE - 1
+	ld [hBubbleSortInitialC], a
 .bubbleSortLoop
 	ld hl, $d004
 	ld de, $d001
-	ld c, STRUGGLE - 1
+	ld c, a
 	ld b, 0
 .swapLoop
+	push hl
 	ld a, [de]
 	cp [hl]
 	jr c, .doSwapInc
-	jr nz, .doneCycleInc
+	jr nz, .doneCycle
 ; maybe swap
 	inc de
 	inc hl
 	ld a, [de]
 	cp [hl]
 	jr c, .doSwap
-	jr .doneCycle
-.doneCycleInc
-	inc de
-	inc hl
 .doneCycle
-	inc de
-	inc de
-	inc hl
-	inc hl
+	pop de
+	ld hl, $3
+	add hl, de
 	dec c
 	jr nz, .swapLoop
 	ld a, b
 	and a
-	jr nz, .bubbleSortLoop
+	jr z, .done
+	ld a, [hBubbleSortInitialC]
+	sub b
+	ld [hBubbleSortInitialC], a
+	jr .bubbleSortLoop
 ; done - copy the result to sSpriteBuffer0
+.done
 	ld a, BANK(sSpriteBuffer0)
 	rst SetSRAMBank
 	ld hl, $d000
 	ld de, sSpriteBuffer0
 	ld bc, STRUGGLE*3
 	call CopyData
-	xor a
-	ld [rSVBK], a
 	ld a, BANK(sStatsStart)
 	rst SetSRAMBank
+	xor a
+	ld [rSVBK], a
+	ld [rIF], a
 	reti
 .doSwapInc
-	inc de
 	inc hl
 .doSwap
-	ld a, [de]
+	ld d, h
+	ld e, l
+	ld a, [hld]
 	ld [hSortTemp+2], a
-	dec de
-	ld a, [de]
+	ld a, [hld]
 	ld [hSortTemp+1], a
-	dec de
-	ld a, [de]
+	ld a, [hld]
 	ld [hSortTemp], a
-	inc de
-	inc de
 	ld a, [hld]
 	ld [de], a
 	dec de
@@ -96,9 +96,7 @@ BubbleSortMovesUsed::
 	ld [hli], a
 	ld a, [hSortTemp+2]
 	ld [hl], a
-	inc de
-	inc de
-	ld b, 1
+	ld b, c
 	jr .doneCycle
 	
 
