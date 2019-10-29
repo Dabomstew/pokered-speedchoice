@@ -2824,8 +2824,10 @@ GetTrainerInformation::
 	ld a, [wTrainerClass]
 	dec a
 	ld hl, TrainerPicAndMoneyPointers
-	ld bc, $5
+	ld bc, $6
 	call AddNTimes
+	ld a, [hli]
+	ld [wTrainerPicBank], a
 	ld de, wTrainerPicPointer
 	ld a, [hli]
 	ld [de], a
@@ -2845,6 +2847,8 @@ GetTrainerInformation::
 	ld [hl], e
 	inc hl
 	ld [hl], d
+	ld a, BANK(RedPicFront)
+	ld [wTrainerPicBank], a
 	ret
 
 GetTrainerName::

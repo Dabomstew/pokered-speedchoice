@@ -7159,11 +7159,7 @@ _LoadTrainerPic:
 	ld e, a
 	ld a, [wTrainerPicPointer + 1]
 	ld d, a ; de contains pointer to trainer pic
-	ld a, [wLinkState]
-	and a
-	ld a, Bank(TrainerPics) ; this is where all the trainer pics are (not counting Red's)
-	jr z, .loadSprite
-	ld a, Bank(RedPicFront)
+	ld a, [wTrainerPicBank]
 .loadSprite
 	call UncompressSpriteFromDE
 	ld de, vFrontPic

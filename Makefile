@@ -1,6 +1,6 @@
 roms := pokered.gbc
 
-pokered_obj := audio_red.o main_red.o text_red.o wram_red.o
+pokered_obj := audio_red.o main_red.o pics_red.o text_red.o wram_red.o
 
 
 ### Build tools

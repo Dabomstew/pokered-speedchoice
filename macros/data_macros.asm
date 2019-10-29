@@ -240,3 +240,9 @@ ENDC
 	ENDR
 	db x
 ENDM
+
+dbwbank: MACRO
+	db BANK(\1)
+	dw \1
+ENDM
+

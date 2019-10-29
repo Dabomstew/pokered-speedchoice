@@ -1,143 +1,143 @@
 TrainerPicAndMoneyPointers:
 ; trainer pic pointers and base money.
 ; money received after battle = base money × level of highest-level enemy mon
-	dw YoungsterPic
+	dbwbank YoungsterPic
 	money 1500
 
-	dw BugCatcherPic
+	dbwbank BugCatcherPic
 	money 1000
 
-	dw LassPic
+	dbwbank LassPic
 	money 1500
 
-	dw SailorPic
+	dbwbank SailorPic
 	money 3000
 
-	dw JrTrainerMPic
+	dbwbank JrTrainerMPic
 	money 2000
 
-	dw JrTrainerFPic
+	dbwbank JrTrainerFPic
 	money 2000
 
-	dw PokemaniacPic
+	dbwbank PokemaniacPic
 	money 5000
 
-	dw SuperNerdPic
+	dbwbank SuperNerdPic
 	money 2500
 
-	dw HikerPic
+	dbwbank HikerPic
 	money 3500
 
-	dw BikerPic
+	dbwbank BikerPic
 	money 2000
 
-	dw BurglarPic
+	dbwbank BurglarPic
 	money 9000
 
-	dw EngineerPic
+	dbwbank EngineerPic
 	money 5000
 
-	dw JugglerPic
+	dbwbank JugglerPic
 	money 3500
 
-	dw FisherPic
+	dbwbank FisherPic
 	money 3500
 
-	dw SwimmerPic
+	dbwbank SwimmerPic
 	money 500
 
-	dw CueBallPic
+	dbwbank CueBallPic
 	money 2500
 
-	dw GamblerPic
+	dbwbank GamblerPic
 	money 7000
 
-	dw BeautyPic
+	dbwbank BeautyPic
 	money 7000
 
-	dw PsychicPic
+	dbwbank PsychicPic
 	money 1000
 
-	dw RockerPic
+	dbwbank RockerPic
 	money 2500
 
-	dw JugglerPic
+	dbwbank JugglerPic
 	money 3500
 
-	dw TamerPic
+	dbwbank TamerPic
 	money 4000
 
-	dw BirdKeeperPic
+	dbwbank BirdKeeperPic
 	money 2500
 
-	dw BlackbeltPic
+	dbwbank BlackbeltPic
 	money 2500
 
-	dw Rival1Pic
+	dbwbank Rival1Pic
 	money 3500
 
-	dw ProfOakPic
+	dbwbank ProfOakPic
 	money 9900
 
-	dw ChiefPic
+	dbwbank ChiefPic
 	money 3000
 
-	dw ScientistPic
+	dbwbank ScientistPic
 	money 5000
 
-	dw GiovanniPic
+	dbwbank GiovanniPic
 	money 9900
 
-	dw RocketPic
+	dbwbank RocketPic
 	money 3000
 
-	dw CooltrainerMPic
+	dbwbank CooltrainerMPic
 	money 3500
 
-	dw CooltrainerFPic
+	dbwbank CooltrainerFPic
 	money 3500
 
-	dw BrunoPic
+	dbwbank BrunoPic
 	money 9900
 
-	dw BrockPic
+	dbwbank BrockPic
 	money 9900
 
-	dw MistyPic
+	dbwbank MistyPic
 	money 9900
 
-	dw LtSurgePic
+	dbwbank LtSurgePic
 	money 9900
 
-	dw ErikaPic
+	dbwbank ErikaPic
 	money 9900
 
-	dw KogaPic
+	dbwbank KogaPic
 	money 9900
 
-	dw BlainePic
+	dbwbank BlainePic
 	money 9900
 
-	dw SabrinaPic
+	dbwbank SabrinaPic
 	money 9900
 
-	dw GentlemanPic
+	dbwbank GentlemanPic
 	money 7000
 
-	dw Rival2Pic
+	dbwbank Rival2Pic
 	money 6500
 
-	dw Rival3Pic
+	dbwbank Rival3Pic
 	money 9900
 
-	dw LoreleiPic
+	dbwbank LoreleiPic
 	money 9900
 
-	dw ChannelerPic
+	dbwbank ChannelerPic
 	money 3000
 
-	dw AgathaPic
+	dbwbank AgathaPic
 	money 9900
 
-	dw LancePic
+	dbwbank LancePic
 	money 9900
