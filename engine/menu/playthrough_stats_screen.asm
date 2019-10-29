@@ -24,12 +24,31 @@ PlaythroughStatsScreen::
 	ld [MBC1SRamBankingMode], a
 	ld a, BANK(sStatsStart)
 	rst SetSRAMBank
+	call ClearScreen
+	call Delay3
 	ld hl, hInMenu
 	ld a, [hl]
 	push af
 	ld [hl], $1
 .pageLoad
 	call RetrievePlaythroughStatsConfig
+	ld a, [wPlayStatsConfigPtr + 1]
+	inc a
+	ld de, sStatsEnemyMovesUsed
+	jr z, .load
+	inc a
+	ld de, sStatsPlayerMovesUsed
+	jr nz, .pageLoadCommon
+.load
+	push de
+	call DisableLCD
+	pop de
+	callab BubbleSortMovesUsed
+	call EnableLCD
+	jr .pageLoadCommon
+.pageLoadNoSort
+	call RetrievePlaythroughStatsConfig
+.pageLoadCommon
 	hlcoord 0, 0
 	ld b, 16
 	ld c, 18
@@ -133,7 +152,7 @@ PlaythroughStatsScreen::
 	ld a, (METRONOME - 1)/6*6 + 1
 .writeAndReload
 	ld [wPlayStatsMovesUsedOffset], a
-	jp .pageLoad
+	jp .pageLoadNoSort
 .goUp
 	ld a, [wPlayStatsMovesUsedOffset]
 	sub 6
@@ -267,37 +286,32 @@ RenderStats::
 	jr .next_loop_nopop
 	
 RenderMovesUsed::
-	inc a
-	ld hl, sStatsEnemyMovesUsed
-	jr z, .render
-	inc a
-	ld hl, sStatsPlayerMovesUsed
-.render
-; a = 0 when entering
+	ld hl, sSpriteBuffer0
+	ld a, [wPlayStatsMovesUsedOffset]
+	dec a
+	ld b, 0
+	ld c, a
+	add hl, bc
+	add hl, bc
+	add hl, bc
+	ld a, BANK(sSpriteBuffer0)
+	rst SetSRAMBank
+	xor a
 	ld [wPlayStatsStatNum], a
 	inc a ; a = 1
 	ld [wPlayStatsPageType], a
 	xor a
 .loop
 	cp 6
-	ret nc
+	jr nc, .done
 	ld b, a
 	ld a, [wPlayStatsMovesUsedOffset]
 	add b
 	cp STRUGGLE + 1
-	ret nc
+	jr nc, .done
+	ld a, [hli]
 	ld [wd11e], a
 	push hl
-	ld c, a
-	ld b, 0
-	dec c
-	add hl, bc
-	add hl, bc
-; reverse the stat endianness for PrintNumber
-	ld a, [hli]
-	ld [wBuffer+1], a
-	ld a, [hl]
-	ld [wBuffer], a
 	call GetMoveName
 	hlcoord 1, 4
 	ld a, [wPlayStatsStatNum]
@@ -309,14 +323,21 @@ RenderMovesUsed::
 	pop hl
 	ld bc, SCREEN_WIDTH*2 - 7
 	add hl, bc
-	ld de, wBuffer
+	pop de
+	push de
 	lb bc, 2, 5
 	call PrintNumber
 	pop hl
+	inc hl
+	inc hl
 	ld a, [wPlayStatsStatNum]
 	inc a
 	ld [wPlayStatsStatNum], a
 	jr .loop
+.done
+	ld a, BANK(sStatsStart)
+	rst SetSRAMBank
+	ret
 	
 Print2ByteCompare:
 	ld bc, SCREEN_WIDTH - 3

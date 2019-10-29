@@ -2153,3 +2153,7 @@ CrystalFrame6: INCBIN "gfx/frames/6.1bpp"
 CrystalFrame7: INCBIN "gfx/frames/7.1bpp"
 CrystalFrame8: INCBIN "gfx/frames/8.1bpp"
 CrystalFrame9: INCBIN "gfx/frames/9.1bpp"
+
+SECTION "bubblesort", ROMX
+
+INCLUDE "engine/bubblesort.asm"
