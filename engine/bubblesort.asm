@@ -39,8 +39,8 @@ BubbleSortMovesUsed::
 	jr c, .doSwapInc
 	jr nz, .doneCycle
 ; maybe swap
-	inc de
-	inc hl
+	inc e ; inc de if data isn't known like it is here
+	inc l ; likewise inc hl
 	ld a, [de]
 	cp [hl]
 	jr c, .doSwap
@@ -74,12 +74,13 @@ BubbleSortMovesUsed::
 .doSwapInc
 	inc hl
 .doSwap
+	push bc
 	ld d, h
 	ld e, l
 	ld a, [hld]
-	ld [hSortTemp+2], a
+	ld c, a
 	ld a, [hld]
-	ld [hSortTemp+1], a
+	ld b, a
 	ld a, [hld]
 	ld [hSortTemp], a
 	ld a, [hld]
@@ -92,10 +93,10 @@ BubbleSortMovesUsed::
 	ld [de], a
 	ld a, [hSortTemp]
 	ld [hli], a
-	ld a, [hSortTemp+1]
+	ld a, b
 	ld [hli], a
-	ld a, [hSortTemp+2]
-	ld [hl], a
+	ld [hl], c
+	pop bc
 	ld b, c
 	jr .doneCycle
 	

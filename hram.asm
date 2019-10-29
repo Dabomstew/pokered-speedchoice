@@ -217,7 +217,7 @@ H_INGAME EQU $FFC2
 hStatsDisabled EQU $FFC3
 hTimerType EQU $FFC4
 hBubbleSortInitialC EQU $FFC5
-hSortTemp EQU $FFC6 ; 3 bytes
+hSortTemp EQU $FFC6
 
 ; controls whether a row or column of 2x2 tile blocks is redrawn in V-blank
 ; 00 = no redraw
