@@ -3037,17 +3037,9 @@ LoadTextBoxFrame::
 
 
 FillMemory::
-; Fill bc bytes at hl with a.
-	push de
-	ld d, a
-.loop
-	ld a, d
-	ld [hli], a
-	dec bc
-	ld a, b
-	or c
-	jr nz, .loop
-	pop de
+; Fill bc bytes at hl with a. Return a=0 to make sure legacy code works
+	call ByteFill
+	xor a
 	ret
 
 

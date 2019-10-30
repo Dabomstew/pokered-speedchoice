@@ -71,8 +71,8 @@ rLCDC_DEFAULT EQU %11100011
 
 	ld sp, wStack
 
-	ld hl, $c000 ; start of WRAM
-	ld bc, $2000 ; size of WRAM
+	ld hl, $c000 ; start of WRAM0
+	ld bc, $1000 ; size of WRAM0
 .loop
 	ld [hl], 0
 	inc hl
@@ -80,6 +80,18 @@ rLCDC_DEFAULT EQU %11100011
 	ld a, b
 	or c
 	jr nz, .loop
+	
+; clear WRAMX
+	ld d, $7 ; num banks
+.bankloop
+	ld a, d
+	ld [rSVBK], a
+	ld hl, $d000
+	ld bc, $1000
+	xor a
+	call ByteFill
+	dec d
+	jr nz, .bankloop
 
 	call ClearVram
 
