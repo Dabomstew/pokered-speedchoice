@@ -582,6 +582,12 @@ INCLUDE "engine/battle/moveEffects/heal_effect.asm"
 INCLUDE "engine/battle/moveEffects/transform_effect.asm"
 INCLUDE "engine/battle/moveEffects/reflect_light_screen_effect.asm"
 
+SECTION "bankERandomizerSpace", ROMX
+
+REPT $300
+	db 0
+ENDR
+
 
 SECTION "bankF", ROMX
 
@@ -1347,6 +1353,12 @@ VictoryRoad1F_Blocks: INCBIN "maps/VictoryRoad1F.blk"
 INCLUDE "engine/predefs17_2.asm"
 
 INCLUDE "engine/hidden_object_functions17.asm"
+
+SECTION "bank17RandomizerSpace", ROMX
+
+REPT $100
+	db 0
+ENDR
 
 
 SECTION "bank18", ROMX

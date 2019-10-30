@@ -114,6 +114,9 @@ ROMX $D
 ROMX $E
 	org $4000
 	"bankE"
+	
+	org $7D00
+	"bankERandomizerSpace"
 
 ROMX $F
 	org $4000
@@ -150,6 +153,9 @@ ROMX $16
 ROMX $17
 	org $4000
 	"bank17"
+	
+	org $7F00
+	"bank17RandomizerSpace"
 
 ROMX $18
 	org $4000
