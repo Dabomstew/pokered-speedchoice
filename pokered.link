@@ -250,19 +250,25 @@ ROMX $3F
 	"randomizer"
 
 WRAM0
-	org $c000
-	"WRAM Bank 0"
-
+	org $c0ff
+	"Stack"
+	
 	org $c100
+	"Audio Engine"
+
+	org $c400
 	"Sprite State Data"
-	"OAM Buffer"
+	"Other WRAM0"
 	
 WRAMX 1
 	org $d000
 	"WRAM Bank 1"
 	
-	org $dfff
-	"Stack"
+	org $df00
+	"OAM Buffer"
+	
+	org $dfa0
+	"Moved WRAM0"
 	
 WRAMX 2
 	org $d000

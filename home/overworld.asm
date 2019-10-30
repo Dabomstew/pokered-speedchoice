@@ -1393,7 +1393,7 @@ LoadCurrentMapView::
 	ld e, a
 	ld a, [wCurrentTileBlockMapViewPointer + 1]
 	ld d, a
-	ld hl, wTileMapBackup
+	ld hl, wMapViewBuffer
 	ld b, $05
 .rowLoop ; each loop iteration fills in one row of tile blocks
 	push hl
@@ -1435,7 +1435,7 @@ LoadCurrentMapView::
 .noCarry2
 	dec b
 	jr nz, .rowLoop
-	ld hl, wTileMapBackup
+	ld hl, wMapViewBuffer
 	ld bc, $0000
 .adjustForYCoordWithinTileBlock
 	ld a, [wYBlockCoord]
@@ -1450,6 +1450,8 @@ LoadCurrentMapView::
 	ld bc, $0002
 	add hl, bc
 .copyToVisibleAreaBuffer
+	ld a, BANK(wMapViewBuffer)
+	ld [rSVBK], a
 	coord de, 0, 0 ; base address for the tiles that are directly transferred to VRAM during V-blank
 	ld b, SCREEN_HEIGHT
 .rowLoop2
@@ -1468,6 +1470,8 @@ LoadCurrentMapView::
 .noCarry3
 	dec b
 	jr nz, .rowLoop2
+	xor a
+	ld [rSVBK], a
 	pop af
 	jp BankswitchCommon
 
@@ -1831,6 +1835,8 @@ DrawTileBlock::
 	ld e, l ; de = address of the tile block's tiles
 	pop hl
 	ld c, $04 ; 4 loop iterations
+	ld a, BANK(wMapViewBuffer)
+	ld [rSVBK], a
 .loop ; each loop iteration, write 4 tile numbers
 	push bc
 	ld a, [de]
@@ -1850,6 +1856,8 @@ DrawTileBlock::
 	pop bc
 	dec c
 	jr nz, .loop
+	xor a
+	ld [rSVBK], a
 	ret
 
 ; function to update joypad state and simulate button presses

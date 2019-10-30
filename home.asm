@@ -2720,11 +2720,11 @@ CheckBoulderCoords::
 	jp CheckCoords
 
 GetPointerWithinSpriteStateData1::
-	ld h, $c1
+	ld h, (wSpriteStateData1 / $100)
 	jr _GetPointerWithinSpriteStateData
 
 GetPointerWithinSpriteStateData2::
-	ld h, $c2
+	ld h, (wSpriteStateData2 / $100)
 
 _GetPointerWithinSpriteStateData:
 	ld a, [H_SPRITEDATAOFFSET]
@@ -3060,10 +3060,14 @@ UncompressSpriteFromDE::
 	jp UncompressSpriteData
 
 SaveScreenTilesToBuffer2::
+	ld a, BANK(wTileMapBackup2)
+	ld [rSVBK], a
 	coord hl, 0, 0
 	ld de, wTileMapBackup2
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	call CopyData
+	xor a
+	ld [rSVBK], a
 	ret
 
 LoadScreenTilesFromBuffer2::
@@ -3076,10 +3080,14 @@ LoadScreenTilesFromBuffer2::
 LoadScreenTilesFromBuffer2DisableBGTransfer::
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
+	ld a, BANK(wTileMapBackup2)
+	ld [rSVBK], a
 	ld hl, wTileMapBackup2
 	coord de, 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	call CopyData
+	xor a
+	ld [rSVBK], a
 	ret
 
 SaveScreenTilesToBuffer1::

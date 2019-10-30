@@ -121,7 +121,7 @@ UpdateNPCSprite:
 	ld l, a
 	ld a, [hl]        ; read movement byte 2
 	ld [wCurSpriteMovement2], a
-	ld h, $c1
+	ld h, (wSpriteStateData1 / $100)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	ld l, a
 	inc l
@@ -130,7 +130,7 @@ UpdateNPCSprite:
 	jp z, InitializeSpriteStatus
 	call CheckSpriteAvailability
 	ret c             ; if sprite is invisible, on tile >=MAP_TILESET_SIZE, in grass or player is currently walking
-	ld h, $c1
+	ld h, (wSpriteStateData1 / $100)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	ld l, a
 	inc l
@@ -150,7 +150,7 @@ UpdateNPCSprite:
 	and a
 	ret nz           ; don't do anything yet if player is currently moving (redundant, already tested in CheckSpriteAvailability)
 	call InitializeSpriteScreenPosition
-	ld h, $c2
+	ld h, (wSpriteStateData2 / $100)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $6
 	ld l, a
@@ -263,7 +263,7 @@ ChangeFacingDirection:
 ; set carry on failure, clears carry on success
 TryWalking:
 	push hl
-	ld h, $c1
+	ld h, (wSpriteStateData1 / $100)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $9
 	ld l, a
@@ -281,7 +281,7 @@ TryWalking:
 	call CanWalkOntoTile
 	pop de
 	ret c               ; cannot walk there (reinitialization of delay values already done)
-	ld h, $c2
+	ld h, (wSpriteStateData2 / $100)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $4
 	ld l, a
@@ -374,7 +374,7 @@ UpdateSpriteInWalkingAnimation:
 
 ; update delay value (c2x8) for sprites in the delayed state (c1x1)
 UpdateSpriteMovementDelay:
-	ld h, $c2
+	ld h, (wSpriteStateData2 / $100)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $6
 	ld l, a
@@ -555,7 +555,7 @@ CheckSpriteAvailability:
 	ret
 
 UpdateSpriteImage:
-	ld h, $c1
+	ld h, (wSpriteStateData1 / $100)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $8
 	ld l, a
@@ -601,7 +601,7 @@ CanWalkOntoTile:
 	jr z, .impassable
 	cp c
 	jr nz, .tilePassableLoop
-	ld h, $c2
+	ld h, (wSpriteStateData2 / $100)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $6
 	ld l, a
@@ -665,7 +665,7 @@ CanWalkOntoTile:
 	and a              ; clear carry (marking success)
 	ret
 .impassable
-	ld h, $c1
+	ld h, (wSpriteStateData1 / $100)
 	ld a, [H_CURRENTSPRITEOFFSET]
 	inc a
 	ld l, a
