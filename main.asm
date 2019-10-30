@@ -20,8 +20,6 @@ INCLUDE "data/facing.asm"
 
 INCLUDE "engine/black_out.asm"
 
-INCLUDE "data/baseStats/mew.asm"
-
 INCLUDE "engine/battle/safari_zone.asm"
 
 INCLUDE "engine/titlescreen.asm"
@@ -1772,3 +1770,7 @@ CrystalFrame6: INCBIN "gfx/frames/6.1bpp"
 CrystalFrame7: INCBIN "gfx/frames/7.1bpp"
 CrystalFrame8: INCBIN "gfx/frames/8.1bpp"
 CrystalFrame9: INCBIN "gfx/frames/9.1bpp"
+
+SECTION "pic_sets", ROMX
+
+INCLUDE "engine/pic_sets.asm"

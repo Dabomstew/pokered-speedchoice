@@ -93,27 +93,22 @@ ROMX $8
 
 ROMX $9
 	org $4000
-	"Pics 1" ; PICS_1
 	"Battle (BANK 9)"
 
 ROMX $A
 	org $4000
-	"Pics 2" ; PICS_2
 	"Battle (BANK A)"
 
 ROMX $B
 	org $4000
-	"Pics 3" ; PICS_3
 	"Battle (BANK B)"
 
 ROMX $C
 	org $4000
-	"Pics 4" ; PICS_4
 	"Battle (BANK C)"
 
 ROMX $D
 	org $4000
-	"Pics 5" ; PICS_5
 	"Battle (BANK D)"
 
 ROMX $E

@@ -246,3 +246,7 @@ dbwbank: MACRO
 	dw \1
 ENDM
 
+altpokepic: MACRO
+	dw \1
+	INCBIN \2,0,1 ; sprite dimensions
+ENDM

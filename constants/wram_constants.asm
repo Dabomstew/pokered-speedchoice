@@ -71,6 +71,10 @@ RACEGOAL_MANUAL    EQU %00
 RACEGOAL_ELITEFOUR EQU %01
 RACEGOAL_151DEX    EQU %10
 
+; wPermanentOptions4:
+	optionbytestart
+	mboption PICSET, 3 ; 0 - only 3 atm, but leaving space for up to 8
+
 ; wSpeedchoiceFlags:
 DEX_RACEGOAL_DONE EQU 0
 DEX_RACEGOAL_EXITING EQU 1

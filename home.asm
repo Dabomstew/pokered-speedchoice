@@ -567,8 +567,6 @@ GetMonHeader::
 	lb bc, $77, BANK(FossilAerodactylPic) ; size and bank of Aerodactyl fossil sprite
 	cp FOSSIL_AERODACTYL ; Aerodactyl fossil
 	jr z, .specialID
-	cp MEW
-	jr z, .mew
 	predef IndexToPokedex   ; convert pokemon ID in [wd11e] to pokedex number
 	ld a, [wd11e]
 	dec a
@@ -578,6 +576,10 @@ GetMonHeader::
 	ld de, wMonHeader
 	ld bc, MonBaseStatsEnd - MonBaseStats
 	call CopyData
+	ld a, [wPermanentOptions4]
+	and PICSET_MASK
+	jr z, .done
+	callab LoadFrontPicFromSet
 	jr .done
 .specialID
 	ld hl, wMonHSpriteDim
@@ -588,13 +590,6 @@ GetMonHeader::
 	ld [hl], d
 	ld a, c
 	ld [wMonHPicBank], a
-	jr .done
-.mew
-	ld hl, MewBaseStats
-	ld de, wMonHeader
-	ld bc, MonBaseStatsEnd - MonBaseStats
-	ld a, BANK(MewBaseStats)
-	call FarCopyData
 .done
 	ld a, [wd0b5]
 	ld [wMonHIndex], a

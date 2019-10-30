@@ -2588,9 +2588,11 @@ wPermanentOptions2::
 	ds 1
 wPermanentOptions3::
 	ds 1
+wPermanentOptions4::
+	ds 1
 wPermanentOptionsEnd::
 ; leave some space for more permaoptions to try to preserve save compat
-	ds 5
+	ds 4
 wSpeedchoiceFlags::
 ; bit 0: seen done screen for reaching 151 dex
 ; bit 1: exiting 151 done screen, don't pop bank in CloseTextDisplay

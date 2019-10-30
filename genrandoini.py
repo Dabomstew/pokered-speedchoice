@@ -145,7 +145,6 @@ def main():
 	set_symbol('PokemonNamesOffset', 'MonsterNames')
 	setconfig('PokemonNamesLength', '10')
 	set_symbol('PokemonStatsOffset', 'MonBaseStats')
-	set_symbol('MewStatsOffset', 'MewBaseStats')
 	set_symbol('WildPokemonTableOffset', 'WildDataPointers')
 	set_symbol('OldRodOffset', 'ItemUseOldRod', 6)
 	set_symbol('GoodRodOffset', 'GoodRodMons')

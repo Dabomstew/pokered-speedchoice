@@ -6,6 +6,8 @@ PermaOptions3String::
 	db "EASY SAFARI<LNBRK>"
 	db "        :<LNBRK>"
 	db "BOAT<LNBRK>"
+	db "        :<LNBRK>"
+	db "POKéMON PICS<LNBRK>"
 	db "        :@"
 
 PermaOptions3Pointers::
@@ -13,6 +15,7 @@ PermaOptions3Pointers::
 	dw Options_BetterGameCorner
 	dw Options_EasySafari
 	dw Options_Boat
+	dw Options_PokemonPics
 	dw Options_PermaOptionsPage
 
 Options_NerfBrock::
@@ -46,3 +49,22 @@ Options_Boat::
 	db "NORMAL@"
 .On
 	db "MEME  @"
+
+Options_PokemonPics:
+	ld hl, .Data
+	jp Options_Multichoice
+	
+.Data:
+	multichoiceoptiondata wPermanentOptions4, PICSET_SHIFT, PICSET_SIZE, 11, NUM_OPTIONS, .Strings
+.Strings:
+	dw .Normal
+	dw .Green
+	dw .Yellow
+.Strings_End:
+	
+.Normal
+	db "NORMAL@"
+.Green
+	db "GREEN @"
+.Yellow
+	db "YELLOW@"
