@@ -36,8 +36,8 @@ BlackWhiteEXP::
     ld b, $4
     call Divide
 .divideConstant
-; divide by 5 (constant)
-	ld a, $5
+; divide by 7 (constant)
+	ld a, $7
 	ld [H_DIVISOR], a
 	ld b, $4
 	call Divide
@@ -135,6 +135,12 @@ BlackWhiteEXP::
 	jr c, .calcLLpPlus10
 	ld a, BWXP_MAX_LEVEL
 .calcLLpPlus10
+; bwxp rebalance: exp will never be reduced (but divisor is increased from 5 to 7)
+; so if Lp >= L, do (2L+10) on the bottom too [really should be Lp > L, but >= is easier to test]
+	cp b
+	jr c, .normalAddition
+	ld a, b
+.normalAddition
 	add b
 	add 10
 	ld b, a
