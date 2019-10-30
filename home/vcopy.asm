@@ -209,7 +209,7 @@ AutoBgMapTransfer::
 	ld a, [H_AUTOBGTRANSFERDEST + 1]
 	ld d, a
 ; change to wram bank 2
-	ld a, 2
+	ld a, BANK(wAlignedTileMap)
 	ld [rSVBK], a
 	ld b, 18
 .hdmaLoop
@@ -246,7 +246,7 @@ endr
 	jr .hdmaLoop
 ; done
 .done
-	xor a
+	xor a ; change back to usual wram bank
 	ld [rSVBK], a
 	ret
 .oldMode

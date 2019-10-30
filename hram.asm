@@ -217,6 +217,9 @@ H_INGAME EQU $FFC2
 hStatsDisabled EQU $FFC3
 hTimerType EQU $FFC4
 
+; gbc wram bank backup during interrupts
+hSVBKBackup EQU $FFCF
+
 ; controls whether a row or column of 2x2 tile blocks is redrawn in V-blank
 ; 00 = no redraw
 ; 01 = redraw column

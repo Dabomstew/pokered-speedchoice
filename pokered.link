@@ -263,6 +263,10 @@ WRAMX 1
 	
 	org $dfff
 	"Stack"
+	
+WRAMX 2
+	org $d000
+	"WRAM Bank 2"
 
 SRAM 0
 	org $a000

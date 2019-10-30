@@ -3257,5 +3257,9 @@ wBoxDataEnd::
 SECTION "Stack", WRAMX
 wStack:: ; dfff
 
+SECTION "WRAM Bank 2", WRAMX
+
+wAlignedTileMap::
+	ds 32 * 32
 
 INCLUDE "sram.asm"

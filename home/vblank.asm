@@ -7,6 +7,11 @@ VBlank::
 
 	ld a, [H_LOADEDROMBANK]
 	ld [wVBlankSavedROMBank], a
+	
+	ld a, [rSVBK]
+	ld [hSVBKBackup], a
+	xor a ; most things in vblank rely on seeing normal d000-dfff
+	ld [rSVBK], a
 
 	ld a, [hSCX]
 	ld [rSCX], a
@@ -77,6 +82,9 @@ VBlank::
 
 	ld a, [wVBlankSavedROMBank]
 	rst BankswitchCommon
+	
+	ld a, [hSVBKBackup]
+	ld [rSVBK], a
 
 	pop hl
 	pop de
