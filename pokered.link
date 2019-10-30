@@ -1,9 +1,6 @@
 ROM0
 	org $0000
-	"rst 00"
-
-	org $0008
-	"rst 08"
+	"Bankswitch"
 
 	org $0010
 	"BankswitchCommon"

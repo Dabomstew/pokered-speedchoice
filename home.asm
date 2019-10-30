@@ -1,9 +1,20 @@
 ; The rst vectors are unused.
-SECTION "rst 00", ROM0
-	rst $38
-SECTION "rst 08", ROM0
-	rst $38
+SECTION "Bankswitch", ROM0
+; self-contained bankswitch, use this when not in the home bank
+; switches to the bank in b
+	ld a, [H_LOADEDROMBANK]
+	push af
+	ld a, b
+	rst BankswitchCommon
+	ld bc, BankswitchReturn
+	push bc
+	jp hl
+BankswitchReturn
+	pop bc
+	ld a, b
+	jr _BankswitchCommon
 SECTION "BankswitchCommon", ROM0
+_BankswitchCommon::
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	ret
@@ -2878,21 +2889,6 @@ BankswitchHome::
 BankswitchBack::
 ; returns from BankswitchHome
 	ld a, [wBankswitchHomeSavedROMBank]
-	jp BankswitchCommon
-
-Bankswitch::
-; self-contained bankswitch, use this when not in the home bank
-; switches to the bank in b
-	ld a, [H_LOADEDROMBANK]
-	push af
-	ld a, b
-	rst BankswitchCommon
-	ld bc, .Return
-	push bc
-	jp hl
-.Return
-	pop bc
-	ld a, b
 	jp BankswitchCommon
 
 ; displays yes/no choice
