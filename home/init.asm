@@ -69,33 +69,25 @@ rLCDC_DEFAULT EQU %11100011
 	ld [rJOYP], a
 .skipSpeedSwitch
 
-; fastclear WRAM0
-	ld sp, $d000
-	ld hl, $0000
-	ld bc, $0800
-.w0loop
-	push hl
-	dec c
-	jr nz, .w0loop
-	dec b
-	jr nz, .w0loop
-	
-; fastclear WRAMX
-	ld a, $7 ; num banks
-.bankloop
-	ld [rSVBK], a
-	ld sp, $e000
-	ld bc, $0800
-.wXloop
-	push hl
-	dec c
-	jr nz, .wXloop
-	dec b
-	jr nz, .wXloop
-	dec a
-	jr nz, .bankloop
-	
+; fastclear WRAM
+; first wram0 using temp sp in hram
+	ld sp, $fffe
+	ld hl, $c000
+	xor a
+	ld b, a
+	call FastFill
+; now wramx
 	ld sp, wStack
+	ld d, $7
+.bankloop
+	ld a, d
+	ld [rSVBK], a
+	xor a
+	ld h, $d0 ; l is already $00 from the previous FastFills
+	call FastFill
+	dec d
+	jr nz, .bankloop
+; finally, vram
 	call ClearVram
 
 	ld hl, $ff80
@@ -176,12 +168,23 @@ rLCDC_DEFAULT EQU %11100011
 	ld [rLCDC], a
 
 	jp SetDefaultNamesBeforeTitlescreen
-
+	
+; fills [b]*$10 bytes from hl with a
+; if b = 00, fills $1000 - intended behavior
+FastFill:
+rept $10
+	ld [hli], a
+endr
+	dec b
+	jr nz, FastFill
+	ret
+	
 ClearVram:
 	ld hl, $8000
-	ld bc, $2000
-	xor a
-	jp FillMemory
+	ld b, l ; b = 0
+	ld a, l
+	call FastFill
+	jp FastFill
 
 
 StopAllSounds::
