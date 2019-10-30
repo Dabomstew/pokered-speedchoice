@@ -69,30 +69,33 @@ rLCDC_DEFAULT EQU %11100011
 	ld [rJOYP], a
 .skipSpeedSwitch
 
-	ld sp, wStack
-
-	ld hl, $c000 ; start of WRAM0
-	ld bc, $1000 ; size of WRAM0
-.loop
-	ld [hl], 0
-	inc hl
-	dec bc
-	ld a, b
-	or c
-	jr nz, .loop
+; fastclear WRAM0
+	ld sp, $d000
+	ld hl, $0000
+	ld bc, $0800
+.w0loop
+	push hl
+	dec c
+	jr nz, .w0loop
+	dec b
+	jr nz, .w0loop
 	
-; clear WRAMX
-	ld d, $7 ; num banks
+; fastclear WRAMX
+	ld a, $7 ; num banks
 .bankloop
-	ld a, d
 	ld [rSVBK], a
-	ld hl, $d000
-	ld bc, $1000
-	xor a
-	call ByteFill
-	dec d
+	ld sp, $e000
+	ld bc, $0800
+.wXloop
+	push hl
+	dec c
+	jr nz, .wXloop
+	dec b
+	jr nz, .wXloop
+	dec a
 	jr nz, .bankloop
-
+	
+	ld sp, wStack
 	call ClearVram
 
 	ld hl, $ff80
