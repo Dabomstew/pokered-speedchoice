@@ -345,7 +345,7 @@ wSerialEnemyMonsPatchList:: ; c5d0
 
 wTempPic::
 wOverworldMap:: ; c6e8
-	ds 1300
+	ds BIGGEST_MAP_SIZE
 wOverworldMapEnd::
 
 wRedrawRowOrColumnSrcTiles:: ; cbfc
@@ -1607,6 +1607,8 @@ wEnemyMon:: battle_struct wEnemyMon ; cfe5
 wEnemyMonBaseStats:: ds 5
 wEnemyMonActualCatchRate:: ds 1
 wEnemyMonBaseExp:: ds 1
+
+SECTION "WRAM Bank 1", WRAMX
 
 wBattleMonNick:: ds NAME_LENGTH ; d009
 wBattleMon:: battle_struct wBattleMon ; d014
@@ -3252,7 +3254,7 @@ wBoxDataEnd::
 
 ; dee2
 
-SECTION "Stack", WRAM0
+SECTION "Stack", WRAMX
 wStack:: ; dfff
 
 

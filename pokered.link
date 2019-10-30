@@ -256,7 +256,11 @@ WRAM0
 	org $c100
 	"Sprite State Data"
 	"OAM Buffer"
-
+	
+WRAMX 1
+	org $d000
+	"WRAM Bank 1"
+	
 	org $dfff
 	"Stack"
 

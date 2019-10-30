@@ -63,7 +63,7 @@ $(pokered_obj): %_red.o: %.asm $$(dep)
 pokered_opt  = -cjsv -k 01 -l 0x33 -m 0x13 -p 0 -r 03 -t "RED_SPDC" -i KAPC
 
 %.gbc: $$(%_obj)
-	$(RGBLINK) -d -n $*.sym -l pokered.link -o $@ $^
+	$(RGBLINK) -n $*.sym -l pokered.link -o $@ $^
 	$(RGBFIX) $($*_opt) $@
 	sort $*.sym -o $*.sym
 
