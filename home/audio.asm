@@ -49,6 +49,7 @@ PlayDefaultMusicCommon::
 	ld [wLastMusicSoundID], a
 	ld [wMusicFadeID], a
 	ld a, c
+	and a
 	jr nz, .doFade
 	inc a
 .doFade
