@@ -2800,7 +2800,7 @@ SetSpriteMovementBytesToFF::
 
 ; returns the sprite movement byte 1 pointer for sprite [H_SPRITEINDEX] in hl
 GetSpriteMovementByte1Pointer::
-	ld h, $C2
+	ld h, (wSpriteStateData2 / $100)
 	ld a, [H_SPRITEINDEX]
 	swap a
 	add 6
