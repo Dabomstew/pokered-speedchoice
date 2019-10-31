@@ -253,19 +253,16 @@ WRAM0
 	org $c100
 	"Audio Engine"
 
-	org $c400
+	org $c300
 	"Sprite State Data"
+	
+	org $c500
+	"OAM Buffer"
 	"Other WRAM0"
 	
 WRAMX 1
 	org $d000
 	"WRAM Bank 1"
-	
-	org $df00
-	"OAM Buffer"
-	
-	org $dfa0
-	"Moved WRAM0"
 	
 WRAMX 2
 	org $d000

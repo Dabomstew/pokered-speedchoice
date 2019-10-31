@@ -318,6 +318,11 @@ wSprite15StateData2::      spritestatedata2 wSprite15StateData2
 
 wSpriteDataEnd::
 
+SECTION "OAM Buffer", WRAM0
+
+wOAMBuffer:: ; c300
+; buffer for OAM data. Copied to OAM by DMA
+	ds 4 * 40
 
 SECTION "Other WRAM0", WRAM0
 
@@ -1501,6 +1506,9 @@ wItemQuantity:: ; cf96
 wMaxItemQuantity:: ; cf97
 	ds 1
 
+; LoadMonData copies mon data here
+wLoadedMon:: party_struct wLoadedMon ; cf98
+
 wFontLoaded:: ; cfc4
 ; bit 0: The space in VRAM that is used to store walk animation tile patterns
 ;        for the player and NPCs is in use for font tile patterns.
@@ -1583,6 +1591,15 @@ wEnemyMonSpecies2:: ; cfd8
 	ds 1
 wBattleMonSpecies2:: ; cfd9
 	ds 1
+
+wEnemyMonNick:: ds NAME_LENGTH ; cfda
+
+wEnemyMon:: battle_struct wEnemyMon ; cfe5
+
+wEnemyMonBaseStats:: ds 5
+wEnemyMonActualCatchRate:: ds 1
+wEnemyMonBaseExp:: ds 1
+
 
 SECTION "WRAM Bank 1", WRAMX
 
@@ -3229,25 +3246,6 @@ wBoxMonNicksEnd:: ; dee2
 wBoxDataEnd::
 
 ; dee2
-
-SECTION "OAM Buffer", WRAMX
-
-wOAMBuffer:: ; c300
-; buffer for OAM data. Copied to OAM by DMA
-	ds 4 * 40
-	
-SECTION "Moved WRAM0", WRAMX
-
-wEnemyMonNick:: ds NAME_LENGTH ; cfda
-
-wEnemyMon:: battle_struct wEnemyMon ; cfe5
-
-wEnemyMonBaseStats:: ds 5
-wEnemyMonActualCatchRate:: ds 1
-wEnemyMonBaseExp:: ds 1
-
-; LoadMonData copies mon data here
-wLoadedMon:: party_struct wLoadedMon ; cf98
 
 SECTION "WRAM Bank 2", WRAMX
 
