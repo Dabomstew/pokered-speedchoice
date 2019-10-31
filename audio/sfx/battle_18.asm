@@ -1,4 +1,5 @@
-SFX_Battle_18_Ch7:
-	noisenote 4, 15, -7, 85
-	noisenote 8, 15, 1, 101
+SFX_Battle_18_Ch1: ; 20563 (8:4563)
+	unknownnoise0x20 4, 255, 85
+	unknownnoise0x20 8, 241, 101
 	endchannel
+; 0x2056a

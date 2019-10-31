@@ -1,14 +1,15 @@
-SFX_Slots_New_Spin_Ch4:
-	duty 3
-	squarenote 5, 14, 1, 1792
-	squarenote 2, 14, 1, 1920
-	squarenote 15, 15, 1, 1984
+SFX_Slots_New_Spin_Ch1: ; 7c70f (1f:470f)
+	dutycycle 3
+	unknownsfx0x20 5, 225, 0, 7
+	unknownsfx0x20 2, 225, 128, 7
+	unknownsfx0x20 15, 241, 192, 7
 	endchannel
 
 
-SFX_Slots_New_Spin_Ch5:
-	duty 2
-	squarenote 4, 12, 1, 1729
-	squarenote 2, 12, 1, 1857
-	squarenote 15, 13, 1, 1921
+SFX_Slots_New_Spin_Ch2: ; 7c71e (1f:471e)
+	dutycycle 2
+	unknownsfx0x20 4, 193, 193, 6
+	unknownsfx0x20 2, 193, 65, 7
+	unknownsfx0x20 15, 209, 129, 7
 	endchannel
+; 0x7c72d

@@ -241,11 +241,6 @@ ENDC
 	db x
 ENDM
 
-dbwbank: MACRO
-	db BANK(\1)
-	dw \1
-ENDM
-
 altpokepic: MACRO
 	dw \1
 	INCBIN \2,0,1 ; sprite dimensions

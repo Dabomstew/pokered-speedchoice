@@ -1,6 +1,7 @@
-SFX_Teleport_Exit2_1_Ch4:
-	duty 1
-	pitchenvelope 1, 6
-	squarenote 15, 13, 2, 1280
-	pitchenvelope 0, 0
+SFX_Teleport_Exit2_1_Ch1: ; 85cb (2:45cb)
+	dutycycle 1
+	unknownsfx0x10 22
+	unknownsfx0x20 15, 210, 0, 5
+	unknownsfx0x10 8
 	endchannel
+; 0x85d6

@@ -8,8 +8,10 @@ ShakeElevator:
 	call PlaySound
 	ld a, [hSCY]
 	ld d, a
-	ld e, $1
 	ld b, 100
+	ld a, $1
+	ld e, a
+	ld [wContinuousSFX], a
 .shakeLoop ; scroll the BG up and down and play a sound effect
 	ld a, e
 	xor $fe
@@ -17,25 +19,22 @@ ShakeElevator:
 	add d
 	ld [hSCY], a
 	push bc
-	ld c, BANK(SFX_Collision_1)
 	ld a, SFX_COLLISION
-	call PlayMusic
+	call PlaySound
 	pop bc
 	ld c, 2
 	call DelayFrames
 	dec b
 	jr nz, .shakeLoop
+	xor a
+	ld [wContinuousSFX], a
 	ld a, d
 	ld [hSCY], a
 	ld a, $ff
 	call PlaySound
-	ld c, BANK(SFX_Safari_Zone_PA)
 	ld a, SFX_SAFARI_ZONE_PA
-	call PlayMusic
-.musicLoop
-	ld a, [wChannelSoundIDs + Ch4]
-	cp SFX_SAFARI_ZONE_PA
-	jr z, .musicLoop
+	call PlaySound
+	call WaitForSoundToFinish
 	call UpdateSprites
 	jp PlayDefaultMusic
 

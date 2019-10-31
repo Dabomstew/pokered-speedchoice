@@ -1,21 +1,22 @@
-SFX_Battle_2F_Ch4:
+SFX_Battle_2F_Ch1: ; 207d1 (8:47d1)
 	dutycycle 43
-	squarenote 3, 15, 1, 2032
-	squarenote 4, 15, 2, 512
-	loopchannel 8, SFX_Battle_2F_Ch4
+	unknownsfx0x20 3, 241, 240, 7
+	unknownsfx0x20 4, 242, 0, 2
+	loopchannel 8, SFX_Battle_2F_Ch1
 	endchannel
 
 
-SFX_Battle_2F_Ch5:
+SFX_Battle_2F_Ch2: ; 207e0 (8:47e0)
 	dutycycle 179
-	squarenote 4, 14, 2, 514
-	squarenote 4, 14, 1, 2018
-	loopchannel 9, SFX_Battle_2F_Ch5
+	unknownsfx0x20 4, 226, 2, 2
+	unknownsfx0x20 4, 225, 226, 7
+	loopchannel 9, SFX_Battle_2F_Ch2
 	endchannel
 
 
-SFX_Battle_2F_Ch7:
-	noisenote 4, 15, -7, 67
-	noisenote 4, 15, 2, 68
-	loopchannel 9, SFX_Battle_2F_Ch7
+SFX_Battle_2F_Ch3: ; 207ef (8:47ef)
+	unknownnoise0x20 4, 255, 67
+	unknownnoise0x20 4, 242, 68
+	loopchannel 9, SFX_Battle_2F_Ch3
 	endchannel
+; 0x207fa

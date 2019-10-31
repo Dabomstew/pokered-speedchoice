@@ -1,6 +1,7 @@
-SFX_Horn_Drill_Ch7:
-	noisenote 3, 9, 2, 49
-	noisenote 3, 11, 2, 50
-	noisenote 3, 12, 2, 51
-	noisenote 8, 15, 1, 84
+SFX_Horn_Drill_Ch1: ; 205b1 (8:45b1)
+	unknownnoise0x20 3, 146, 49
+	unknownnoise0x20 3, 178, 50
+	unknownnoise0x20 3, 194, 51
+	unknownnoise0x20 8, 241, 84
 	endchannel
+; 0x205be

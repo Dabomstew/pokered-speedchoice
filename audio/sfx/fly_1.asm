@@ -1,18 +1,19 @@
-SFX_Fly_1_Ch7:
-	noisenote 2, 15, 1, 18
-	noisenote 2, 0, 0, 0
-	noisenote 2, 10, 1, 18
-	noisenote 2, 0, 0, 0
-	noisenote 2, 13, 1, 18
-	noisenote 2, 0, 0, 0
-	noisenote 2, 8, 1, 18
-	noisenote 2, 0, 0, 0
-	noisenote 2, 11, 1, 18
-	noisenote 2, 0, 0, 0
-	noisenote 2, 6, 1, 18
-	noisenote 2, 0, 0, 0
-	noisenote 2, 9, 1, 18
-	noisenote 2, 0, 0, 0
-	noisenote 2, 4, 1, 18
-	noisenote 2, 0, 0, 0
+SFX_Fly_1_Ch1: ; 85ee (2:45ee)
+	unknownnoise0x20 2, 241, 18
+	unknownnoise0x20 2, 0, 0
+	unknownnoise0x20 2, 161, 18
+	unknownnoise0x20 2, 0, 0
+	unknownnoise0x20 2, 209, 18
+	unknownnoise0x20 2, 0, 0
+	unknownnoise0x20 2, 129, 18
+	unknownnoise0x20 2, 0, 0
+	unknownnoise0x20 2, 177, 18
+	unknownnoise0x20 2, 0, 0
+	unknownnoise0x20 2, 97, 18
+	unknownnoise0x20 2, 0, 0
+	unknownnoise0x20 2, 145, 18
+	unknownnoise0x20 2, 0, 0
+	unknownnoise0x20 2, 65, 18
+	unknownnoise0x20 2, 0, 0
 	endchannel
+; 0x861f

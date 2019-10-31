@@ -1,4 +1,5 @@
-SFX_Intro_Crash_Ch7:
-	noisenote 2, 13, 2, 50
-	noisenote 15, 15, 2, 67
+SFX_Intro_Crash_Ch1: ; 7c6de (1f:46de)
+	unknownnoise0x20 2, 210, 50
+	unknownnoise0x20 15, 242, 67
 	endchannel
+; 0x7c6e5

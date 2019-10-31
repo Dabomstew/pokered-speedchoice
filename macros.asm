@@ -1,3 +1,4 @@
+INCLUDE "macros/enum.asm"
 INCLUDE "macros/asm_macros.asm"
 INCLUDE "macros/data_macros.asm"
 INCLUDE "macros/text_macros.asm"

@@ -1,6 +1,7 @@
-SFX_Slots_Stop_Wheel_Ch4:
-	duty 2
-	squarenote 1, 15, 2, 1696
-	squarenote 1, 15, 2, 1760
-	squarenote 8, 15, 1, 1792
+SFX_Slots_Stop_Wheel_Ch1: ; 7c6f5 (1f:46f5)
+	dutycycle 2
+	unknownsfx0x20 1, 242, 160, 6
+	unknownsfx0x20 1, 242, 224, 6
+	unknownsfx0x20 8, 241, 0, 7
 	endchannel
+; 0x7c704

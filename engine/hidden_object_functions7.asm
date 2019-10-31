@@ -63,17 +63,11 @@ SafariZoneGameStillGoing:
 
 SafariZoneGameOver:
 	call EnableAutoTextBoxDrawing
-	xor a
-	ld [wAudioFadeOutControl], a
-	dec a
+	ld a, $ff
 	call PlaySound
-	ld c, BANK(SFX_Safari_Zone_PA)
 	ld a, SFX_SAFARI_ZONE_PA
-	call PlayMusic
-.waitForMusicToPlay
-	ld a, [wChannelSoundIDs + Ch4]
-	cp SFX_SAFARI_ZONE_PA
-	jr nz, .waitForMusicToPlay
+	call PlaySound
+	call WaitForSoundToFinish
 	ld a, TEXT_SAFARI_GAME_OVER
 	ld [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -375,7 +369,6 @@ BillsHouseInitiatedText:
 	TX_BLINK
 	TX_ASM
 	ld a, $ff
-	ld [wNewSoundID], a
 	call PlaySound
 	ld c, 16
 	call DelayFrames

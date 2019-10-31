@@ -160,6 +160,51 @@ dbbw: MACRO
 	dw \3
 ENDM
 
+dbww: MACRO
+	db \1
+	dw \2, \3
+ENDM
+
+dbwww: MACRO
+	db \1
+	dw \2, \3, \4
+ENDM
+
+dc: MACRO ; "crumbs"
+rept _NARG / 4
+	db ((\1) << 6) | ((\2) << 4) | ((\3) << 2) | (\4)
+	shift
+	shift
+	shift
+	shift
+endr
+ENDM
+
+dx: MACRO
+x = 8 * ((\1) - 1)
+rept \1
+	db ((\2) >> x) & $ff
+x = x + -8
+endr
+ENDM
+
+dt: MACRO ; three-byte (big-endian)
+	dx 3, \1
+ENDM
+
+dd: MACRO ; four-byte (big-endian)
+	dx 4, \1
+ENDM
+
+bigdw: MACRO ; big-endian word
+	dx 2, \1 ; db HIGH(\1), LOW(\1)
+ENDM
+
+dbwbank: MACRO
+	db BANK(\1)
+	dw \1
+ENDM
+
 ; Predef macro.
 predef_const: MACRO
 	const \1PredefID
@@ -213,4 +258,33 @@ ENDM
 
 ldPal: MACRO
 	ld \1, \2 << 6 | \3 << 4 | \4 << 2 | \5
+ENDM
+
+maskbits: MACRO
+; masks just enough bits to cover the first argument
+; the second argument is an optional shift amount
+; e.g. "maskbits 26" becomes "and %00011111" (since 26 - 1 = %00011001)
+; and "maskbits 3, 2" becomes "and %00001100" (since "maskbits 3" becomes %00000011)
+; example usage in rejection sampling:
+; .loop
+; 	call Random
+; 	maskbits 26
+; 	cp 26
+; 	jr nc, .loop
+x = 1
+rept 8
+if x + 1 < (\1)
+x = x << 1 | 1
+endc
+endr
+if _NARG == 2
+	and x << (\2)
+else
+	and x
+endc
+ENDM
+
+inc_section: MACRO
+    SECTION \1, ROMX
+    include \1
 ENDM

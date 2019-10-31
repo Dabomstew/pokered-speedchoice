@@ -148,9 +148,6 @@ rLCDC_DEFAULT EQU %11100011
 
 	predef LoadSGB
 
-	ld a, BANK(SFX_Shooting_Star)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
 	ld a, $9c
 	ld [H_AUTOBGTRANSFERDEST + 1], a
 	xor a
@@ -188,12 +185,12 @@ ClearVram:
 
 
 StopAllSounds::
-	ld a, BANK(Audio1_UpdateMusic)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
 	xor a
-	ld [wAudioFadeOutControl], a
-	ld [wNewSoundID], a
+	ld hl, wMusic
+	ld bc, wMusicEnd - wMusic
+	call FillMemory
+	
+	xor a
 	ld [wLastMusicSoundID], a
 	dec a
 	jp PlaySound

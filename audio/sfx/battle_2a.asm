@@ -1,28 +1,29 @@
-SFX_Battle_2A_Ch4:
+SFX_Battle_2A_Ch1: ; 206a9 (8:46a9)
 	dutycycle 57
-	squarenote 4, 15, 4, 1536
-	squarenote 3, 12, 4, 1280
-	squarenote 5, 11, 5, 1536
-	squarenote 13, 14, 2, 1728
-	loopchannel 3, SFX_Battle_2A_Ch4
-	squarenote 8, 13, 1, 1536
+	unknownsfx0x20 4, 244, 0, 6
+	unknownsfx0x20 3, 196, 0, 5
+	unknownsfx0x20 5, 181, 0, 6
+	unknownsfx0x20 13, 226, 192, 6
+	loopchannel 3, SFX_Battle_2A_Ch1
+	unknownsfx0x20 8, 209, 0, 6
 	endchannel
 
 
-SFX_Battle_2A_Ch5:
+SFX_Battle_2A_Ch2: ; 206c4 (8:46c4)
 	dutycycle 141
-	squarenote 5, 14, 4, 1504
-	squarenote 4, 11, 4, 1248
-	squarenote 6, 10, 5, 1512
-	squarenote 14, 13, 1, 1696
-	loopchannel 3, SFX_Battle_2A_Ch5
+	unknownsfx0x20 5, 228, 224, 5
+	unknownsfx0x20 4, 180, 224, 4
+	unknownsfx0x20 6, 165, 232, 5
+	unknownsfx0x20 14, 209, 160, 6
+	loopchannel 3, SFX_Battle_2A_Ch2
 	endchannel
 
 
-SFX_Battle_2A_Ch7:
-	noisenote 5, 12, 3, 51
-	noisenote 3, 9, 2, 67
-	noisenote 10, 11, 5, 51
-	noisenote 15, 12, 3, 50
-	loopchannel 2, SFX_Battle_2A_Ch7
+SFX_Battle_2A_Ch3: ; 206db (8:46db)
+	unknownnoise0x20 5, 195, 51
+	unknownnoise0x20 3, 146, 67
+	unknownnoise0x20 10, 181, 51
+	unknownnoise0x20 15, 195, 50
+	loopchannel 2, SFX_Battle_2A_Ch3
 	endchannel
+; 0x206ec

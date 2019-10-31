@@ -1,7 +1,8 @@
-SFX_Cut_1_Ch7:
-	noisenote 2, 15, 7, 36
-	noisenote 2, 15, 7, 52
-	noisenote 4, 15, 7, 68
-	noisenote 8, 15, 4, 85
-	noisenote 8, 15, 1, 68
+SFX_Cut_1_Ch1: ; 83e1 (2:43e1)
+	unknownnoise0x20 2, 247, 36
+	unknownnoise0x20 2, 247, 52
+	unknownnoise0x20 4, 247, 68
+	unknownnoise0x20 8, 244, 85
+	unknownnoise0x20 8, 241, 68
 	endchannel
+; 0x83f1

@@ -1,359 +1,203 @@
-SFX_Headers_2::
-	db $ff, $ff, $ff ; padding
+SFX_Level_Up:: ; 20192 (8:4192)
+	musicheader 3, 5, SFX_Level_Up_Ch1
+	musicheader 1, 6, SFX_Level_Up_Ch2
+	musicheader 1, 7, SFX_Level_Up_Ch3
+    
+SFX_Ball_Toss:: ; 201b3 (8:41b3)
+	musicheader 2, 5, SFX_Ball_Toss_Ch1
+	musicheader 1, 6, SFX_Ball_Toss_Ch2
 
-SFX_Snare1_2::
-	audio SFX_Snare1_2, Ch7
+SFX_Ball_Poof:: ; 201b9 (8:41b9)
+	musicheader 2, 5, SFX_Ball_Poof_Ch1
+	musicheader 1, 8, SFX_Ball_Poof_Ch2
 
-SFX_Snare2_2::
-	audio SFX_Snare2_2, Ch7
+SFX_Faint_Thud:: ; 201bf (8:41bf)
+	musicheader 2, 5, SFX_Faint_Thud_Ch1
+	musicheader 1, 8, SFX_Faint_Thud_Ch2
 
-SFX_Snare3_2::
-	audio SFX_Snare3_2, Ch7
+SFX_Run:: ; 201c5 (8:41c5)
+	musicheader 1, 8, SFX_Run_Ch1
 
-SFX_Snare4_2::
-	audio SFX_Snare4_2, Ch7
+SFX_Dex_Page_Added:: ; 201c8 (8:41c8)
+	musicheader 2, 5, SFX_Dex_Page_Added_Ch1
+	musicheader 1, 6, SFX_Dex_Page_Added_Ch2
 
-SFX_Snare5_2::
-	audio SFX_Snare5_2, Ch7
+SFX_Caught_Mon:: ; 201ce (8:41ce)
+	musicheader 3, 5, SFX_Caught_Mon_Ch1
+	musicheader 1, 6, SFX_Caught_Mon_Ch2
+	musicheader 1, 7, SFX_Caught_Mon_Ch3
 
-SFX_Triangle1_2::
-	audio SFX_Triangle1_2, Ch7
+SFX_Peck:: ; 201d7 (8:41d7)
+	musicheader 1, 8, SFX_Peck_Ch1
 
-SFX_Triangle2_2::
-	audio SFX_Triangle2_2, Ch7
+SFX_Faint_Fall:: ; 201da (8:41da)
+	musicheader 1, 5, SFX_Faint_Fall_Ch1
 
-SFX_Snare6_2::
-	audio SFX_Snare6_2, Ch7
+SFX_Battle_09:: ; 201dd (8:41dd)
+	musicheader 1, 5, SFX_Battle_09_Ch1
 
-SFX_Snare7_2::
-	audio SFX_Snare7_2, Ch7
+SFX_Pound:: ; 201e0 (8:41e0)
+	musicheader 1, 8, SFX_Pound_Ch1
 
-SFX_Snare8_2::
-	audio SFX_Snare8_2, Ch7
+SFX_Battle_0B:: ; 201e3 (8:41e3)
+	musicheader 1, 8, SFX_Battle_0B_Ch1
 
-SFX_Snare9_2::
-	audio SFX_Snare9_2, Ch7
+SFX_Battle_0C:: ; 201e6 (8:41e6)
+	musicheader 1, 8, SFX_Battle_0C_Ch1
 
-SFX_Cymbal1_2::
-	audio SFX_Cymbal1_2, Ch7
+SFX_Battle_0D:: ; 201e9 (8:41e9)
+	musicheader 1, 8, SFX_Battle_0D_Ch1
 
-SFX_Cymbal2_2::
-	audio SFX_Cymbal2_2, Ch7
+SFX_Battle_0E:: ; 201ec (8:41ec)
+	musicheader 1, 8, SFX_Battle_0E_Ch1
 
-SFX_Cymbal3_2::
-	audio SFX_Cymbal3_2, Ch7
+SFX_Battle_0F:: ; 201ef (8:41ef)
+	musicheader 1, 8, SFX_Battle_0F_Ch1
 
-SFX_Muted_Snare1_2::
-	audio SFX_Muted_Snare1_2, Ch7
+SFX_Damage:: ; 201f2 (8:41f2)
+	musicheader 1, 8, SFX_Damage_Ch1
 
-SFX_Triangle3_2::
-	audio SFX_Triangle3_2, Ch7
+SFX_Not_Very_Effective:: ; 201f5 (8:41f5)
+	musicheader 1, 8, SFX_Not_Very_Effective_Ch1
 
-SFX_Muted_Snare2_2::
-	audio SFX_Muted_Snare2_2, Ch7
+SFX_Battle_12:: ; 201f8 (8:41f8)
+	musicheader 1, 8, SFX_Battle_12_Ch1
 
-SFX_Muted_Snare3_2::
-	audio SFX_Muted_Snare3_2, Ch7
+SFX_Battle_13:: ; 201fb (8:41fb)
+	musicheader 1, 8, SFX_Battle_13_Ch1
 
-SFX_Muted_Snare4_2::
-	audio SFX_Muted_Snare4_2, Ch7
+SFX_Battle_14:: ; 201fe (8:41fe)
+	musicheader 1, 8, SFX_Battle_14_Ch1
 
-SFX_Cry00_2::
-	audio SFX_Cry00_2, Ch4, Ch5, Ch7
+SFX_Vine_Whip:: ; 20201 (8:4201)
+	musicheader 1, 8, SFX_Vine_Whip_Ch1
 
-SFX_Cry01_2::
-	audio SFX_Cry01_2, Ch4, Ch5, Ch7
+SFX_Battle_16:: ; 20204 (8:4204)
+	musicheader 1, 8, SFX_Battle_16_Ch1
 
-SFX_Cry02_2::
-	audio SFX_Cry02_2, Ch4, Ch5, Ch7
+SFX_Battle_17:: ; 20207 (8:4207)
+	musicheader 1, 8, SFX_Battle_17_Ch1
 
-SFX_Cry03_2::
-	audio SFX_Cry03_2, Ch4, Ch5, Ch7
+SFX_Battle_18:: ; 2020a (8:420a)
+	musicheader 1, 8, SFX_Battle_18_Ch1
 
-SFX_Cry04_2::
-	audio SFX_Cry04_2, Ch4, Ch5, Ch7
+SFX_Battle_19:: ; 2020d (8:420d)
+	musicheader 1, 8, SFX_Battle_19_Ch1
 
-SFX_Cry05_2::
-	audio SFX_Cry05_2, Ch4, Ch5, Ch7
+SFX_Super_Effective:: ; 20210 (8:4210)
+	musicheader 1, 8, SFX_Super_Effective_Ch1
 
-SFX_Cry06_2::
-	audio SFX_Cry06_2, Ch4, Ch5, Ch7
+SFX_Battle_1B:: ; 20213 (8:4213)
+	musicheader 1, 8, SFX_Battle_1B_Ch1
 
-SFX_Cry07_2::
-	audio SFX_Cry07_2, Ch4, Ch5, Ch7
+SFX_Battle_1C:: ; 20216 (8:4216)
+	musicheader 1, 8, SFX_Battle_1C_Ch1
 
-SFX_Cry08_2::
-	audio SFX_Cry08_2, Ch4, Ch5, Ch7
+SFX_Doubleslap:: ; 20219 (8:4219)
+	musicheader 1, 8, SFX_Doubleslap_Ch1
 
-SFX_Cry09_2::
-	audio SFX_Cry09_2, Ch4, Ch5, Ch7
-
-SFX_Cry0A_2::
-	audio SFX_Cry0A_2, Ch4, Ch5, Ch7
-
-SFX_Cry0B_2::
-	audio SFX_Cry0B_2, Ch4, Ch5, Ch7
-
-SFX_Cry0C_2::
-	audio SFX_Cry0C_2, Ch4, Ch5, Ch7
-
-SFX_Cry0D_2::
-	audio SFX_Cry0D_2, Ch4, Ch5, Ch7
-
-SFX_Cry0E_2::
-	audio SFX_Cry0E_2, Ch4, Ch5, Ch7
-
-SFX_Cry0F_2::
-	audio SFX_Cry0F_2, Ch4, Ch5, Ch7
-
-SFX_Cry10_2::
-	audio SFX_Cry10_2, Ch4, Ch5, Ch7
-
-SFX_Cry11_2::
-	audio SFX_Cry11_2, Ch4, Ch5, Ch7
-
-SFX_Cry12_2::
-	audio SFX_Cry12_2, Ch4, Ch5, Ch7
-
-SFX_Cry13_2::
-	audio SFX_Cry13_2, Ch4, Ch5, Ch7
-
-SFX_Cry14_2::
-	audio SFX_Cry14_2, Ch4, Ch5, Ch7
-
-SFX_Cry15_2::
-	audio SFX_Cry15_2, Ch4, Ch5, Ch7
-
-SFX_Cry16_2::
-	audio SFX_Cry16_2, Ch4, Ch5, Ch7
-
-SFX_Cry17_2::
-	audio SFX_Cry17_2, Ch4, Ch5, Ch7
-
-SFX_Cry18_2::
-	audio SFX_Cry18_2, Ch4, Ch5, Ch7
-
-SFX_Cry19_2::
-	audio SFX_Cry19_2, Ch4, Ch5, Ch7
-
-SFX_Cry1A_2::
-	audio SFX_Cry1A_2, Ch4, Ch5, Ch7
-
-SFX_Cry1B_2::
-	audio SFX_Cry1B_2, Ch4, Ch5, Ch7
-
-SFX_Cry1C_2::
-	audio SFX_Cry1C_2, Ch4, Ch5, Ch7
-
-SFX_Cry1D_2::
-	audio SFX_Cry1D_2, Ch4, Ch5, Ch7
-
-SFX_Cry1E_2::
-	audio SFX_Cry1E_2, Ch4, Ch5, Ch7
-
-SFX_Cry1F_2::
-	audio SFX_Cry1F_2, Ch4, Ch5, Ch7
-
-SFX_Cry20_2::
-	audio SFX_Cry20_2, Ch4, Ch5, Ch7
-
-SFX_Cry21_2::
-	audio SFX_Cry21_2, Ch4, Ch5, Ch7
-
-SFX_Cry22_2::
-	audio SFX_Cry22_2, Ch4, Ch5, Ch7
-
-SFX_Cry23_2::
-	audio SFX_Cry23_2, Ch4, Ch5, Ch7
-
-SFX_Cry24_2::
-	audio SFX_Cry24_2, Ch4, Ch5, Ch7
-
-SFX_Cry25_2::
-	audio SFX_Cry25_2, Ch4, Ch5, Ch7
-
-SFX_Level_Up::
-	audio SFX_Level_Up, Ch4, Ch5, Ch6
-
-SFX_Get_Item2_2::
-	audio SFX_Get_Item2_2, Ch4, Ch5, Ch6
-
-SFX_Tink_2::
-	audio SFX_Tink_2, Ch4
-
-SFX_Heal_HP_2::
-	audio SFX_Heal_HP_2, Ch4
-
-SFX_Heal_Ailment_2::
-	audio SFX_Heal_Ailment_2, Ch4
-
-SFX_Start_Menu_2::
-	audio SFX_Start_Menu_2, Ch7
-
-SFX_Press_AB_2::
-	audio SFX_Press_AB_2, Ch4
-
-SFX_Ball_Toss::
-	audio SFX_Ball_Toss, Ch4, Ch5
-
-SFX_Ball_Poof::
-	audio SFX_Ball_Poof, Ch4, Ch7
-
-SFX_Faint_Thud::
-	audio SFX_Faint_Thud, Ch4, Ch7
-
-SFX_Run::
-	audio SFX_Run, Ch7
-
-SFX_Dex_Page_Added::
-	audio SFX_Dex_Page_Added, Ch4, Ch5
-
-SFX_Caught_Mon::
-	audio SFX_Caught_Mon, Ch4, Ch5, Ch6
-
-SFX_Peck::
-	audio SFX_Peck, Ch7
-
-SFX_Faint_Fall::
-	audio SFX_Faint_Fall, Ch4
-
-SFX_Battle_09::
-	audio SFX_Battle_09, Ch4
-
-SFX_Pound::
-	audio SFX_Pound, Ch7
-
-SFX_Battle_0B::
-	audio SFX_Battle_0B, Ch7
-
-SFX_Battle_0C::
-	audio SFX_Battle_0C, Ch7
-
-SFX_Battle_0D::
-	audio SFX_Battle_0D, Ch7
-
-SFX_Battle_0E::
-	audio SFX_Battle_0E, Ch7
-
-SFX_Battle_0F::
-	audio SFX_Battle_0F, Ch7
-
-SFX_Damage::
-	audio SFX_Damage, Ch7
-
-SFX_Not_Very_Effective::
-	audio SFX_Not_Very_Effective, Ch7
-
-SFX_Battle_12::
-	audio SFX_Battle_12, Ch7
-
-SFX_Battle_13::
-	audio SFX_Battle_13, Ch7
-
-SFX_Battle_14::
-	audio SFX_Battle_14, Ch7
-
-SFX_Vine_Whip::
-	audio SFX_Vine_Whip, Ch7
-
-SFX_Battle_16::
-	audio SFX_Battle_16, Ch7
-
-SFX_Battle_17::
-	audio SFX_Battle_17, Ch7
-
-SFX_Battle_18::
-	audio SFX_Battle_18, Ch7
-
-SFX_Battle_19::
-	audio SFX_Battle_19, Ch7
-
-SFX_Super_Effective::
-	audio SFX_Super_Effective, Ch7
-
-SFX_Battle_1B::
-	audio SFX_Battle_1B, Ch7
-
-SFX_Battle_1C::
-	audio SFX_Battle_1C, Ch7
-
-SFX_Doubleslap::
-	audio SFX_Doubleslap, Ch7
-
-SFX_Battle_1E::
-	audio SFX_Battle_1E, Ch4, Ch7
-
-SFX_Horn_Drill::
-	audio SFX_Horn_Drill, Ch7
-
-SFX_Battle_20::
-	audio SFX_Battle_20, Ch7
-
-SFX_Battle_21::
-	audio SFX_Battle_21, Ch7
-
-SFX_Battle_22::
-	audio SFX_Battle_22, Ch7
-
-SFX_Battle_23::
-	audio SFX_Battle_23, Ch7
-
-SFX_Battle_24::
-	audio SFX_Battle_24, Ch4, Ch7
-
-SFX_Battle_25::
-	audio SFX_Battle_25, Ch7
-
-SFX_Battle_26::
-	audio SFX_Battle_26, Ch7
-
-SFX_Battle_27::
-	audio SFX_Battle_27, Ch4, Ch5, Ch7
-
-SFX_Battle_28::
-	audio SFX_Battle_28, Ch4, Ch5, Ch7
-
-SFX_Battle_29::
-	audio SFX_Battle_29, Ch4, Ch7
-
-SFX_Battle_2A::
-	audio SFX_Battle_2A, Ch4, Ch5, Ch7
-
-SFX_Battle_2B::
-	audio SFX_Battle_2B, Ch4, Ch7
-
-SFX_Battle_2C::
-	audio SFX_Battle_2C, Ch4, Ch5, Ch7
-
-SFX_Psybeam::
-	audio SFX_Psybeam, Ch4, Ch5, Ch7
-
-SFX_Battle_2E::
-	audio SFX_Battle_2E, Ch4, Ch5, Ch7
-
-SFX_Battle_2F::
-	audio SFX_Battle_2F, Ch4, Ch5, Ch7
-
-SFX_Psychic_M::
-	audio SFX_Psychic_M, Ch4, Ch5, Ch7
-
-SFX_Battle_31::
-	audio SFX_Battle_31, Ch4, Ch5
-
-SFX_Battle_32::
-	audio SFX_Battle_32, Ch4, Ch5
-
-SFX_Battle_33::
-	audio SFX_Battle_33, Ch4, Ch5
-
-SFX_Battle_34::
-	audio SFX_Battle_34, Ch4, Ch5, Ch7
-
-SFX_Battle_35::
-	audio SFX_Battle_35, Ch4, Ch5
-
-SFX_Battle_36::
-	audio SFX_Battle_36, Ch4, Ch5, Ch7
-
-SFX_Silph_Scope::
-	audio SFX_Silph_Scope, Ch4
+SFX_Battle_1E:: ; 2021c (8:421c)
+	musicheader 2, 5, SFX_Battle_1E_Ch1
+	musicheader 1, 8, SFX_Battle_1E_Ch2
+
+SFX_Horn_Drill:: ; 20222 (8:4222)
+	musicheader 1, 8, SFX_Horn_Drill_Ch1
+
+SFX_Battle_20:: ; 20225 (8:4225)
+	musicheader 1, 8, SFX_Battle_20_Ch1
+
+SFX_Battle_21:: ; 20228 (8:4228)
+	musicheader 1, 8, SFX_Battle_21_Ch1
+
+SFX_Battle_22:: ; 2022b (8:422b)
+	musicheader 1, 8, SFX_Battle_22_Ch1
+
+SFX_Battle_23:: ; 2022e (8:422e)
+	musicheader 1, 8, SFX_Battle_23_Ch1
+
+SFX_Battle_24:: ; 20231 (8:4231)
+	musicheader 2, 5, SFX_Battle_24_Ch1
+	musicheader 1, 8, SFX_Battle_24_Ch2
+
+SFX_Battle_25:: ; 20237 (8:4237)
+	musicheader 1, 8, SFX_Battle_25_Ch1
+
+SFX_Battle_26:: ; 2023a (8:423a)
+	musicheader 1, 8, SFX_Battle_26_Ch1
+
+SFX_Battle_27:: ; 2023d (8:423d)
+	musicheader 3, 5, SFX_Battle_27_Ch1
+	musicheader 1, 6, SFX_Battle_27_Ch2
+	musicheader 1, 8, SFX_Battle_27_Ch3
+
+SFX_Battle_28:: ; 20246 (8:4246)
+	musicheader 3, 5, SFX_Battle_28_Ch1
+	musicheader 1, 6, SFX_Battle_28_Ch2
+	musicheader 1, 8, SFX_Battle_28_Ch3
+
+SFX_Battle_29:: ; 2024f (8:424f)
+	musicheader 2, 5, SFX_Battle_29_Ch1
+	musicheader 1, 8, SFX_Battle_29_Ch2
+
+SFX_Battle_2A:: ; 20255 (8:4255)
+	musicheader 3, 5, SFX_Battle_2A_Ch1
+	musicheader 1, 6, SFX_Battle_2A_Ch2
+	musicheader 1, 8, SFX_Battle_2A_Ch3
+
+SFX_Battle_2B:: ; 2025e (8:425e)
+	musicheader 2, 5, SFX_Battle_2B_Ch1
+	musicheader 1, 8, SFX_Battle_2B_Ch2
+
+SFX_Battle_2C:: ; 20264 (8:4264)
+	musicheader 3, 5, SFX_Battle_2C_Ch1
+	musicheader 1, 6, SFX_Battle_2C_Ch2
+	musicheader 1, 8, SFX_Battle_2C_Ch3
+
+SFX_Psybeam:: ; 2026d (8:426d)
+	musicheader 3, 5, SFX_Psybeam_Ch1
+	musicheader 1, 6, SFX_Psybeam_Ch2
+	musicheader 1, 8, SFX_Psybeam_Ch3
+
+SFX_Battle_2E:: ; 20276 (8:4276)
+	musicheader 3, 5, SFX_Battle_2E_Ch1
+	musicheader 1, 6, SFX_Battle_2E_Ch2
+	musicheader 1, 8, SFX_Battle_2E_Ch3
+
+SFX_Battle_2F:: ; 2027f (8:427f)
+	musicheader 3, 5, SFX_Battle_2F_Ch1
+	musicheader 1, 6, SFX_Battle_2F_Ch2
+	musicheader 1, 8, SFX_Battle_2F_Ch3
+
+SFX_Psychic_M:: ; 20288 (8:4288)
+	musicheader 3, 5, SFX_Psychic_M_Ch1
+	musicheader 1, 6, SFX_Psychic_M_Ch2
+	musicheader 1, 8, SFX_Psychic_M_Ch3
+
+SFX_Battle_31:: ; 20291 (8:4291)
+	musicheader 2, 5, SFX_Battle_31_Ch1
+	musicheader 1, 6, SFX_Battle_31_Ch2
+
+SFX_Battle_32:: ; 20297 (8:4297)
+	musicheader 2, 5, SFX_Battle_32_Ch1
+	musicheader 1, 6, SFX_Battle_32_Ch2
+
+SFX_Battle_33:: ; 2029d (8:429d)
+	musicheader 2, 5, SFX_Battle_33_Ch1
+	musicheader 1, 6, SFX_Battle_33_Ch2
+
+SFX_Battle_34:: ; 202a3 (8:42a3)
+	musicheader 3, 5, SFX_Battle_34_Ch1
+	musicheader 1, 6, SFX_Battle_34_Ch2
+	musicheader 1, 8, SFX_Battle_34_Ch3
+
+SFX_Battle_35:: ; 202ac (8:42ac)
+	musicheader 2, 5, SFX_Battle_35_Ch1
+	musicheader 1, 6, SFX_Battle_35_Ch2
+
+SFX_Battle_36:: ; 202b2 (8:42b2)
+	musicheader 3, 5, SFX_Battle_36_Ch1
+	musicheader 1, 6, SFX_Battle_36_Ch2
+	musicheader 1, 8, SFX_Battle_36_Ch3
+
+SFX_Silph_Scope:: ; 202bb (8:42bb)
+	musicheader 1, 5, SFX_Silph_Scope_Ch1

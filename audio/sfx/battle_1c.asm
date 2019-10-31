@@ -1,5 +1,6 @@
-SFX_Battle_1C_Ch7:
-	noisenote 2, 12, 2, 1
-	noisenote 15, 15, 4, 1
-	noisenote 15, 15, 2, 1
+SFX_Battle_1C_Ch1: ; 20582 (8:4582)
+	unknownnoise0x20 2, 194, 1
+	unknownnoise0x20 15, 244, 1
+	unknownnoise0x20 15, 242, 1
 	endchannel
+; 0x2058c

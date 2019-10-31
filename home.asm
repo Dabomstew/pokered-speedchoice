@@ -311,41 +311,7 @@ LoadFrontSpriteByMonIndex::
 	jp BankswitchCommon
 
 
-PlayCry::
-; Play monster a's cry.
-	call GetCryData
-	call PlaySound
-	jp WaitForSoundToFinish
-
-GetCryData::
-; Load cry data for monster a.
-	dec a
-	ld c, a
-	ld b, 0
-	ld hl, CryData
-	add hl, bc
-	add hl, bc
-	add hl, bc
-
-	ld a, BANK(CryData)
-	call BankswitchHome
-	ld a, [hli]
-	ld b, a ; cry id
-	ld a, [hli]
-	ld [wFrequencyModifier], a
-	ld a, [hl]
-	ld [wTempoModifier], a
-	call BankswitchBack
-
-	; Cry headers have 3 channels,
-	; and start from index $14,
-	; so add 3 times the cry id.
-	ld a, b
-	ld c, $14
-	rlca ; * 2
-	add b
-	add c
-	ret
+; PlayCry has moved to home/audio.asm
 
 DisplayPartyMenu::
 	ld a, [hTilesetType]
@@ -955,55 +921,6 @@ ResetPlayerSpriteData_ClearSpriteData::
 	ld bc, $10
 	xor a
 	jp FillMemory
-
-FadeOutAudio::
-	ld a, [wAudioFadeOutControl]
-	and a ; currently fading out audio?
-	jr nz, .fadingOut
-	ld a, [wd72c]
-	bit 1, a
-	ret nz
-	ld a, $77
-	ld [rNR50], a
-	ret
-.fadingOut
-	ld a, [wAudioFadeOutCounter]
-	and a
-	jr z, .counterReachedZero
-	dec a
-	ld [wAudioFadeOutCounter], a
-	ret
-.counterReachedZero
-	ld a, [wAudioFadeOutCounterReloadValue]
-	ld [wAudioFadeOutCounter], a
-	ld a, [rNR50]
-	and a ; has the volume reached 0?
-	jr z, .fadeOutComplete
-	ld b, a
-	and $f
-	dec a
-	ld c, a
-	ld a, b
-	and $f0
-	swap a
-	dec a
-	swap a
-	or c
-	ld [rNR50], a
-	ret
-.fadeOutComplete
-	ld a, [wAudioFadeOutControl]
-	ld b, a
-	xor a
-	ld [wAudioFadeOutControl], a
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
-	ld a, [wAudioSavedROMBank]
-	ld [wAudioROMBank], a
-	ld a, b
-	ld [wNewSoundID], a
-	jp PlaySound
 
 ; this function is used to display sign messages, sprite dialog, etc.
 ; INPUT: [hSpriteIndexOrTextID] = sprite ID or text ID
@@ -2535,13 +2452,8 @@ PlayTrainerMusic::
 	ld a, [wGymLeaderNo]
 	and a
 	ret nz
-	xor a
-	ld [wAudioFadeOutControl], a
 	ld a, $ff
 	call PlaySound
-	ld a, BANK(Music_MeetEvilTrainer)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
 	ld a, [wEngagedTrainerClass]
 	ld b, a
 	ld hl, EvilTrainerList
@@ -2566,8 +2478,7 @@ PlayTrainerMusic::
 .maleTrainer
 	ld a, MUSIC_MEET_MALE_TRAINER
 .PlaySound
-	ld [wNewSoundID], a
-	jp PlaySound
+	jp PlayMusic
 
 INCLUDE "data/trainer_types.asm"
 
@@ -3100,31 +3011,6 @@ DelayFrames::
 	call DelayFrame
 	dec c
 	jr nz, DelayFrames
-	ret
-
-PlaySoundWaitForCurrent::
-	push af
-	call WaitForSoundToFinish
-	pop af
-	jp PlaySound
-
-; Wait for sound to finish playing
-WaitForSoundToFinish::
-	ld a, [wLowHealthAlarm]
-	and $80
-	ret nz
-	push hl
-.waitLoop
-	ld hl, wChannelSoundIDs + Ch4
-	xor a
-	or [hl]
-	inc hl
-	or [hl]
-	inc hl
-	inc hl
-	or [hl]
-	jr nz, .waitLoop
-	pop hl
 	ret
 
 NamePointers::

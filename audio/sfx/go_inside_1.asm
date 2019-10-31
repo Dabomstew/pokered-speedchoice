@@ -1,4 +1,5 @@
-SFX_Go_Inside_1_Ch7:
-	noisenote 9, 15, 1, 68
-	noisenote 8, 13, 1, 67
+SFX_Go_Inside_1_Ch1: ; 83f1 (2:43f1)
+	unknownnoise0x20 9, 241, 68
+	unknownnoise0x20 8, 209, 67
 	endchannel
+; 0x83f8

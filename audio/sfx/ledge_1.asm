@@ -1,6 +1,7 @@
-SFX_Ledge_1_Ch4:
-	duty 2
-	pitchenvelope 9, 5
-	squarenote 15, 15, 2, 1024
-	pitchenvelope 0, 0
+SFX_Ledge_1_Ch1: ; 85d6 (2:45d6)
+	dutycycle 2
+	unknownsfx0x10 149
+	unknownsfx0x20 15, 242, 0, 4
+	unknownsfx0x10 8
 	endchannel
+; 0x85e1

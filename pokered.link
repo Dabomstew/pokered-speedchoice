@@ -52,10 +52,11 @@ ROMX $1
 ROMX $2
 	org $4000
 	"Sound Effect Headers 1" ; AUDIO_1
-	"Music Headers 1"
+	"Sound Effect Headers 2"
+	"Sound Effect Headers 3"
 	"Sound Effects 1"
-	"Audio Engine 1"
-	"Music 1"
+	"Sound Effects 2"
+	"Sound Effects 3"
 
 ROMX $3
 	org $4000
@@ -82,11 +83,12 @@ ROMX $7
 
 ROMX $8
 	org $4000
-	"Sound Effect Headers 2" ; AUDIO_2
-	"Music Headers 2"
-	"Sound Effects 2"
-	"Audio Engine 2"
-	"Music 2"
+	"Music Routines"
+	"Alt Music Routines"
+	"Pokedex Rating SFX Routines"
+	"Audio Engine"
+	"Sound Effects"
+	"Crystal Sound Effects"
 
 ROMX $9
 	org $4000
@@ -184,11 +186,7 @@ ROMX $1E
 
 ROMX $1F
 	org $4000
-	"Sound Effect Headers 3" ; AUDIO_3
-	"Music Headers 3"
-	"Sound Effects 3"
-	"Audio Engine 3"
-	"Music 3"
+	"Cries"
 
 ROMX $20
 	org $4000
@@ -251,7 +249,7 @@ WRAM0
 	"Stack"
 	
 	org $c100
-	"Audio Engine"
+	"Audio Engine WRAM"
 
 	org $c300
 	"Sprite State Data"
