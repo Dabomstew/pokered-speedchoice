@@ -4,14 +4,14 @@ VBlank::
 	push bc
 	push de
 	push hl
-
-	ld a, [H_LOADEDROMBANK]
-	ld [wVBlankSavedROMBank], a
 	
 	ld a, [rSVBK]
 	ld [hSVBKBackup], a
 	xor a ; most things in vblank rely on seeing normal d000-dfff
 	ld [rSVBK], a
+
+	ld a, [H_LOADEDROMBANK]
+	ld [wVBlankSavedROMBank], a
 
 	ld a, [hSCX]
 	ld [rSCX], a
