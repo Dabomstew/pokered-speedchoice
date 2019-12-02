@@ -716,6 +716,8 @@ GetTileSpriteStandsOn:
 	ld a, [hli]     ; c1x4: screen Y position
 	add $4          ; align to 2*2 tile blocks (Y position is always off 4 pixels to the top)
 	and $f0         ; in case object is currently moving
+	cp $90
+	jr nc, .oob
 	srl a           ; screen Y tile * 4
 	ld c, a
 	ld b, $0
@@ -735,6 +737,14 @@ GetTileSpriteStandsOn:
 	add hl, bc
 	add hl, de     ; wTileMap + 20*(screen Y tile + 1) + screen X tile
 	ret
+.oob
+; vanilla behavior is that an out of bounds sprite is never over a textbox tile
+; to reproduce this, we can just point to a static set of 0s
+	ld hl, OOBTileMap + 20
+	ret
+
+OOBTileMap:
+	ds 22
 
 ; loads [de+a] into a
 LoadDEPlusA:
