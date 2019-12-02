@@ -1,5 +1,5 @@
 VersionNumberText::
-    db "Beta 2"
+    db "Beta 3"
 	INCLUDE "git-revision.asm"
 	db "@"
 VersionNumberTextEnd::
