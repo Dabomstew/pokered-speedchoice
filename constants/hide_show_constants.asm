@@ -42,6 +42,14 @@ const_value = 0
 	const HS_ROUTE_16_SNORLAX              ; 21
 	const HS_ROUTE_22_RIVAL_1              ; 22
 	const HS_ROUTE_22_RIVAL_2              ; 23
+	const HS_ROUTE_23_NORMAL_EB_GUARD
+	const HS_ROUTE_23_VOLCANOBADGE_GUARD
+	const HS_ROUTE_23_MARSHBADGE_GUARD
+	const HS_ROUTE_23_SOULBADGE_GUARD
+	const HS_ROUTE_23_RAINBOWBADGE_GUARD
+	const HS_ROUTE_23_THUNDERBADGE_GUARD
+	const HS_ROUTE_23_CASCADEBADGE_GUARD
+	const HS_ROUTE_23_MOVED_EB_GUARD
 	const HS_NUGGET_BRIDGE_GUY             ; 24
 	const HS_ROUTE_24_ITEM                 ; 25 X
 	const HS_ROUTE_25_ITEM                 ; 26 X
@@ -176,7 +184,6 @@ const_value = 0
 	const HS_SILPH_CO_7F_RIVAL             ; A7
 	const HS_SILPH_CO_7F_ITEM_1            ; A8 X
 	const HS_SILPH_CO_7F_ITEM_2            ; A9 X
-	const HS_SILPH_CO_7F_8                 ; AA XXX sprite doesn't exist
 	const HS_SILPH_CO_8F_1                 ; AB
 	const HS_SILPH_CO_8F_2                 ; AC
 	const HS_SILPH_CO_8F_3                 ; AD
@@ -192,7 +199,6 @@ const_value = 0
 	const HS_SILPH_CO_11F_1                ; B7
 	const HS_SILPH_CO_11F_2                ; B8
 	const HS_SILPH_CO_11F_3                ; B9
-	const HS_UNUSED_MAP_F4_1               ; BA XXX sprite doesn't exist
 	const HS_POKEMON_MANSION_2F_ITEM       ; BB X
 	const HS_POKEMON_MANSION_3F_ITEM_1     ; BC X
 	const HS_POKEMON_MANSION_3F_ITEM_2     ; BD X

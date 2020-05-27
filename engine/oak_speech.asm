@@ -45,6 +45,9 @@ OakSpeech:
 	ldafarbyte KeyItemRandoActive
 	and a
 	call nz, HideShowObjectsKeyItemRando
+	ld a, [wPermanentOptions4]
+	and EARLY_VICTORY_ROAD_VAL
+	call nz, HideShowGuardsEarlyVR
 	call ClearScreen
 	call OakSpeechBoxItems
 	ld a, [wDefaultMap]
@@ -247,6 +250,21 @@ HideShowObjectsKeyItemRando:
 	ld a, HS_CERULEAN_GUARD_2
 	ld [wMissableObjectIndex], a
 	predef_jump HideObject
+	
+HideShowGuardsEarlyVR:
+; hide the first 7 guards
+	ld a, HS_ROUTE_23_NORMAL_EB_GUARD
+.loop
+	ld [wMissableObjectIndex], a
+	push af
+	predef HideObject
+	pop af
+	inc a
+	cp HS_ROUTE_23_MOVED_EB_GUARD
+	jr nz, .loop
+; show the moved guard
+	ld [wMissableObjectIndex], a
+	predef_jump ShowObject
 	
 OakSpeechBoxItems::
 	ld a, POTION

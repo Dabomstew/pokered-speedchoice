@@ -74,6 +74,9 @@ RACEGOAL_151DEX    EQU %10
 ; wPermanentOptions4:
 	optionbytestart
 	mboption PICSET, 3 ; 0 - only 3 atm, but leaving space for up to 8
+	sboption EARLY_VICTORY_ROAD ; 3
+	sboption START_WITH_BIKE ; 4
+	sboption B_FAST_MOVEMENT ; 5
 
 ; wSpeedchoiceFlags:
 DEX_RACEGOAL_DONE EQU 0
