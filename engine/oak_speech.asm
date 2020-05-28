@@ -49,6 +49,7 @@ OakSpeech:
 	and EARLY_VICTORY_ROAD_VAL
 	call nz, HideShowGuardsEarlyVR
 	call ClearScreen
+	call OakSpeechBagItems
 	call OakSpeechBoxItems
 	ld a, [wDefaultMap]
 	ld [wDestinationMap], a
@@ -270,16 +271,25 @@ HideShowGuardsEarlyVR:
 	ld [wMissableObjectIndex], a
 	predef_jump HideObject
 	
+OakSpeechBagItems::
+	ld a, [wPermanentOptions4]
+	and START_WITH_BIKE_VAL
+	ret z
+	ld a, BICYCLE
+	ld hl, wNumBagItems
+	jr OakSpeechGiveItem
+	
 OakSpeechBoxItems::
 	ld a, POTION
 	ld hl, wNumBoxItems
-	call .giveItem
+	call OakSpeechGiveItem
 ; also give a pokedex if not normal startin
 	ld a, [wPermanentOptions3]
 	and STARTIN_MASK
 	ret z
 	ld a, POKEDEX_NEW
-.giveItem
+
+OakSpeechGiveItem:
 	ld [wcf91], a
 	ld a, 1
 	ld [wItemQuantity], a
