@@ -12,9 +12,10 @@
 	cd pokered-speedchoice
 
 To build **pokered.gbc**:
+
 	make red
 	make
-	
+
 Note that `make red` is only required on the first build. Afterwards you can just use `make`.
 
 
