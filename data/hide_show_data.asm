@@ -198,7 +198,7 @@ MapHSPointers:
 	dw MapHSXX
 	dw MapHSXX
 	dw MapHSC0
-	dw MapHSXX
+	dw MapHSC1
 	dw MapHSC2
 	dw MapHSXX
 	dw MapHSXX
@@ -319,15 +319,6 @@ MapHS1B:
 MapHS21:
 	db ROUTE_22,$01,Hide
 	db ROUTE_22,$02,Hide
-MapHS22:
-	db ROUTE_23,$01,Show
-	db ROUTE_23,$02,Show
-	db ROUTE_23,$03,Show
-	db ROUTE_23,$04,Show
-	db ROUTE_23,$05,Show
-	db ROUTE_23,$06,Show
-	db ROUTE_23,$07,Show
-	db ROUTE_23,$08,Hide
 MapHS23:
 	db ROUTE_24,$01,Show
 	db ROUTE_24,$08,Show
@@ -503,6 +494,7 @@ MapHSD4:
 	db SILPH_CO_7F,$09,Show
 	db SILPH_CO_7F,$0A,Show
 	db SILPH_CO_7F,$0B,Show
+	db SILPH_CO_7F,$0C,Show
 MapHSD5:
 	db SILPH_CO_8F,$02,Show
 	db SILPH_CO_8F,$03,Show
@@ -522,6 +514,8 @@ MapHSEB:
 	db SILPH_CO_11F,$03,Show
 	db SILPH_CO_11F,$04,Show
 	db SILPH_CO_11F,$05,Show
+MapHSC1:
+	db ROUTE_22_GATE,$01,Show
 MapHSD6:
 	db POKEMON_MANSION_2F,$02,Show
 MapHSD7:
@@ -579,5 +573,14 @@ MapHSA2:
 	db SEAFOAM_ISLANDS_B4F,$01,Hide
 	db SEAFOAM_ISLANDS_B4F,$02,Hide
 	db SEAFOAM_ISLANDS_B4F,$03,Show
-
+MapHS22:
+	db ROUTE_23,$01,Show
+	db ROUTE_23,$02,Show
+	db ROUTE_23,$03,Show
+	db ROUTE_23,$04,Show
+	db ROUTE_23,$05,Show
+	db ROUTE_23,$06,Show
+	db ROUTE_23,$07,Show
+	db ROUTE_23,$08,Hide
+	
 	db $FF,$01,Show

@@ -252,7 +252,7 @@ HideShowObjectsKeyItemRando:
 	predef_jump HideObject
 	
 HideShowGuardsEarlyVR:
-; hide the first 7 guards
+; hide the normal 7 outside guards
 	ld a, HS_ROUTE_23_NORMAL_EB_GUARD
 .loop
 	ld [wMissableObjectIndex], a
@@ -264,7 +264,11 @@ HideShowGuardsEarlyVR:
 	jr nz, .loop
 ; show the moved guard
 	ld [wMissableObjectIndex], a
-	predef_jump ShowObject
+	predef ShowObject
+; hide the boulderbadge guard
+	ld a, HS_ROUTE_22_GATE_GUARD
+	ld [wMissableObjectIndex], a
+	predef_jump HideObject
 	
 OakSpeechBoxItems::
 	ld a, POTION
