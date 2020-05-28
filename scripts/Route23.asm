@@ -33,10 +33,6 @@ Route23Script0:
 	ret nz
 	ld e, $08
 	ld c, $06
-	ld a, $08
-	ld [hSpriteIndexOrTextID], a
-	ld a, $06
-	ld [wWhichBadge], a
 	jr .asm_51237
 .normalLines
 	ld hl, YCoordsData_51255
