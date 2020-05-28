@@ -11,8 +11,9 @@ PermaOptions3String::
 	db "        :<LNBRK>"
 	db "START WITH BIKE<LNBRK>"
 	db "        :<LNBRK>"
-	db "#DEX AREA BEEP<LNBRK>"
+	db "START WITH DRINK<LNBRK>"
 	db "        :@"
+	
 
 PermaOptions3Pointers::
 	dw Options_NerfBrock
@@ -21,7 +22,7 @@ PermaOptions3Pointers::
 	dw Options_EarlyVRoad
 	dw Options_BFastMovement
 	dw Options_StartWithBike
-	dw Options_DexAreaBeep
+	dw Options_StartWithDrink
 	dw Options_PermaOptionsPage
 
 Options_NerfBrock::
@@ -60,8 +61,8 @@ Options_StartWithBike::
 	ld c, 13
 	jp Options_OnOff
 	
-Options_DexAreaBeep::
-	ld hl, wPermanentOptions4
-	ld b, DEX_AREA_BEEP
+Options_StartWithDrink::
+	ld hl, wPermanentOptions3
+	ld b, START_WITH_DRINK
 	ld c, 15
 	jp Options_OnOff

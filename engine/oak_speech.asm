@@ -274,8 +274,15 @@ HideShowGuardsEarlyVR:
 OakSpeechBagItems::
 	ld a, [wPermanentOptions4]
 	and START_WITH_BIKE_VAL
-	ret z
+	jr z, .drink
 	ld a, BICYCLE
+	ld hl, wNumBagItems
+	call OakSpeechGiveItem
+.drink
+	ld a, [wPermanentOptions3]
+	and START_WITH_DRINK_VAL
+	ret z
+	ld a, FRESH_WATER
 	ld hl, wNumBagItems
 	jr OakSpeechGiveItem
 	
