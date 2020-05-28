@@ -64,7 +64,8 @@ void scan_file(char* filename) {
 
 			case 'i':
 			case 'I':
-				if ((strncmp(buffer, "INCBIN", 6) == 0) || (strncmp(buffer, "incbin", 6) == 0)) {
+			case 'a':
+				if ((strncmp(buffer, "INCBIN", 6) == 0) || (strncmp(buffer, "incbin", 6) == 0) || (strncmp(buffer, "altpokepic", 10) == 0)) {
 					is_incbin = true;
 				} else if ((strncmp(buffer, "INCLUDE", 7) == 0) || (strncmp(buffer, "include", 7) == 0)) {
 					is_include = true;
