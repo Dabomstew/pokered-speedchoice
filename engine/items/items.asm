@@ -2933,11 +2933,7 @@ FindWildLocationsOfMon:
 
 CheckMapForMon:
 	inc hl
-IF DEF(_VANILLAWILDS)
-	ld b, $0A ; 10 slots
-ELSE
-	ld b, $07 ; 7 slots
-ENDC
+	ld b, NUM_WILD_SLOTS
 .loop
 	ld a, [wd11e]
 	cp [hl]

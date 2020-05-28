@@ -77,6 +77,8 @@ RACEGOAL_151DEX    EQU %10
 	sboption EARLY_VICTORY_ROAD ; 3
 	sboption START_WITH_BIKE ; 4
 	sboption B_FAST_MOVEMENT ; 5
+	sboption KEEP_WARDEN_CANDY ; 6
+	sboption DEX_AREA_BEEP ; 7
 
 ; wSpeedchoiceFlags:
 DEX_RACEGOAL_DONE EQU 0

@@ -124,11 +124,46 @@ LoadTownMap_Nest:
 	ld l, c
 	ld de, MonsNestText
 	call PlaceString
+	; dex area beep?
+	ld a, [wPermanentOptions4]
+	and DEX_AREA_BEEP_VAL
+	jr z, .reallyDone
+	ld a, [wd11e]
+	ld hl, wGrassMons + 1
+	call .checkForMon
+	jr z, .doBeep
+	ld hl, wWaterMons + 1
+	call .checkForMon
+	jr z, .doBeep
+	jr .reallyDone
+.doBeep
+	ld b, 3
+.playLoop
+	ld a, SFX_TINK
+	push bc
+	call PlaySound
+	call WaitForSoundToFinish
+	pop bc
+	dec b
+	jr nz, .playLoop
+.reallyDone
 	call WaitForTextScrollButtonPress
 	call ExitTownMap
 	pop hl
 	pop af
 	ld [hl], a
+	ret
+
+.checkForMon
+	ld b, NUM_WILD_SLOTS
+.checkLoop
+	cp [hl]
+	ret z
+	inc hl
+	inc hl
+	dec b
+	jr nz, .checkLoop
+	and a ; clear zeroflag
 	ret
 
 MonsNestText:
