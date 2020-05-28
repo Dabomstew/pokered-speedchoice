@@ -28,13 +28,15 @@ Then in **Terminal**, run:
 	xcode-select --install
 	brew install rgbds
 
-	git clone https://github.com/pret/pokered
-	cd pokered
+	git clone https://github.com/Dabomstew/pokered-speedchoice
+	cd pokered-speedchoice
 
 To build **pokered.gbc**:
 
+	make red
 	make
 
+See the above note about `make red` vs `make`.
 
 # Windows
 
@@ -51,9 +53,12 @@ Then download [**rgbds**](https://github.com/rednex/rgbds/releases/): the latest
 
 In the **Cygwin terminal**, enter these commands:
 
-	git clone https://github.com/pret/pokered
-	cd pokered
+	git clone https://github.com/Dabomstew/pokered-speedchoice
+	cd pokered-speedchoice
 
 To build **pokered.gbc**:
 
+	make red
 	make
+
+See the above note about `make red` vs `make`.
