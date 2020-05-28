@@ -20,10 +20,18 @@ BikeShopText1:
 	ld hl, BikeShopText_1d81f
 	call PrintText
 	ldafarbyte KeyItemBicycle
+	cp BICYCLE
+	jr nz, .give
+	ld b, BICYCLE
+	call IsItemInBag
+	jr nz, .dontActuallyGiveBike
+	ld a, BICYCLE
+.give
 	ld b, a
 	ld c, 1
 	call GiveItem
 	jr nc, .BagFull
+.dontActuallyGiveBike
 	ld a, BIKE_VOUCHER
 	ld [$ffdb], a
 	callba RemoveItemByID
