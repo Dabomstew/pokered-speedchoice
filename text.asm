@@ -564,6 +564,11 @@ _TimesUpText::
 	para "Time's up!"
 	prompt
 
+_SafariZoneRetireText::
+	text "Are you sure"
+	line "you're done?"
+	done
+
 _GameOverText::
 	text "PA: Your SAFARI"
 	line "GAME is over!"
