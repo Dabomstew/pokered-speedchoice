@@ -7,9 +7,11 @@ PermaOptions3String::
 	db "        :<LNBRK>"
 	db "EARLY V. ROAD<LNBRK>"
 	db "        :<LNBRK>"
-	db "BOAT<LNBRK>"
+	db "B TO GO FAST<LNBRK>"
 	db "        :<LNBRK>"
-	db "POKéMON PICS<LNBRK>"
+	db "START WITH BIKE<LNBRK>"
+	db "        :<LNBRK>"
+	db "#DEX AREA BEEP<LNBRK>"
 	db "        :@"
 
 PermaOptions3Pointers::
@@ -17,8 +19,9 @@ PermaOptions3Pointers::
 	dw Options_BetterGameCorner
 	dw Options_EasySafari
 	dw Options_EarlyVRoad
-	dw Options_Boat
-	dw Options_PokemonPics
+	dw Options_BFastMovement
+	dw Options_StartWithBike
+	dw Options_DexAreaBeep
 	dw Options_PermaOptionsPage
 
 Options_NerfBrock::
@@ -45,35 +48,20 @@ Options_EarlyVRoad::
 	ld c, 9
 	jp Options_OnOff
 	
-Options_Boat::
-	ld hl, wPermanentOptions2
-	ld b, BACKWARDS_BOAT
+Options_BFastMovement::
+	ld hl, wPermanentOptions4
+	ld b, B_FAST_MOVEMENT
 	ld c, 11
-	ld de, .NormalMeme
-	jp Options_TrueFalse
-.NormalMeme
-	dw .Off
-	dw .On
-.Off
-	db "NORMAL@"
-.On
-	db "MEME  @"
-
-Options_PokemonPics:
-	ld hl, .Data
-	jp Options_Multichoice
+	jp Options_OnOff
 	
-.Data:
-	multichoiceoptiondata wPermanentOptions4, PICSET_SHIFT, PICSET_SIZE, 13, NUM_OPTIONS, .Strings
-.Strings:
-	dw .Normal
-	dw .Green
-	dw .Yellow
-.Strings_End:
+Options_StartWithBike::
+	ld hl, wPermanentOptions4
+	ld b, START_WITH_BIKE
+	ld c, 13
+	jp Options_OnOff
 	
-.Normal
-	db "NORMAL@"
-.Green
-	db "GREEN @"
-.Yellow
-	db "YELLOW@"
+Options_DexAreaBeep::
+	ld hl, wPermanentOptions4
+	ld b, DEX_AREA_BEEP
+	ld c, 15
+	jp Options_OnOff

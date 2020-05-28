@@ -128,10 +128,16 @@ LoadTownMap_Nest:
 	ld a, [wPermanentOptions4]
 	and DEX_AREA_BEEP_VAL
 	jr z, .reallyDone
-	ld a, [wd11e]
+	ld a, [wGrassRate]
+	and a
+	jr z, .checkWater
 	ld hl, wGrassMons + 1
 	call .checkForMon
 	jr z, .doBeep
+.checkWater
+	ld a, [wWaterRate]
+	and a
+	jr z, .reallyDone
 	ld hl, wWaterMons + 1
 	call .checkForMon
 	jr z, .doBeep
@@ -155,6 +161,7 @@ LoadTownMap_Nest:
 	ret
 
 .checkForMon
+	ld a, [wd11e]
 	ld b, NUM_WILD_SLOTS
 .checkLoop
 	cp [hl]
