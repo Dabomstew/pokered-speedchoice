@@ -8,12 +8,14 @@
 	sudo make install
 	cd ..
 
-	git clone https://github.com/pret/pokered
-	cd pokered
+	git clone https://github.com/Dabomstew/pokered-speedchoice
+	cd pokered-speedchoice
 
 To build **pokered.gbc**:
-
+	make red
 	make
+	
+Note that `make red` is only required on the first build. Afterwards you can just use `make`.
 
 
 # Mac
