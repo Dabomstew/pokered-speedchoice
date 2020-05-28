@@ -67,6 +67,7 @@ SELECTTO_JACK EQU %10
 	optionbytestart
 	mboption STARTIN, 4 ; 0 - there are only 5 atm, but leaving space for up to 16
 	mboption RACEGOAL, 2 ; 4
+	sboption START_WITH_DRINK ; 6
 
 RACEGOAL_MANUAL    EQU %00
 RACEGOAL_ELITEFOUR EQU %01
@@ -75,6 +76,11 @@ RACEGOAL_151DEX    EQU %10
 ; wPermanentOptions4:
 	optionbytestart
 	mboption PICSET, 3 ; 0 - only 3 atm, but leaving space for up to 8
+	sboption EARLY_VICTORY_ROAD ; 3
+	sboption START_WITH_BIKE ; 4
+	sboption B_FAST_MOVEMENT ; 5
+	sboption KEEP_WARDEN_CANDY ; 6
+	sboption DEX_AREA_BEEP ; 7
 
 ; wSpeedchoiceFlags:
 DEX_RACEGOAL_DONE EQU 0

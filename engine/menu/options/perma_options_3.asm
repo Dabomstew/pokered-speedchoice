@@ -5,17 +5,24 @@ PermaOptions3String::
 	db "        :<LNBRK>"
 	db "EASY SAFARI<LNBRK>"
 	db "        :<LNBRK>"
-	db "BOAT<LNBRK>"
+	db "EARLY V. ROAD<LNBRK>"
 	db "        :<LNBRK>"
-	db "POKéMON PICS<LNBRK>"
+	db "B TO GO FAST<LNBRK>"
+	db "        :<LNBRK>"
+	db "START WITH BIKE<LNBRK>"
+	db "        :<LNBRK>"
+	db "START WITH DRINK<LNBRK>"
 	db "        :@"
+	
 
 PermaOptions3Pointers::
 	dw Options_NerfBrock
 	dw Options_BetterGameCorner
 	dw Options_EasySafari
-	dw Options_Boat
-	dw Options_PokemonPics
+	dw Options_EarlyVRoad
+	dw Options_BFastMovement
+	dw Options_StartWithBike
+	dw Options_StartWithDrink
 	dw Options_PermaOptionsPage
 
 Options_NerfBrock::
@@ -36,35 +43,26 @@ Options_EasySafari::
 	ld c, 7
 	jp Options_OnOff
 	
-Options_Boat::
-	ld hl, wPermanentOptions2
-	ld b, BACKWARDS_BOAT
+Options_EarlyVRoad::
+	ld hl, wPermanentOptions4
+	ld b, EARLY_VICTORY_ROAD
 	ld c, 9
-	ld de, .NormalMeme
-	jp Options_TrueFalse
-.NormalMeme
-	dw .Off
-	dw .On
-.Off
-	db "NORMAL@"
-.On
-	db "MEME  @"
-
-Options_PokemonPics:
-	ld hl, .Data
-	jp Options_Multichoice
+	jp Options_OnOff
 	
-.Data:
-	multichoiceoptiondata wPermanentOptions4, PICSET_SHIFT, PICSET_SIZE, 11, NUM_OPTIONS, .Strings
-.Strings:
-	dw .Normal
-	dw .Green
-	dw .Yellow
-.Strings_End:
+Options_BFastMovement::
+	ld hl, wPermanentOptions4
+	ld b, B_FAST_MOVEMENT
+	ld c, 11
+	jp Options_OnOff
 	
-.Normal
-	db "NORMAL@"
-.Green
-	db "GREEN @"
-.Yellow
-	db "YELLOW@"
+Options_StartWithBike::
+	ld hl, wPermanentOptions4
+	ld b, START_WITH_BIKE
+	ld c, 13
+	jp Options_OnOff
+	
+Options_StartWithDrink::
+	ld hl, wPermanentOptions3
+	ld b, START_WITH_DRINK
+	ld c, 15
+	jp Options_OnOff

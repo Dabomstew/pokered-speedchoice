@@ -43,7 +43,11 @@ OakSpeech:
 	ldafarbyte KeyItemRandoActive
 	and a
 	call nz, HideShowObjectsKeyItemRando
+	ld a, [wPermanentOptions4]
+	and EARLY_VICTORY_ROAD_VAL
+	call nz, HideShowGuardsEarlyVR
 	call ClearScreen
+	call OakSpeechBagItems
 	call OakSpeechBoxItems
 	ld a, [wDefaultMap]
 	ld [wDestinationMap], a
@@ -241,16 +245,51 @@ HideShowObjectsKeyItemRando:
 	ld [wMissableObjectIndex], a
 	predef_jump HideObject
 	
+HideShowGuardsEarlyVR:
+; hide the normal 7 outside guards
+	ld a, HS_ROUTE_23_NORMAL_EB_GUARD
+.loop
+	ld [wMissableObjectIndex], a
+	push af
+	predef HideObject
+	pop af
+	inc a
+	cp HS_ROUTE_23_MOVED_EB_GUARD
+	jr nz, .loop
+; show the moved guard
+	ld [wMissableObjectIndex], a
+	predef ShowObject
+; hide the boulderbadge guard
+	ld a, HS_ROUTE_22_GATE_GUARD
+	ld [wMissableObjectIndex], a
+	predef_jump HideObject
+	
+OakSpeechBagItems::
+	ld a, [wPermanentOptions4]
+	and START_WITH_BIKE_VAL
+	jr z, .drink
+	ld a, BICYCLE
+	ld hl, wNumBagItems
+	call OakSpeechGiveItem
+.drink
+	ld a, [wPermanentOptions3]
+	and START_WITH_DRINK_VAL
+	ret z
+	ld a, FRESH_WATER
+	ld hl, wNumBagItems
+	jr OakSpeechGiveItem
+	
 OakSpeechBoxItems::
 	ld a, POTION
 	ld hl, wNumBoxItems
-	call .giveItem
+	call OakSpeechGiveItem
 ; also give a pokedex if not normal startin
 	ld a, [wPermanentOptions3]
 	and STARTIN_MASK
 	ret z
 	ld a, POKEDEX_NEW
-.giveItem
+
+OakSpeechGiveItem:
 	ld [wcf91], a
 	ld a, 1
 	ld [wItemQuantity], a

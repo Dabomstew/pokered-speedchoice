@@ -192,7 +192,7 @@ const_value = 0
 	const HS_SILPH_CO_11F_1                ; B7
 	const HS_SILPH_CO_11F_2                ; B8
 	const HS_SILPH_CO_11F_3                ; B9
-	const HS_UNUSED_MAP_F4_1               ; BA XXX sprite doesn't exist
+	const HS_ROUTE_22_GATE_GUARD           ; BA
 	const HS_POKEMON_MANSION_2F_ITEM       ; BB X
 	const HS_POKEMON_MANSION_3F_ITEM_1     ; BC X
 	const HS_POKEMON_MANSION_3F_ITEM_2     ; BD X
@@ -234,3 +234,11 @@ const_value = 0
 	const HS_SEAFOAM_ISLANDS_B4F_BOULDER_1 ; E1
 	const HS_SEAFOAM_ISLANDS_B4F_BOULDER_2 ; E2
 	const HS_ARTICUNO                      ; E3 X
+	const HS_ROUTE_23_NORMAL_EB_GUARD
+	const HS_ROUTE_23_VOLCANOBADGE_GUARD
+	const HS_ROUTE_23_MARSHBADGE_GUARD
+	const HS_ROUTE_23_SOULBADGE_GUARD
+	const HS_ROUTE_23_RAINBOWBADGE_GUARD
+	const HS_ROUTE_23_THUNDERBADGE_GUARD
+	const HS_ROUTE_23_CASCADEBADGE_GUARD
+	const HS_ROUTE_23_MOVED_EB_GUARD

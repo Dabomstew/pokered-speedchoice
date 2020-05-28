@@ -287,13 +287,31 @@ OverworldLoopLessDelay::
 .moveAhead2
 	ld hl, wFlags_0xcd60
 	res 2, [hl]
-	ld a, [wWalkBikeSurfState]
-	dec a ; riding a bike?
-	jr nz, .normalPlayerSpriteAdvancement
 	ld a, [wd736]
 	bit 6, a ; jumping a ledge?
 	jr nz, .normalPlayerSpriteAdvancement
+; calculate how many times to advance movement
+	ld b, 1
+	ld a, [wWalkBikeSurfState]
+	dec a
+	jr nz, .notBike
+	inc b
+.notBike
+	ld a, [wPermanentOptions4]
+	and B_FAST_MOVEMENT_VAL
+	jr z, .apply
+	ld a, [hJoyHeld]
+	and B_BUTTON
+	jr z, .apply
+	sla b
+.apply
+; call BikeSpeedup [b - 1] times, then normal advancement
+	dec b
+	jr z, .normalPlayerSpriteAdvancement
+	push bc
 	call DoBikeSpeedup
+	pop bc
+	jr .apply
 .normalPlayerSpriteAdvancement
 	call AdvancePlayerSprite
 	ld a, [wWalkCounter]

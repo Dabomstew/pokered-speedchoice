@@ -25,6 +25,16 @@ Route23_ScriptPointers:
 	dw Route23Script2
 
 Route23Script0:
+	ld a, [wPermanentOptions4]
+	and EARLY_VICTORY_ROAD_VAL
+	jr z, .normalLines
+	ld a, [wYCoord]
+	cp $15
+	ret nz
+	ld e, $08
+	ld c, $06
+	jr .asm_51237
+.normalLines
 	ld hl, YCoordsData_51255
 	ld a, [wYCoord]
 	ld b, a
@@ -139,7 +149,8 @@ Route23_TextPointers:
 	dw Route23Text5
 	dw Route23Text6
 	dw Route23Text7
-	dw Route23Text8
+	dw Route23Text1
+	dw Route23Sign
 
 Route23Text1:
 	TX_ASM
@@ -231,6 +242,6 @@ VictoryRoadGuardText2:
 	TX_FAR _VictoryRoadGuardText_513a3
 	db "@"
 
-Route23Text8:
+Route23Sign:
 	TX_FAR _Route23Text8
 	db "@"

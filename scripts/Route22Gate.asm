@@ -18,6 +18,9 @@ Route22Gate_ScriptPointers:
 	dw Route22GateScript2
 
 Route22GateScript0:
+	ld a, [wPermanentOptions4]
+	and EARLY_VICTORY_ROAD_VAL
+	ret nz
 	ld hl, Route22GateScriptCoords
 	call ArePlayerCoordsInArray
 	ret nc

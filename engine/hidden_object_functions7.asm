@@ -38,7 +38,10 @@ StrengthsAndWeaknessesText:
 
 SafariZoneCheck:
 	CheckEventHL EVENT_IN_SAFARI_ZONE ; if we are not in the Safari Zone,
-	jr z, SafariZoneGameStillGoing ; don't bother printing game over text
+	jr z, SafariZoneGameStillGoing ; don't bother printing game over text and clear flag
+	ld a, [wSafariZoneGameOver]
+	and a
+	ret nz
 	ld a, [wNumSafariBalls]
 	and a
 	jr z, SafariZoneGameOver

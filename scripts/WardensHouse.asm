@@ -1,5 +1,19 @@
 WardensHouse_Script:
+	call WardensHouse_SetRareCandy
 	jp EnableAutoTextBoxDrawing
+	
+WardensHouse_SetRareCandy:
+; if keep warden candy is on, force this item to be a candy
+	ld hl, wCurrentMapScriptFlags
+	bit 5, [hl]
+	res 5, [hl]
+	ret z
+	ld a, [wPermanentOptions4]
+	and KEEP_WARDEN_CANDY_VAL
+	ret z
+	ld a, RARE_CANDY
+	ld [wMapSpriteExtraData + $02], a
+	ret
 
 WardensHouse_TextPointers:
 	dw FuchsiaHouse2Text1
