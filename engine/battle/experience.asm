@@ -264,7 +264,7 @@ ExperienceReturnPoint::
 	ld a, [wd0b5]
 	ld [wd11e], a
 	sboptioncheck DONT_SKIP_MOVES
-	jr z, .vanilla
+	jr z, .lastLevel
 	ld a, [wTempLevel]
 	ld b, a
 	ld a, [wCurEnemyLVL]
@@ -273,16 +273,14 @@ ExperienceReturnPoint::
 	inc b
 	ld a, b
 	ld [wCurEnemyLVL], a
+	cp c
+	jr z, .lastLevel
 	push bc
 	predef LearnMoveFromLevelUp
 	pop bc
-	ld a, b
-	cp c
-	jr nz, .level_loop
-	jr .cont
-.vanilla
+	jr .level_loop
+.lastLevel
 	predef LearnMoveFromLevelUp
-.cont
 	ld hl, wCanEvolveFlags
 	ld a, [wWhichPokemon]
 	ld c, a
