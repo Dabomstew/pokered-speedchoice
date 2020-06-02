@@ -320,6 +320,7 @@ wSerialEnemyMonsPatchList:: ; c5d0
 	ds 160
 
 wTempPic::
+wTempLevel::
 wOverworldMap:: ; c6e8
 	ds BIGGEST_MAP_SIZE
 wOverworldMapEnd::

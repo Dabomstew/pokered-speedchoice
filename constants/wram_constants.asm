@@ -97,6 +97,9 @@ RACEGOAL_151DEX    EQU %10
 	sboption KEEP_WARDEN_CANDY ; 6
 	sboption DEX_AREA_BEEP ; 7
 	
+	optionbytestart
+	sboption DONT_SKIP_MOVES
+	
 NUM_PERMAOPTIONS_BYTES EQU optionbyte
 
 ; wSpeedchoiceFlags:

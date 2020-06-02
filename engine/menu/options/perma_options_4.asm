@@ -3,6 +3,8 @@ PermaOptions4String::
 	db "        :<LNBRK>"
 	db "KEEP WARDEN CANDY<LNBRK>"
 	db "        :<LNBRK>"
+	db "LEVELUP MOVES<LNBRK>"
+	db "        :<LNBRK>"
 	db "BOAT<LNBRK>"
 	db "        :<LNBRK>"
 	db "POKéMON PICS<LNBRK>"
@@ -11,6 +13,7 @@ PermaOptions4String::
 PermaOptions4Pointers::
 	dw Options_DexAreaBeep
 	dw Options_KeepWardenCandy
+	dw Options_SkipLevelupMoves
 	dw Options_Boat
 	dw Options_PokemonPics
 	dw Options_PermaOptionsPage
@@ -27,10 +30,24 @@ Options_KeepWardenCandy::
 	ld c, 5
 	jp Options_OnOff
 	
+Options_SkipLevelupMoves::
+	ld hl, DONT_SKIP_MOVES_ADDRESS
+	ld b, DONT_SKIP_MOVES
+	ld c, 7
+	ld de, .OptionNames
+	jp Options_TrueFalse
+.OptionNames
+	dw .Off
+	dw .On
+.Off
+	db "CAN SKIP@"
+.On
+	db "NO SKIP @"
+	
 Options_Boat::
 	ld hl, BACKWARDS_BOAT_ADDRESS
 	ld b, BACKWARDS_BOAT
-	ld c, 7
+	ld c, 9
 	ld de, .NormalMeme
 	jp Options_TrueFalse
 .NormalMeme
@@ -46,7 +63,7 @@ Options_PokemonPics:
 	jp Options_Multichoice
 	
 .Data:
-	multichoiceoptiondata PICSET_ADDRESS, PICSET_SHIFT, PICSET_SIZE, 9, NUM_OPTIONS, .Strings
+	multichoiceoptiondata PICSET_ADDRESS, PICSET_SHIFT, PICSET_SIZE, 11, NUM_OPTIONS, .Strings
 .Strings:
 	dw .Normal
 	dw .Green
