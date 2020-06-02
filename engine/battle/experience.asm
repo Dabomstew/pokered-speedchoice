@@ -279,6 +279,7 @@ ExperienceReturnPoint::
 	ld a, b
 	cp c
 	jr nz, .level_loop
+	jr .cont
 .vanilla
 	predef LearnMoveFromLevelUp
 .cont
