@@ -1,11 +1,14 @@
 ; macros for options
+optionbyte = 0
 optionbytestart: MACRO
+optionbyte = optionbyte + 1
 optionbit = 0
 ENDM
 
 sboption: MACRO
 \1 EQU optionbit
 \1_VAL EQU (1 << optionbit)
+\1_ADDRESS EQUS "wPermanentOptions + {optionbyte} - 1"
 optionbit = optionbit + 1
 ENDM
 
@@ -13,6 +16,7 @@ mboption: MACRO
 \1_SHIFT EQU optionbit
 \1_SIZE EQU \2
 \1_MASK EQU (1 << (optionbit + \2)) - (1 << optionbit)
+\1_ADDRESS EQUS "wPermanentOptions + {optionbyte} - 1"
 optionbit = optionbit + \2
 ENDM
 
@@ -80,6 +84,8 @@ RACEGOAL_151DEX    EQU %10
 	sboption B_FAST_MOVEMENT ; 5
 	sboption KEEP_WARDEN_CANDY ; 6
 	sboption DEX_AREA_BEEP ; 7
+	
+NUM_PERMAOPTIONS_BYTES EQU optionbyte
 
 ; wSpeedchoiceFlags:
 DEX_RACEGOAL_DONE EQU 0
