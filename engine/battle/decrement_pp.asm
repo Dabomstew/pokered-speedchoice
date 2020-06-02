@@ -1,7 +1,6 @@
 DecrementPP:
 ; after using a move, decrement pp in battle and (if not transformed?) in party
-	ld a, [wPermanentOptions2]
-	and (1 << METRONOME_ONLY)
+	sboptioncheck METRONOME_ONLY
 	ret nz
 	ld a, [de]
 	cp STRUGGLE

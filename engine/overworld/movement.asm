@@ -680,7 +680,7 @@ CanWalkOntoTile:
 	ld a, [H_CURRENTSPRITEOFFSET]
 	add $8
 	ld l, a
-	ld a, [wPermanentOptions]
+	ld a, [SPINNERS_ADDRESS]
 	and SPINNERS_MASK
 	jr z, .normal
 	dec a

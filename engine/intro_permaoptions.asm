@@ -7,8 +7,9 @@ VersionNumberTextEnd::
 IntroPermaOptions::
 	xor a
 	ld hl, wPermanentOptions
+	rept NUM_PERMAOPTIONS_BYTES - 1
 	ld [hli], a
-	ld [hli], a
+	endr
 	ld [hl], a
 	ld a, [wOptions]
 	push af
@@ -42,7 +43,7 @@ PrintPermaOptionsToScreen::
 	call PlaceString
 ; start in + race goal
 	coord hl, 1, 1
-	ld a, [wPermanentOptions3]
+	ld a, [STARTIN_ADDRESS]
 	ld b, a
 ; start in
 	and STARTIN_MASK
@@ -77,7 +78,7 @@ PrintPermaOptionsToScreen::
 	pop hl
 	call PlaceStringIncHL
 ; byte 1 stuff
-	ld a, [wPermanentOptions]
+	ld a, [SPINNERS_ADDRESS]
 	ld b, a
 ; spinners
 	and SPINNERS_MASK
@@ -103,7 +104,7 @@ PrintPermaOptionsToScreen::
 	call PlaceStringIncHL
 ; exp
 	ld a, b
-	and EXP_MASK
+	and EXP_FORMULA_MASK
 	srl a
 	srl a
 	push hl
@@ -190,10 +191,10 @@ PrintHexValueXoredWithOptions::
 ; a contains the value to be displayed
 	push hl
 	ld hl, wPermanentOptions
+	rept NUM_PERMAOPTIONS_BYTES - 1
 	xor [hl]
 	inc hl
-	xor [hl]
-	inc hl
+	endr
 	xor [hl]
 	ld b, a
 	pop hl

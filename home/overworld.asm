@@ -35,9 +35,7 @@ EnterMap::
 	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
 	set 6, [hl]
-	ld a, [wPermanentOptions3]
-	and RACEGOAL_MASK
-	cp RACEGOAL_151DEX << RACEGOAL_SHIFT
+	mboptioncheck RACEGOAL, 151DEX
 	jr nz, .continue
 	callab Check151DexRaceGoal
 .continue
@@ -51,9 +49,7 @@ OverworldLoopLessDelay::
 	call LoadGBPal
 	ld a, TIMER_OVERWORLD
 	ld [hTimerType], a
-	ld a, [wPermanentOptions3]
-	and RACEGOAL_MASK
-	cp RACEGOAL_151DEX << RACEGOAL_SHIFT
+	mboptioncheck RACEGOAL, 151DEX
 	jr nz, .no151
 	ld hl, wSpeedchoiceFlags
 	bit DEX_RACEGOAL_CHECK, [hl]
@@ -153,7 +149,7 @@ OverworldLoopLessDelay::
 .checkIfSelectButtonIsPressed
 	bit 2, a
 	jr z, .checkIfDownButtonIsPressed
-	ld a, [wPermanentOptions2]
+	ld a, [SELECTTO_ADDRESS]
 	and SELECTTO_MASK
 	jr z, .checkIfDownButtonIsPressed
 	ld hl, wOverworldSelectFlags
@@ -297,8 +293,7 @@ OverworldLoopLessDelay::
 	jr nz, .notBike
 	inc b
 .notBike
-	ld a, [wPermanentOptions4]
-	and B_FAST_MOVEMENT_VAL
+	sboptioncheck B_FAST_MOVEMENT
 	jr z, .apply
 	ld a, [hJoyHeld]
 	and B_BUTTON
@@ -2267,7 +2262,7 @@ LoadMapHeader::
 ; random facing direction for spinner hell, by lucky
 	bit 6, a
 	jr z, .notTrainerOrSpinnerHell
-	ld a, [wPermanentOptions]
+	ld a, [SPINNERS_ADDRESS]
 	and SPINNERS_MASK
 	jr z, .notTrainerOrSpinnerHell
 	dec hl

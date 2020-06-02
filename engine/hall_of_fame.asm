@@ -86,9 +86,7 @@ AnimateHallOfFame:
 	call HoFFadeOutScreenAndMusic
 	xor a
 	ld [hWY], a
-	ld a, [wPermanentOptions3]
-	and RACEGOAL_MASK
-	cp RACEGOAL_ELITEFOUR << RACEGOAL_SHIFT
+	mboptioncheck RACEGOAL, ELITEFOUR
 	jr nz, .done
 	ld hl, wSpeedchoiceFlags
 	set HOF_STATS_SCREEN, [hl]

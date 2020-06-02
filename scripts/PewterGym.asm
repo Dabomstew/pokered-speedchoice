@@ -1,6 +1,5 @@
 PewterGym_Script:
-	ld a, [wPermanentOptions]
-	and (1 << NERF_PEWTER_GYM)
+	sboptioncheck NERF_PEWTER_GYM
 	jr z, .continue
 	ld a, 2 ; alt brock roster
 	ld [wMapSpriteExtraData + 1], a

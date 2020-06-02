@@ -137,8 +137,7 @@ CeladonGameCornerText1:
 
 CeladonGameCornerText2:
 	TX_ASM
-	ld a, [wPermanentOptions2]
-	and (1 << BETTER_GAME_CORNER)
+	sboptioncheck BETTER_GAME_CORNER
 	jr z, .normal
 	jp .better
 .normal

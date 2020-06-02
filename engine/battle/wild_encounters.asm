@@ -77,8 +77,7 @@ TryDoWildEncounter:
 	ld [wCurEnemyLVL], a
 	ld a, [hl]
 	ld [wcf91], a
-	ld a, [wPermanentOptions2]
-	and (1 << GOOD_EARLY_WILDS)
+	sboptioncheck GOOD_EARLY_WILDS
 	jr z, .noEvolve
 	ld a, [wCurEnemyLVL]
 	cp 10

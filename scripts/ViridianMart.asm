@@ -10,8 +10,7 @@ ViridianMartScript_1d47d:
 	ld hl, ViridianMart_TextPointers
 	jr .asm_1d48c
 .asm_1d489
-	ld a, [wPermanentOptions]
-	and (1 << BETTER_MARTS)
+	sboptioncheck BETTER_MARTS
 	ld hl, ViridianMart_TextPointers2
 	jr z, .asm_1d48c
 	ld hl, ViridianMart_TextPointers3

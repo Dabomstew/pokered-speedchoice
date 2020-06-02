@@ -25,7 +25,7 @@ PermaOptions2Pointers::
 	dw Options_PermaOptionsPage
 	
 Options_Delays:: ; 3
-	ld hl, wPermanentOptions2
+	ld hl, SHORT_DELAYS_ADDRESS
 	ld b, SHORT_DELAYS
 	ld c, 3
 	ld de, .NormalFast
@@ -39,13 +39,13 @@ Options_Delays:: ; 3
 	db "FAST  @"
 	
 Options_MetronomeOnly:: ; 5
-	ld hl, wPermanentOptions2
+	ld hl, METRONOME_ONLY_ADDRESS
 	ld b, METRONOME_ONLY
 	ld c, 5
 	jp Options_OnOff
 	
 Options_ShakeMoves::
-	ld hl, wPermanentOptions
+	ld hl, ALL_MOVES_SHAKE_ADDRESS
 	ld b, ALL_MOVES_SHAKE
 	ld c, 7
 	ld de, .NormalAll
@@ -63,7 +63,7 @@ Options_EXP:
 	jp Options_Multichoice
 	
 .Data:
-	multichoiceoptiondata wPermanentOptions, EXP_SHIFT, EXP_SIZE, 9, NUM_OPTIONS, .Strings
+	multichoiceoptiondata EXP_FORMULA_ADDRESS, EXP_FORMULA_SHIFT, EXP_FORMULA_SIZE, 9, NUM_OPTIONS, .Strings
 .Strings:
 	dw .Normal
 	dw .BW
@@ -78,13 +78,13 @@ Options_EXP:
 	db "NONE  @"
 	
 Options_GoodEarlyWilds:: ; 11
-	ld hl, wPermanentOptions2
+	ld hl, GOOD_EARLY_WILDS_ADDRESS
 	ld b, GOOD_EARLY_WILDS
 	ld c, 11
 	jp Options_OnOff
 	
 Options_BetterMarts::
-	ld hl, wPermanentOptions
+	ld hl, BETTER_MARTS_ADDRESS
 	ld b, BETTER_MARTS
 	ld c, 13
 	jp Options_OnOff
@@ -94,7 +94,7 @@ Options_SelectTo:: ; 15
 	jp Options_Multichoice
 	
 .Data:
-	multichoiceoptiondata wPermanentOptions2, SELECTTO_SHIFT, SELECTTO_SIZE, 15, NUM_OPTIONS, .Strings
+	multichoiceoptiondata SELECTTO_ADDRESS, SELECTTO_SHIFT, SELECTTO_SIZE, 15, NUM_OPTIONS, .Strings
 .Strings:
 	dw .None
 	dw .Bike

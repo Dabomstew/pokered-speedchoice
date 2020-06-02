@@ -3,8 +3,7 @@ CeladonMart4F_Script:
 	jp EnableAutoTextBoxDrawing
 	
 CeladonMart4F_ChooseTextPointer:
-	ld a, [wPermanentOptions]
-	and (1 << BETTER_MARTS)
+	sboptioncheck BETTER_MARTS
 	ld hl, CeladonMart4F_TextPointers
 	jr z, .write
 	ld hl, CeladonMart4F_TextPointers_BM

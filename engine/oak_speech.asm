@@ -43,8 +43,7 @@ OakSpeech:
 	ldafarbyte KeyItemRandoActive
 	and a
 	call nz, HideShowObjectsKeyItemRando
-	ld a, [wPermanentOptions4]
-	and EARLY_VICTORY_ROAD_VAL
+	sboptioncheck EARLY_VICTORY_ROAD
 	call nz, HideShowGuardsEarlyVR
 	call ClearScreen
 	call OakSpeechBagItems
@@ -265,15 +264,13 @@ HideShowGuardsEarlyVR:
 	predef_jump HideObject
 	
 OakSpeechBagItems::
-	ld a, [wPermanentOptions4]
-	and START_WITH_BIKE_VAL
+	sboptioncheck START_WITH_BIKE
 	jr z, .drink
 	ld a, BICYCLE
 	ld hl, wNumBagItems
 	call OakSpeechGiveItem
 .drink
-	ld a, [wPermanentOptions3]
-	and START_WITH_DRINK_VAL
+	sboptioncheck START_WITH_DRINK
 	ret z
 	ld a, FRESH_WATER
 	ld hl, wNumBagItems
@@ -284,7 +281,7 @@ OakSpeechBoxItems::
 	ld hl, wNumBoxItems
 	call OakSpeechGiveItem
 ; also give a pokedex if not normal startin
-	ld a, [wPermanentOptions3]
+	ld a, [STARTIN_ADDRESS]
 	and STARTIN_MASK
 	ret z
 	ld a, POKEDEX_NEW

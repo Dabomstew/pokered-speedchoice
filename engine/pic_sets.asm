@@ -1,6 +1,6 @@
 LoadFrontPicFromSet::
 ; get pointer to correct picset from option selected
-	ld a, [wPermanentOptions4]
+	ld a, [PICSET_ADDRESS]
 	and PICSET_MASK
 	dec a
 	add a

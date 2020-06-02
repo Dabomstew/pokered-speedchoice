@@ -164,8 +164,7 @@ SaveSAV:
 	coord hl, 1, 14
 	ld de, NowSavingString
 	call PlaceString
-	ld a, [wPermanentOptions2]
-	and (1 << SHORT_DELAYS)
+	sboptioncheck SHORT_DELAYS
 	ld c, 120
 	jr z, .delay
 	ld c, 3
@@ -176,8 +175,7 @@ SaveSAV:
 	ld a, SFX_SAVE
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
-	ld a, [wPermanentOptions2]
-	and (1 << SHORT_DELAYS)
+	sboptioncheck SHORT_DELAYS
 	ld c, 30
 	jr z, .delay2
 	ld c, 3

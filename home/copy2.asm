@@ -203,8 +203,7 @@ CopyVideoDataDelay::
 	ld a, [H_INGAME]
 	and a
 	ret z
-	ld a, [wPermanentOptions2]
-	and (1 << SHORT_DELAYS)
+	sboptioncheck SHORT_DELAYS
 	ret nz
 ; delay frames to pretend we aren't doing this super fast
 	ld a, c

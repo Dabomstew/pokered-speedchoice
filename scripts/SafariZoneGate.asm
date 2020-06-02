@@ -178,8 +178,7 @@ SafariZoneGate_TextPointers:
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
-	ld a, [wPermanentOptions2]
-	and EASY_SAFARI_VAL
+	sboptioncheck EASY_SAFARI
 	ld a, 30
 	ld bc, 502
 	jr z, .set

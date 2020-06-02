@@ -394,8 +394,7 @@ PrintSaveScreenText:
 	call PrintPlayTime
 	ld a, $1
 	ld [H_AUTOBGTRANSFERENABLED], a
-	ld a, [wPermanentOptions2]
-	and (1 << SHORT_DELAYS)
+	sboptioncheck SHORT_DELAYS
 	ld c, 30
 	jr z, .delay
 	ld c, 3

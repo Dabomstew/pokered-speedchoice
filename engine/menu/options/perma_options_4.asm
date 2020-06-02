@@ -16,19 +16,19 @@ PermaOptions4Pointers::
 	dw Options_PermaOptionsPage
 	
 Options_DexAreaBeep::
-	ld hl, wPermanentOptions4
+	ld hl, DEX_AREA_BEEP_ADDRESS
 	ld b, DEX_AREA_BEEP
 	ld c, 3
 	jp Options_OnOff
 	
 Options_KeepWardenCandy::
-	ld hl, wPermanentOptions4
+	ld hl, KEEP_WARDEN_CANDY_ADDRESS
 	ld b, KEEP_WARDEN_CANDY
 	ld c, 5
 	jp Options_OnOff
 	
 Options_Boat::
-	ld hl, wPermanentOptions2
+	ld hl, BACKWARDS_BOAT_ADDRESS
 	ld b, BACKWARDS_BOAT
 	ld c, 7
 	ld de, .NormalMeme
@@ -46,7 +46,7 @@ Options_PokemonPics:
 	jp Options_Multichoice
 	
 .Data:
-	multichoiceoptiondata wPermanentOptions4, PICSET_SHIFT, PICSET_SIZE, 9, NUM_OPTIONS, .Strings
+	multichoiceoptiondata PICSET_ADDRESS, PICSET_SHIFT, PICSET_SIZE, 9, NUM_OPTIONS, .Strings
 .Strings:
 	dw .Normal
 	dw .Green

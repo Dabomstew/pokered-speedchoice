@@ -291,8 +291,7 @@ Char51:: ; para
 	coord hl, 1, 13
 	lb bc, 4, 18
 	call ClearScreenArea
-	ld a, [wPermanentOptions2]
-	and (1 << SHORT_DELAYS)
+	sboptioncheck SHORT_DELAYS
 	jr z, .vanilla
 	call DelayFrame
 	jr .end
@@ -313,8 +312,7 @@ Char49::
 	coord hl, 1, 10
 	lb bc, 7, 18
 	call ClearScreenArea
-	ld a, [wPermanentOptions2]
-	and (1 << SHORT_DELAYS)
+	sboptioncheck SHORT_DELAYS
 	jr z, .vanilla
 	call DelayFrame
 	jr .end
@@ -369,8 +367,7 @@ ScrollTextUpOneLine::
 	jr nz, .clearText
 
 	; wait five frames
-	ld a, [wPermanentOptions2]
-	and (1 << SHORT_DELAYS)
+	sboptioncheck SHORT_DELAYS
 	ld b, 5
 	jr z, .WaitFrame
 	ld b, 1

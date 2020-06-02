@@ -553,7 +553,7 @@ GetMonHeader::
 	ld de, wMonHeader
 	ld bc, MonBaseStatsEnd - MonBaseStats
 	call CopyData
-	ld a, [wPermanentOptions4]
+	ld a, [PICSET_ADDRESS]
 	and PICSET_MASK
 	jr z, .done
 	callab LoadFrontPicFromSet
@@ -1289,8 +1289,7 @@ DisplayListMenuID::
 	ld [wTopMenuItemX], a
 	ld a, A_BUTTON | B_BUTTON | SELECT
 	ld [wMenuWatchedKeys], a
-	ld a, [wPermanentOptions2]
-	and (1 << SHORT_DELAYS)
+	sboptioncheck SHORT_DELAYS
 	ld c, 10
 	jr z, .call
 	ld c, 1
@@ -2341,8 +2340,7 @@ CheckForEngagingTrainers::
 	xor a
 	call ReadTrainerHeaderInfo       ; get trainer header pointer
 	inc hl
-	ld a, [wPermanentOptions]
-	bit MAX_RANGE, a
+	sboptioncheck MAX_RANGE
 	ld a, $50
 	jr nz, .loadedVision
 	ld a, [hl]                       ; read trainer engage distance
@@ -3113,8 +3111,7 @@ GetItemPrice::
 	jr nc, .getTMPrice
 	cp MOON_STONE
 	jr nz, .normal
-	ld a, [wPermanentOptions]
-	and BETTER_MARTS_VAL
+	sboptioncheck BETTER_MARTS
 	ld a, MOON_STONE
 	jr z, .normal
 ; moon stone costs 2100 if better marts is on
@@ -4095,8 +4092,7 @@ Delay3::
 	and a
 	jp nz, DelayFrames
 .optionsCheck
-	ld a, [wPermanentOptions2]
-	and (1 << SHORT_DELAYS)
+	sboptioncheck SHORT_DELAYS
 	jp z, DelayFrames
 	jp DelayFrame
 

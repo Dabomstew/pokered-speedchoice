@@ -8,8 +8,7 @@ WardensHouse_SetRareCandy:
 	bit 5, [hl]
 	res 5, [hl]
 	ret z
-	ld a, [wPermanentOptions4]
-	and KEEP_WARDEN_CANDY_VAL
+	sboptioncheck KEEP_WARDEN_CANDY
 	ret z
 	ld a, RARE_CANDY
 	ld [wMapSpriteExtraData + $02], a

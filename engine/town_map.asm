@@ -125,8 +125,7 @@ LoadTownMap_Nest:
 	ld de, MonsNestText
 	call PlaceString
 	; dex area beep?
-	ld a, [wPermanentOptions4]
-	and DEX_AREA_BEEP_VAL
+	sboptioncheck DEX_AREA_BEEP
 	jr z, .reallyDone
 	ld a, [wGrassRate]
 	and a

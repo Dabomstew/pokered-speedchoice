@@ -20,6 +20,19 @@ mboption: MACRO
 optionbit = optionbit + \2
 ENDM
 
+; z if option off, nz if option on
+sboptioncheck: MACRO
+	ld a, [\1_ADDRESS]
+	and \1_VAL
+ENDM
+
+; nz if selection does not match, z if selection matches (careful of difference vs above!)
+mboptioncheck: MACRO
+	ld a, [\1_ADDRESS]
+	and \1_MASK
+	cp \1_\2 << \1_SHIFT
+ENDM
+
 ; wOptions:
 	optionbytestart
 	mboption TEXT_SPEED, 2
@@ -37,23 +50,23 @@ TEXT_SLOW    EQU %11
 	optionbytestart
 	mboption FRAME, 4
 
-; wPermanentOptions:
+; permaoptions
+optionbyte = 0
 	optionbytestart
 	mboption SPINNERS, 2 ; 0
 	sboption MAX_RANGE ; 2
-	mboption EXP, 2 ; 3
+	mboption EXP_FORMULA, 2 ; 3
 	sboption BETTER_MARTS ; 5
 	sboption NERF_PEWTER_GYM ; 6
 	sboption ALL_MOVES_SHAKE ; 7
 
-EXP_NORMAL     EQU %00
-EXP_BLACKWHITE EQU %01
-EXP_NONE       EQU %10
+EXP_FORMULA_NORMAL     EQU %00
+EXP_FORMULA_BLACKWHITE EQU %01
+EXP_FORMULA_NO_EXP     EQU %10
 
 SPINNERHELL_NORMAL_SPEED EQU %1111
 SPINNERHELL_WHY_SPEED EQU %11
 
-; wPermanentOptions2:
 	optionbytestart
 	sboption SHORT_DELAYS ; 0
 	sboption GOOD_EARLY_WILDS ; 1
@@ -67,7 +80,6 @@ SELECTTO_NONE EQU %00
 SELECTTO_BIKE EQU %01
 SELECTTO_JACK EQU %10
 
-; wPermanentOptions3:
 	optionbytestart
 	mboption STARTIN, 4 ; 0 - there are only 5 atm, but leaving space for up to 16
 	mboption RACEGOAL, 2 ; 4
@@ -77,7 +89,6 @@ RACEGOAL_MANUAL    EQU %00
 RACEGOAL_ELITEFOUR EQU %01
 RACEGOAL_151DEX    EQU %10
 
-; wPermanentOptions4:
 	optionbytestart
 	mboption PICSET, 3 ; 0 - only 3 atm, but leaving space for up to 8
 	sboption EARLY_VICTORY_ROAD ; 3

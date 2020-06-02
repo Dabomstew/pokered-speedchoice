@@ -201,8 +201,7 @@ ItemUseBall:
 	cp SAFARI_BALL
 	jr nz, .notSafari
 	
-	ld a, [wPermanentOptions2]
-	and EASY_SAFARI_VAL
+	sboptioncheck EASY_SAFARI
 	ld a, SAFARI_BALL
 	jp nz, .captured
 	

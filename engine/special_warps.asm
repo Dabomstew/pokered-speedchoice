@@ -53,7 +53,7 @@ LoadSpecialWarpData:
 	bit 2, a
 	jr nz, .notFirstMap
 ; first map - check "start in" choice
-	ld a, [wPermanentOptions3]
+	ld a, [STARTIN_ADDRESS]
 	and STARTIN_MASK
 	ld hl, FirstMapSpec
 	jr z, .copyWarpData

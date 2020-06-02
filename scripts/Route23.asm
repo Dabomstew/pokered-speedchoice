@@ -25,8 +25,7 @@ Route23_ScriptPointers:
 	dw Route23Script2
 
 Route23Script0:
-	ld a, [wPermanentOptions4]
-	and EARLY_VICTORY_ROAD_VAL
+	sboptioncheck EARLY_VICTORY_ROAD
 	jr z, .normalLines
 	ld a, [wYCoord]
 	cp $15

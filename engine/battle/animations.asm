@@ -491,8 +491,7 @@ ShakeScreenHorizontallySlow:
 	jr AnimationShakeScreenHorizontallySlow
 
 BlinkEnemyMonSprite:
-	ld a, [wPermanentOptions]
-	and (1 << ALL_MOVES_SHAKE)
+	sboptioncheck ALL_MOVES_SHAKE
 	jr nz, ShakeScreenHorizontallyLight
 	call PlayApplyingAttackSound
 	jp AnimationBlinkEnemyMon

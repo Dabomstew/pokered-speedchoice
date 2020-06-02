@@ -2553,16 +2553,10 @@ wCurPalette::
 	ds 1
 wPermanentOptionsStart::
 wPermanentOptions::
-	ds 1
-wPermanentOptions2::
-	ds 1
-wPermanentOptions3::
-	ds 1
-wPermanentOptions4::
-	ds 1
+	ds NUM_PERMAOPTIONS_BYTES
 wPermanentOptionsEnd::
 ; leave some space for more permaoptions to try to preserve save compat
-	ds 4
+	ds 8 - NUM_PERMAOPTIONS_BYTES
 wSpeedchoiceFlags::
 ; bit 0: seen done screen for reaching 151 dex
 ; bit 1: exiting 151 done screen, don't pop bank in CloseTextDisplay

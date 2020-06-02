@@ -3,8 +3,7 @@ CeruleanMart_Script:
 	jp EnableAutoTextBoxDrawing
 	
 CeruleanMart_ChooseTextPointer:
-	ld a, [wPermanentOptions]
-	and (1 << BETTER_MARTS)
+	sboptioncheck BETTER_MARTS
 	ld hl, CeruleanMart_TextPointers
 	jr z, .write
 	ld hl, CeruleanMart_TextPointers_BM

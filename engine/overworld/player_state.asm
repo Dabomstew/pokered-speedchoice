@@ -248,8 +248,7 @@ PrintSafariZoneSteps:
 	lb bc, 2, 3
 	call PrintNumber
 	coord hl, 4, 1
-	ld a, [wPermanentOptions2]
-	and EASY_SAFARI_VAL
+	sboptioncheck EASY_SAFARI
 	ld de, SafariSteps
 	jr z, .place
 	ld de, ExtraSafariSteps

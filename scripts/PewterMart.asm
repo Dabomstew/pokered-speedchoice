@@ -6,8 +6,7 @@ PewterMart_Script:
 	ret
 	
 PewterMart_ChooseTextPointer:
-	ld a, [wPermanentOptions]
-	and (1 << BETTER_MARTS)
+	sboptioncheck BETTER_MARTS
 	ld hl, PewterMart_TextPointers
 	jr z, .write
 	ld hl, PewterMart_TextPointers_BM

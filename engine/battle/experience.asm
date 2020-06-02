@@ -3,9 +3,7 @@ GainExperience:
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
 	; kill immediately if no exp
-	ld a, [wPermanentOptions]
-	and EXP_MASK
-	cp EXP_NONE << EXP_SHIFT
+	mboptioncheck EXP_FORMULA, NO_EXP
 	ret z
 	call DivideExpDataByNumMonsGainingExp
 	ld hl, wPartyMon1
@@ -59,9 +57,7 @@ ExperiencePartyLoop ; loop over each mon and add gained exp
 	inc de
 	jr .gainStatExpLoop
 .statExpDone
-	ld a, [wPermanentOptions]
-	and EXP_MASK
-	cp EXP_BLACKWHITE << EXP_SHIFT
+	mboptioncheck EXP_FORMULA, BLACKWHITE
 	jp z, BlackWhiteEXP
 	xor a
 	ld [H_MULTIPLICAND], a

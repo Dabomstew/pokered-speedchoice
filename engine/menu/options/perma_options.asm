@@ -24,11 +24,9 @@ PermaOptionsPointers::
 	dw Options_TrainerVision
 	dw Options_PermaOptionsPage
 	
-PERMAOPTIONS_NUM_BYTES EQU 4 ; wPermanentOptionsEnd - wPermanentOptionsStart
-	
 permaoptionspreset: MACRO
 	dw \1
-rept PERMAOPTIONS_NUM_BYTES
+rept NUM_PERMAOPTIONS_BYTES
 	db \2
 	shift
 endr
@@ -38,9 +36,9 @@ PermaOptionsPresets:
 	; Vanilla
 	permaoptionspreset Preset_VanillaName, 0, 0, 0, 0
 	; Bingo
-	permaoptionspreset Preset_BingoName, (EXP_BLACKWHITE << EXP_SHIFT) | BETTER_MARTS_VAL | NERF_PEWTER_GYM_VAL | ALL_MOVES_SHAKE_VAL, SHORT_DELAYS_VAL | BACKWARDS_BOAT_VAL | BETTER_GAME_CORNER_VAL | (SELECTTO_BIKE << SELECTTO_SHIFT) | EASY_SAFARI_VAL, 0, EARLY_VICTORY_ROAD_VAL | B_FAST_MOVEMENT_VAL | KEEP_WARDEN_CANDY_VAL | DEX_AREA_BEEP_VAL
+	permaoptionspreset Preset_BingoName, (EXP_FORMULA_BLACKWHITE << EXP_FORMULA_SHIFT) | BETTER_MARTS_VAL | NERF_PEWTER_GYM_VAL | ALL_MOVES_SHAKE_VAL, SHORT_DELAYS_VAL | BACKWARDS_BOAT_VAL | BETTER_GAME_CORNER_VAL | (SELECTTO_BIKE << SELECTTO_SHIFT) | EASY_SAFARI_VAL, 0, EARLY_VICTORY_ROAD_VAL | B_FAST_MOVEMENT_VAL | KEEP_WARDEN_CANDY_VAL | DEX_AREA_BEEP_VAL
 	; 251
-	permaoptionspreset Preset_CEAName, (EXP_BLACKWHITE << EXP_SHIFT) | BETTER_MARTS_VAL | NERF_PEWTER_GYM_VAL | ALL_MOVES_SHAKE_VAL, SHORT_DELAYS_VAL | BACKWARDS_BOAT_VAL | BETTER_GAME_CORNER_VAL | (SELECTTO_BIKE << SELECTTO_SHIFT) | EASY_SAFARI_VAL, (RACEGOAL_151DEX << RACEGOAL_SHIFT), EARLY_VICTORY_ROAD_VAL | B_FAST_MOVEMENT_VAL | KEEP_WARDEN_CANDY_VAL | DEX_AREA_BEEP_VAL
+	permaoptionspreset Preset_CEAName, (EXP_FORMULA_BLACKWHITE << EXP_FORMULA_SHIFT) | BETTER_MARTS_VAL | NERF_PEWTER_GYM_VAL | ALL_MOVES_SHAKE_VAL, SHORT_DELAYS_VAL | BACKWARDS_BOAT_VAL | BETTER_GAME_CORNER_VAL | (SELECTTO_BIKE << SELECTTO_SHIFT) | EASY_SAFARI_VAL, (RACEGOAL_151DEX << RACEGOAL_SHIFT), EARLY_VICTORY_ROAD_VAL | B_FAST_MOVEMENT_VAL | KEEP_WARDEN_CANDY_VAL | DEX_AREA_BEEP_VAL
 PermaOptionsPresetsEnd:
 
 Preset_VanillaName:
@@ -62,7 +60,7 @@ Options_Preset::
 	call .get_pointer
 	inc hl
 	inc hl
-	ld b, PERMAOPTIONS_NUM_BYTES
+	ld b, NUM_PERMAOPTIONS_BYTES
 	ld de, wPermanentOptions
 .setloop
 	ld a, [hli]
@@ -80,7 +78,7 @@ Options_Preset::
 .incr
 	inc c
 	ld a, c
-	cp (PermaOptionsPresetsEnd - PermaOptionsPresets) / (PERMAOPTIONS_NUM_BYTES + 2)
+	cp (PermaOptionsPresetsEnd - PermaOptionsPresets) / (NUM_PERMAOPTIONS_BYTES + 2)
 	jr c, .okay
 	ld c, 0
 	jr .okay
@@ -90,7 +88,7 @@ Options_Preset::
 	dec c
 	and a
 	jr nz, .okay
-	ld c, (PermaOptionsPresetsEnd - PermaOptionsPresets) / (PERMAOPTIONS_NUM_BYTES + 2) - 1
+	ld c, (PermaOptionsPresetsEnd - PermaOptionsPresets) / (NUM_PERMAOPTIONS_BYTES + 2) - 1
 .okay
 	ld [hl], c
 .print
@@ -106,7 +104,7 @@ Options_Preset::
 .get_pointer
 	ld b, 0
 	ld hl, PermaOptionsPresets
-rept (PERMAOPTIONS_NUM_BYTES + 2)
+rept (NUM_PERMAOPTIONS_BYTES + 2)
 	add hl, bc
 endr
 	ret
@@ -170,9 +168,9 @@ Options_StartIn::
 	and a
 	jr z, .normal
 ; with KeyItemRando on, disable startin and set it to normal (0)
-	ld a, [wPermanentOptions3]
+	ld a, [STARTIN_ADDRESS]
 	and $ff ^ STARTIN_MASK
-	ld [wPermanentOptions3], a
+	ld [STARTIN_ADDRESS], a
 	ld de, .KIROn
 	coord hl, 11, 8
 	call PlaceString
@@ -184,7 +182,7 @@ Options_StartIn::
 	jp Options_Multichoice
 	
 .Data:
-	multichoiceoptiondata wPermanentOptions3, STARTIN_SHIFT, STARTIN_SIZE, 9, NUM_OPTIONS, .Strings
+	multichoiceoptiondata STARTIN_ADDRESS, STARTIN_SHIFT, STARTIN_SIZE, 9, NUM_OPTIONS, .Strings
 	
 .Strings:
 	dw .Normal
@@ -212,7 +210,7 @@ Options_RaceGoal:: ; 11
 	jp Options_Multichoice
 	
 .Data:
-	multichoiceoptiondata wPermanentOptions3, RACEGOAL_SHIFT, RACEGOAL_SIZE, 11, NUM_OPTIONS, .Strings
+	multichoiceoptiondata RACEGOAL_ADDRESS, RACEGOAL_SHIFT, RACEGOAL_SIZE, 11, NUM_OPTIONS, .Strings
 	
 .Strings:
 	dw .Manual
@@ -232,7 +230,7 @@ Options_Spinners:
 	jp Options_Multichoice
 	
 .Data:
-	multichoiceoptiondata wPermanentOptions, SPINNERS_SHIFT, SPINNERS_SIZE, 13, NUM_OPTIONS, .Strings
+	multichoiceoptiondata SPINNERS_ADDRESS, SPINNERS_SHIFT, SPINNERS_SIZE, 13, NUM_OPTIONS, .Strings
 	
 .Strings:
 	dw .Normal
@@ -248,7 +246,7 @@ Options_Spinners:
 	db "WHY   @"
 	
 Options_TrainerVision:
-	ld hl, wPermanentOptions
+	ld hl, MAX_RANGE_ADDRESS
 	ld b, MAX_RANGE
 	ld c, 15
 	ld de, .NormalMax
