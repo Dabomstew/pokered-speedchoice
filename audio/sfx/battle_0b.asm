@@ -1,3 +1,4 @@
-SFX_Battle_0B_Ch7:
-	noisenote 8, 15, 1, 84
+SFX_Battle_0B_Ch1: ; 204c8 (8:44c8)
+	unknownnoise0x20 8, 241, 84
 	endchannel
+; 0x204cc

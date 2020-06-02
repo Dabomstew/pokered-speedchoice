@@ -1,3 +1,7 @@
+; Boolean checks
+FALSE EQU 0
+TRUE  EQU 1
+
 MAX_LEVEL EQU 100
 
 NUM_MOVES     EQU 4

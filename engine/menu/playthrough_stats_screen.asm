@@ -8,7 +8,6 @@ NUM_STAT_SCREENS EQUS "(PlaythroughStatsScreensEnd - PlaythroughStatsScreens)/4"
 
 PlaythroughStatsScreen::
 	ld a, MUSIC_GAME_CORNER
-	ld c, BANK(Music_GameCorner)
 	call PlayMusic
 	xor a
 	ld [wOptionsMenuID], a

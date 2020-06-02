@@ -1,5 +1,6 @@
-SFX_Damage_Ch7:
-	noisenote 2, 15, 4, 68
-	noisenote 2, 15, 4, 20
-	noisenote 15, 15, 1, 50
+SFX_Damage_Ch1: ; 204f4 (8:44f4)
+	unknownnoise0x20 2, 244, 68
+	unknownnoise0x20 2, 244, 20
+	unknownnoise0x20 15, 241, 50
 	endchannel
+; 0x204fe

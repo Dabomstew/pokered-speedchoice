@@ -1,22 +1,23 @@
-SFX_SS_Anne_Horn_1_Ch4:
-	duty 2
-	squarenote 15, 15, 0, 1280
-	squarenote 4, 0, 0, 0
-	squarenote 15, 15, 0, 1280
-	squarenote 15, 15, 0, 1280
-	squarenote 15, 15, 0, 1280
-	squarenote 15, 15, 0, 1280
-	squarenote 15, 15, 2, 1280
+SFX_SS_Anne_Horn_1_Ch1: ; 866d (2:466d)
+	dutycycle 2
+	unknownsfx0x20 15, 240, 0, 5
+	unknownsfx0x20 4, 0, 0, 0
+	unknownsfx0x20 15, 240, 0, 5
+	unknownsfx0x20 15, 240, 0, 5
+	unknownsfx0x20 15, 240, 0, 5
+	unknownsfx0x20 15, 240, 0, 5
+	unknownsfx0x20 15, 242, 0, 5
 	endchannel
 
 
-SFX_SS_Anne_Horn_1_Ch5:
-	duty 3
-	squarenote 15, 15, 0, 1154
-	squarenote 4, 0, 0, 0
-	squarenote 15, 15, 0, 1154
-	squarenote 15, 15, 0, 1154
-	squarenote 15, 15, 0, 1154
-	squarenote 15, 15, 0, 1154
-	squarenote 15, 15, 2, 1154
+SFX_SS_Anne_Horn_1_Ch2: ; 868c (2:468c)
+	dutycycle 3
+	unknownsfx0x20 15, 240, 130, 4
+	unknownsfx0x20 4, 0, 0, 0
+	unknownsfx0x20 15, 240, 130, 4
+	unknownsfx0x20 15, 240, 130, 4
+	unknownsfx0x20 15, 240, 130, 4
+	unknownsfx0x20 15, 240, 130, 4
+	unknownsfx0x20 15, 242, 130, 4
 	endchannel
+; 0x86ab

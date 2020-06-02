@@ -1,18 +1,19 @@
-SFX_Battle_33_Ch4:
-	duty 2
-	squarenote 6, 15, 1, 1280
-	squarenote 6, 15, 1, 1408
-	squarenote 6, 15, 1, 1536
-	squarenote 6, 15, 1, 1664
-	squarenote 8, 15, 1, 1792
+SFX_Battle_33_Ch1: ; 20887 (8:4887)
+	dutycycle 2
+	unknownsfx0x20 6, 241, 0, 5
+	unknownsfx0x20 6, 241, 128, 5
+	unknownsfx0x20 6, 241, 0, 6
+	unknownsfx0x20 6, 241, 128, 6
+	unknownsfx0x20 8, 241, 0, 7
 	endchannel
 
 
-SFX_Battle_33_Ch5:
-	duty 3
-	squarenote 6, 14, 1, 1296
-	squarenote 6, 14, 1, 1424
-	squarenote 6, 14, 1, 1552
-	squarenote 6, 14, 1, 1680
-	squarenote 8, 14, 1, 1808
+SFX_Battle_33_Ch2: ; 2089e (8:489e)
+	dutycycle 3
+	unknownsfx0x20 6, 225, 16, 5
+	unknownsfx0x20 6, 225, 144, 5
+	unknownsfx0x20 6, 225, 16, 6
+	unknownsfx0x20 6, 225, 144, 6
+	unknownsfx0x20 8, 225, 16, 7
 	endchannel
+; 0x208b5

@@ -1,6 +1,7 @@
-SFX_Collision_1_Ch4:
-	duty 2
-	pitchenvelope 5, -2
-	squarenote 15, 15, 1, 768
-	pitchenvelope 0, 0
+SFX_Collision_1_Ch1: ; 8447 (2:4447)
+	dutycycle 2
+	unknownsfx0x10 90
+	unknownsfx0x20 15, 241, 0, 3
+	unknownsfx0x10 8
 	endchannel
+; 0x8452

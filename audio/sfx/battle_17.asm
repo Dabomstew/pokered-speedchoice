@@ -1,6 +1,7 @@
-SFX_Battle_17_Ch7:
-	noisenote 2, 9, 4, 51
-	noisenote 4, 11, 4, 34
-	noisenote 4, 15, 1, 68
-	noisenote 8, 15, 1, 85
+SFX_Battle_17_Ch1: ; 20556 (8:4556)
+	unknownnoise0x20 2, 148, 51
+	unknownnoise0x20 4, 180, 34
+	unknownnoise0x20 4, 241, 68
+	unknownnoise0x20 8, 241, 85
 	endchannel
+; 0x20563

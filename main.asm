@@ -1786,3 +1786,7 @@ CrystalFrame9: INCBIN "gfx/frames/9.1bpp"
 SECTION "pic_sets", ROMX
 
 INCLUDE "engine/pic_sets.asm"
+
+SECTION "Bill's PC", ROMX
+
+INCLUDE "engine/menu/bills_pc.asm"

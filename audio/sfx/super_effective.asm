@@ -1,4 +1,5 @@
-SFX_Super_Effective_Ch7:
-	noisenote 4, 15, 1, 52
-	noisenote 15, 15, 2, 100
+SFX_Super_Effective_Ch1: ; 20574 (8:4574)
+	unknownnoise0x20 4, 241, 52
+	unknownnoise0x20 15, 242, 100
 	endchannel
+; 0x2057b

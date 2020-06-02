@@ -1,5 +1,5 @@
 _UpdateSprites:
-	ld h, $c1
+	ld h, (wSpriteStateData1 / $100)
 	inc h
 	ld a, $e    ; wSpriteStateData2 + $0e
 .spriteLoop

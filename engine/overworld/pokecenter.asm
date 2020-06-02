@@ -24,13 +24,10 @@ DisplayPokemonCenterDialogue_:
 	predef HealParty
 	callba AnimateHealingMachine ; do the healing machine animation
 	xor a
-	ld [wAudioFadeOutControl], a
-	ld a, [wAudioSavedROMBank]
-	ld [wAudioROMBank], a
+	ld [wMusicFade], a
 	ld a, [wMapMusicSoundID]
 	ld [wLastMusicSoundID], a
-	ld [wNewSoundID], a
-	call PlaySound
+	call PlayMusic
 	ld hl, PokemonFightingFitText
 	call PrintText
 	ld a, $14

@@ -200,7 +200,7 @@ PlayAnimation:
 	push hl
 	push de
 	call GetMoveSound
-	call PlaySound
+	call nc, AnimPlaySFX
 	pop de
 	pop hl
 .skipPlayingSound
@@ -254,6 +254,15 @@ PlayAnimation:
 	pop hl
 	jr .animationLoop
 .AnimationOver
+	ret
+	
+AnimPlaySFX:
+	push de
+	ld e, a
+	xor a
+	ld d, a
+	call PlaySFX
+	pop de
 	ret
 
 LoadSubanimation:
@@ -554,7 +563,7 @@ PlaySubanimation:
 	cp $FF
 	jr z, .skipPlayingSound
 	call GetMoveSound
-	call PlaySound
+	call nc, AnimPlaySFX
 .skipPlayingSound
 	ld hl, wOAMBuffer ; base address of OAM buffer
 	ld a, l
@@ -2331,24 +2340,23 @@ GetMoveSound:
 .next
 	ld a, [wEnemyMonSpecies]
 .Continue
-	push hl
-	call GetCryData
-	ld b, a
-	pop hl
-	ld a, [wFrequencyModifier]
-	add [hl]
-	ld [wFrequencyModifier], a
-	inc hl
-	ld a, [wTempoModifier]
-	add [hl]
-	ld [wTempoModifier], a
-	jr .done
+	push af
+	ld a, 1
+	ld [wSFXDontWait], a
+	pop af
+	call PlayCry
+	xor a
+	ld [wSFXDontWait], a
+	ld a, b
+	scf
+	ret
 .NotCryMove
 	ld a, [hli]
 	ld [wFrequencyModifier], a
 	ld a, [hli]
 	ld [wTempoModifier], a
 .done
+	xor a ; just in case c got set somewhere
 	ld a, b
 	ret
 

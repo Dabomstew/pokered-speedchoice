@@ -69,18 +69,25 @@ rLCDC_DEFAULT EQU %11100011
 	ld [rJOYP], a
 .skipSpeedSwitch
 
+; fastclear WRAM
+; first wram0 using temp sp in hram
+	ld sp, $fffe
+	ld hl, $c000
+	xor a
+	ld b, a
+	call FastFill
+; now wramx
 	ld sp, wStack
-
-	ld hl, $c000 ; start of WRAM
-	ld bc, $2000 ; size of WRAM
-.loop
-	ld [hl], 0
-	inc hl
-	dec bc
-	ld a, b
-	or c
-	jr nz, .loop
-
+	ld d, $7
+.bankloop
+	ld a, d
+	ld [rSVBK], a
+	xor a
+	ld h, $d0 ; l is already $00 from the previous FastFills
+	call FastFill
+	dec d
+	jr nz, .bankloop
+; finally, vram
 	call ClearVram
 
 	ld hl, $ff80
@@ -141,9 +148,6 @@ rLCDC_DEFAULT EQU %11100011
 
 	predef LoadSGB
 
-	ld a, BANK(SFX_Shooting_Star)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
 	ld a, $9c
 	ld [H_AUTOBGTRANSFERDEST + 1], a
 	xor a
@@ -161,21 +165,32 @@ rLCDC_DEFAULT EQU %11100011
 	ld [rLCDC], a
 
 	jp SetDefaultNamesBeforeTitlescreen
-
+	
+; fills [b]*$10 bytes from hl with a
+; if b = 00, fills $1000 - intended behavior
+FastFill:
+rept $10
+	ld [hli], a
+endr
+	dec b
+	jr nz, FastFill
+	ret
+	
 ClearVram:
 	ld hl, $8000
-	ld bc, $2000
-	xor a
-	jp FillMemory
+	ld b, l ; b = 0
+	ld a, l
+	call FastFill
+	jp FastFill
 
 
 StopAllSounds::
-	ld a, BANK(Audio1_UpdateMusic)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
 	xor a
-	ld [wAudioFadeOutControl], a
-	ld [wNewSoundID], a
+	ld hl, wMusic
+	ld bc, wMusicEnd - wMusic
+	call FillMemory
+	
+	xor a
 	ld [wLastMusicSoundID], a
 	dec a
 	jp PlaySound

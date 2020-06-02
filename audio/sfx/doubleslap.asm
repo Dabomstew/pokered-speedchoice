@@ -1,4 +1,5 @@
-SFX_Doubleslap_Ch7:
-	noisenote 8, 15, 1, 50
-	noisenote 8, 15, 1, 51
+SFX_Doubleslap_Ch1: ; 2058c (8:458c)
+	unknownnoise0x20 8, 241, 50
+	unknownnoise0x20 8, 241, 51
 	endchannel
+; 0x20593

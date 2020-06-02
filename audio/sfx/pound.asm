@@ -1,3 +1,4 @@
-SFX_Pound_Ch7:
-	noisenote 2, 10, 1, 34
+SFX_Pound_Ch1: ; 204c4 (8:44c4)
+	unknownnoise0x20 2, 161, 34
 	endchannel
+; 0x204c8

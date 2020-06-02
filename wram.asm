@@ -59,149 +59,126 @@ battle_struct: MACRO
 \1PP::         ds NUM_MOVES
 ENDM
 
+SECTION "Stack", WRAM0
+wStack:: ; dfff
 
-SECTION "WRAM Bank 0", WRAM0
+SECTION "Audio Engine WRAM", WRAM0
 
-wUnusedC000:: ; c000
+wMusic::
+
+; nonzero if playing
+wMusicPlaying:: db ; c100
+
+wChannels::
+wChannel1:: channel_struct wChannel1 ; c101
+wChannel2:: channel_struct wChannel2 ; c133
+wChannel3:: channel_struct wChannel3 ; c165
+wChannel4:: channel_struct wChannel4 ; c197
+
+wSFXChannels::
+wChannel5:: channel_struct wChannel5 ; c1c9
+wChannel6:: channel_struct wChannel6 ; c1fb
+wChannel7:: channel_struct wChannel7 ; c22d
+wChannel8:: channel_struct wChannel8 ; c25f
+
+	ds 1 ; c291
+
+wCurTrackDuty:: db
+wCurTrackIntensity:: db
+wCurTrackFrequency:: dw
+wUnusedBCDNumber:: db ; BCD value, dummied out
+wCurNoteDuration:: db ; used in MusicE0 and LoadNote
+
+wCurMusicByte:: db ; c298
+wCurChannel:: db ; c299
+wVolume:: ; c29a
+; corresponds to rNR50
+; Channel control / ON-OFF / Volume (R/W)
+;   bit 7 - Vin->SO2 ON/OFF
+;   bit 6-4 - SO2 output level (volume) (# 0-7)
+;   bit 3 - Vin->SO1 ON/OFF
+;   bit 2-0 - SO1 output level (volume) (# 0-7)
+	db
+wSoundOutput:: ; c29b
+; corresponds to rNR51
+; bit 4-7: ch1-4 so2 on/off
+; bit 0-3: ch1-4 so1 on/off
+	db
+wSoundInput:: ; c29c
+; corresponds to rNR52
+; bit 7: global on/off
+; bit 0: ch1 on/off
+; bit 1: ch2 on/off
+; bit 2: ch3 on/off
+; bit 3: ch4 on/off
+	db
+
+wMusicID:: dw ; c29d
+wMusicBank:: db ; c29f
+wNoiseSampleAddress:: dw ; c2a0
+wNoiseSampleDelay:: db ; c2a2
+	ds 1 ; c2a3
+wMusicNoiseSampleSet:: db ; c2a4
+wSFXNoiseSampleSet:: db ; c2a5
+
+;wLowHealthAlarm:: ; c2a6
+; nb kept where it is in red instead
+; bit 7: on/off
+; bit 4: pitch
+; bit 0-3: counter
+	db
+
+wMusicFade:: ; c2a7
+; fades volume over x frames
+; bit 7: fade in/out
+; bit 0-5: number of frames for each volume level
+; $00 = none (default)
+	db
+wMusicFadeCount:: db ; c2a8
+wMusicFadeID:: dw ; c2a9
+
+	ds 5
+
+wCryPitch:: dw ; c2b0
+wCryLength:: dw ; c2b2
+
+wLastVolume:: db ; c2b4
+wUnusedMusicF9Flag:: db ; c2b5
+
+wSFXPriority:: ; c2b6
+; if nonzero, turn off music when playing sfx
+	db
+
 	ds 1
 
-wSoundID:: ; c001
-	ds 1
+wChannel1JumpCondition:: db
+wChannel2JumpCondition:: db
+wChannel3JumpCondition:: db
+wChannel4JumpCondition:: db
 
-wMuteAudioAndPauseMusic:: ; c002
-; bit 7: whether sound has been muted
-; all bits: whether the effective is active
-; Store 1 to activate effect (any value in the range [1, 127] works).
-; All audio is muted and music is paused. Sfx continues playing until it
-; ends normally.
-; Store 0 to resume music.
-	ds 1
+wStereoPanningMask:: db ; c2bc
 
-wDisableChannelOutputWhenSfxEnds:: ; c003
-	ds 1
+wCryTracks:: ; c2bd
+; plays only in left or right track depending on what side the monster is on
+; both tracks active outside of battle
+	db
 
-wStereoPanning:: ; c004
-	ds 1
+wSFXDuration:: db
+wCurSFX:: ; c2bf
+; id of sfx currently playing
+	db
+wChannelsEnd::
 
-wSavedVolume:: ; c005
-	ds 1
+wMapMusic:: db ; c2c0
 
-wChannelCommandPointers:: ; c006
-	ds 16
+wDontPlayMapMusicOnReload:: db
 
-wChannelReturnAddresses:: ; c016
-	ds 16
-
-wChannelSoundIDs:: ; c026
-	ds 8
-
-wChannelFlags1:: ; c02e
-	ds 8
-
-wChannelFlags2:: ; c036
-	ds 8
-
-wChannelDuties:: ; c03e
-	ds 8
-
-wChannelDutyCycles:: ; c046
-	ds 8
-
-wChannelVibratoDelayCounters:: ; c04e
-; reloaded at the beginning of a note. counts down until the vibrato begins.
-	ds 8
-
-wChannelVibratoExtents:: ; c056
-	ds 8
-
-wChannelVibratoRates:: ; c05e
-; high nybble is rate (counter reload value) and low nybble is counter.
-; time between applications of vibrato.
-	ds 8
-
-wChannelFrequencyLowBytes:: ; c066
-	ds 8
-
-wChannelVibratoDelayCounterReloadValues:: ; c06e
-; delay of the beginning of the vibrato from the start of the note
-	ds 8
-
-wChannelPitchBendLengthModifiers:: ; c076
-	ds 8
-
-wChannelPitchBendFrequencySteps:: ; c07e
-	ds 8
-
-wChannelPitchBendFrequencyStepsFractionalPart:: ; c086
-	ds 8
-
-wChannelPitchBendCurrentFrequencyFractionalPart:: ; c08e
-	ds 8
-
-wChannelPitchBendCurrentFrequencyHighBytes:: ; c096
-	ds 8
-
-wChannelPitchBendCurrentFrequencyLowBytes:: ; c09e
-	ds 8
-
-wChannelPitchBendTargetFrequencyHighBytes:: ; c0a6
-	ds 8
-
-wChannelPitchBendTargetFrequencyLowBytes:: ; c0ae
-	ds 8
-
-wChannelNoteDelayCounters:: ; c0b6
-; Note delays are stored as 16-bit fixed-point numbers where the integer part
-; is 8 bits and the fractional part is 8 bits.
-	ds 8
-
-wChannelLoopCounters:: ; c0be
-	ds 8
-
-wChannelNoteSpeeds:: ; c0c6
-	ds 8
-
-wChannelNoteDelayCountersFractionalPart:: ; c0ce
-	ds 8
-
-wChannelOctaves:: ; c0d6
-	ds 8
-
-wChannelVolumes:: ; c0de
-; also includes fade for hardware channels that support it
-	ds 8
-
-wMusicWaveInstrument::
-	ds 1
-
-wSfxWaveInstrument::
-	ds 1
-
-wMusicTempo:: ; c0e8
-	ds 2
-
-wSfxTempo:: ; c0ea
-	ds 2
-
-wSfxHeaderPointer:: ; c0ec
-	ds 2
-
-wNewSoundID:: ; c0ee
-	ds 1
-
-wAudioROMBank:: ; c0ef
-	ds 1
-
-wAudioSavedROMBank:: ; c0f0
-	ds 1
-
-wFrequencyModifier:: ; c0f1
-	ds 1
-
-wTempoModifier:: ; c0f2
-	ds 1
-
-	ds 13
+wContinuousSFX:: ds 1
+wHaltAudio:: ds 1
+wSFXDontWait:: ds 1
+wFrequencyModifier:: ds 1
+wTempoModifier:: ds 1
+wMusicEnd::
 
 
 SECTION "Sprite State Data", WRAM0
@@ -316,12 +293,13 @@ wSprite15StateData2::      spritestatedata2 wSprite15StateData2
 
 wSpriteDataEnd::
 
-
 SECTION "OAM Buffer", WRAM0
 
 wOAMBuffer:: ; c300
 ; buffer for OAM data. Copied to OAM by DMA
 	ds 4 * 40
+
+SECTION "Other WRAM0", WRAM0
 
 wTileMap:: ; c3a0
 ; buffer for tiles that are visible on screen (20 columns by 18 rows)
@@ -339,13 +317,11 @@ wTileMapBackup:: ; c508
 
 wSerialEnemyMonsPatchList:: ; c5d0
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
-	ds 200
-
-	ds 80
+	ds 160
 
 wTempPic::
 wOverworldMap:: ; c6e8
-	ds 1300
+	ds BIGGEST_MAP_SIZE
 wOverworldMapEnd::
 
 wRedrawRowOrColumnSrcTiles:: ; cbfc
@@ -1272,10 +1248,6 @@ ENDU
 wSerialOtherGameboyRandomNumberListBlock:: ; cd81
 ; buffer for transferring the random number list generated by the other gameboy
 
-wTileMapBackup2:: ; cd81
-; second buffer for temporarily saving and restoring current screen's tiles (e.g. if menus are drawn on top)
-	ds 20 * 18
-
 wNamingScreenNameLength:: ; cee9
 
 wEvoOldSpecies:: ; cee9
@@ -1469,11 +1441,6 @@ wItemList:: ; cf7b
 wListPointer:: ; cf8b
 	ds 2
 
-wUnusedCF8D:: ; cf8d
-; 2 bytes
-; used to store pointers, but never read
-	ds 2
-
 wItemPrices:: ; cf8f
 	ds 2
 
@@ -1607,6 +1574,9 @@ wEnemyMon:: battle_struct wEnemyMon ; cfe5
 wEnemyMonBaseStats:: ds 5
 wEnemyMonActualCatchRate:: ds 1
 wEnemyMonBaseExp:: ds 1
+
+
+SECTION "WRAM Bank 1", WRAMX
 
 wBattleMonNick:: ds NAME_LENGTH ; d009
 wBattleMon:: battle_struct wBattleMon ; d014
@@ -3252,8 +3222,17 @@ wBoxDataEnd::
 
 ; dee2
 
-SECTION "Stack", WRAM0
-wStack:: ; dfff
+SECTION "WRAM Bank 2", WRAMX
 
+wAlignedTileMap::
+	ds 32 * 32
+	
+wTileMapBackup2::
+; second buffer for temporarily saving and restoring current screen's tiles (e.g. if menus are drawn on top)
+	ds 20 * 18
+	
+wMapViewBuffer::
+; used to construct the current viewable section in tiles from the blocks in wOverworldMap
+	ds $60 * 5
 
 INCLUDE "sram.asm"

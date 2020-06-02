@@ -894,9 +894,7 @@ FaintEnemyPokemon:
 	ld a, SFX_FAINT_FALL
 	call PlaySoundWaitForCurrent
 .sfxwait
-	ld a, [wChannelSoundIDs + Ch4]
-	cp SFX_FAINT_FALL
-	jr z, .sfxwait
+	call WaitForSoundToFinishIgnoreRedbar
 	ld a, SFX_FAINT_THUD
 	call PlaySound
 	call WaitForSoundToFinish
@@ -978,7 +976,6 @@ EndLowHealthAlarm:
 ; the low health alarm and prevents it from reactivating until the next battle.
 	xor a
 	ld [wLowHealthAlarm], a ; turn off low health alarm
-	ld [wChannelSoundIDs + Ch4], a
 	inc a
 	ld [wLowHealthAlarmDisabled], a ; prevent it from reactivating
 	ret
@@ -1073,9 +1070,7 @@ TrainerDefeatedText:
 PlayBattleVictoryMusic:
 	push af
 	ld a, $ff
-	ld [wNewSoundID], a
 	call PlaySoundWaitForCurrent
-	ld c, BANK(Music_DefeatedTrainer)
 	pop af
 	call PlayMusic
 	jp Delay3
@@ -1984,7 +1979,6 @@ DrawPlayerHUDAndHPBar:
 	ld [hl], $0
 	ret z
 	xor a
-	ld [wChannelSoundIDs + Ch4], a
 	ret
 .setLowHealthAlarm
 	ld hl, wLowHealthAlarm

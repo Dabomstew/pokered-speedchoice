@@ -800,15 +800,19 @@ HandleBlackOut::
 	jp SpecialEnterMap
 
 StopMusic::
-	ld [wAudioFadeOutControl], a
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
-.wait
-	ld a, [wAudioFadeOutControl]
+	xor a
+	ld [wMusicFadeID], a
+	ld a, 1
+	ld [wMusicFade], a
+.wait0
+	ld a, [wMusicFadeCount]
 	and a
-	jr nz, .wait
-	jp StopAllSounds
+	jr z, .wait0
+.wait1
+	ld a, [wMusicFadeCount]
+	and a
+	jr nz, .wait1
+	ret
 
 HandleFlyWarpOrDungeonWarp::
 	call UpdateSprites
@@ -1272,9 +1276,10 @@ CollisionCheckOnLand::
 	call CheckTilePassable
 	jr nc, .noCollision
 .collision
-	ld a, [wChannelSoundIDs + Ch4]
-	cp SFX_COLLISION ; check if collision sound is already playing
-	jr z, .setCarry
+	; ch5 on?
+	ld hl, wChannel5 + CHANNEL_FLAGS1
+	bit 0, [hl]
+	jr nz, .setCarry
 	ld a, SFX_COLLISION
 	call PlaySound ; play collision sound (if it's not already playing)
 ; only track 1 bonk per sound effect for sanity reasons
@@ -1411,7 +1416,7 @@ LoadCurrentMapView::
 	ld e, a
 	ld a, [wCurrentTileBlockMapViewPointer + 1]
 	ld d, a
-	ld hl, wTileMapBackup
+	ld hl, wMapViewBuffer
 	ld b, $05
 .rowLoop ; each loop iteration fills in one row of tile blocks
 	push hl
@@ -1453,7 +1458,7 @@ LoadCurrentMapView::
 .noCarry2
 	dec b
 	jr nz, .rowLoop
-	ld hl, wTileMapBackup
+	ld hl, wMapViewBuffer
 	ld bc, $0000
 .adjustForYCoordWithinTileBlock
 	ld a, [wYBlockCoord]
@@ -1468,6 +1473,8 @@ LoadCurrentMapView::
 	ld bc, $0002
 	add hl, bc
 .copyToVisibleAreaBuffer
+	ld a, BANK(wMapViewBuffer)
+	ld [rSVBK], a
 	coord de, 0, 0 ; base address for the tiles that are directly transferred to VRAM during V-blank
 	ld b, SCREEN_HEIGHT
 .rowLoop2
@@ -1486,6 +1493,8 @@ LoadCurrentMapView::
 .noCarry3
 	dec b
 	jr nz, .rowLoop2
+	xor a
+	ld [rSVBK], a
 	pop af
 	jp BankswitchCommon
 
@@ -1849,6 +1858,8 @@ DrawTileBlock::
 	ld e, l ; de = address of the tile block's tiles
 	pop hl
 	ld c, $04 ; 4 loop iterations
+	ld a, BANK(wMapViewBuffer)
+	ld [rSVBK], a
 .loop ; each loop iteration, write 4 tile numbers
 	push bc
 	ld a, [de]
@@ -1868,6 +1879,8 @@ DrawTileBlock::
 	pop bc
 	dec c
 	jr nz, .loop
+	xor a
+	ld [rSVBK], a
 	ret
 
 ; function to update joypad state and simulate button presses
@@ -1976,9 +1989,10 @@ CollisionCheckOnWater::
 	jr z, .stopSurfing ; stop surfing if the tile is passable
 	jr .loop
 .collision
-	ld a, [wChannelSoundIDs + Ch4]
-	cp SFX_COLLISION ; check if collision sound is already playing
-	jr z, .setCarry
+	; ch5 on?
+	ld hl, wChannel5 + CHANNEL_FLAGS1
+	bit 0, [hl]
+	jr nz, .setCarry
 	ld a, SFX_COLLISION
 	call PlaySound ; play collision sound (if it's not already playing)
 ; only track 1 bonk per sound effect for sanity reasons
@@ -2335,10 +2349,9 @@ LoadMapHeader::
 	rst BankswitchCommon
 	ld hl, MapSongBanks
 	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld [wMapMusicSoundID], a ; music 1
 	ld a, [hl]
+	ld [wMapMusicSoundID], a ; music 1
+	xor a
 	ld [wMapMusicROMBank], a ; music 2
 	pop af
 	jp BankswitchCommon
@@ -2408,7 +2421,6 @@ LoadMapData::
 	ld a, [wFlags_D733]
 	bit 1, a
 	jr nz, .restoreRomBank
-	call UpdateMusic6Times
 	call PlayDefaultMusicFadeOutCurrent
 .restoreRomBank
 	pop af

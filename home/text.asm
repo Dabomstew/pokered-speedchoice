@@ -629,7 +629,11 @@ TextCommand0B::
 	jr z, .pokemonCry
 	cp $16
 	jr z, .pokemonCry
+	cp $0B
+	jr z, .overloadedSound
+.playNormalSound
 	ld a, [hl]
+.playSound
 	call PlaySound
 	call WaitForSoundToFinish
 	pop hl
@@ -643,6 +647,14 @@ TextCommand0B::
 	pop hl
 	pop bc
 	jp NextTextCommand
+.overloadedSound
+; this ID played a different sound in and out of battle on non-crysaudio
+; simulate the same effect
+	ld a, [wIsInBattle]
+	and a
+	jr z, .playNormalSound
+	ld a, SFX_LEVEL_UP
+	jr .playSound
 
 ; format: text command ID, sound ID or cry ID
 TextCommandSounds::

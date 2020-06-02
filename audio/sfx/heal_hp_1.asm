@@ -1,7 +1,8 @@
-SFX_Heal_HP_1_Ch4:
-	duty 2
-	pitchenvelope 1, 7
-	squarenote 15, 15, 0, 1264
-	squarenote 15, 15, 2, 1616
-	pitchenvelope 0, 0
+SFX_Heal_HP_1_Ch1: ; 84b7 (2:44b7)
+	dutycycle 2
+	unknownsfx0x10 23
+	unknownsfx0x20 15, 240, 240, 4
+	unknownsfx0x20 15, 242, 80, 6
+	unknownsfx0x10 8
 	endchannel
+; 0x84c6

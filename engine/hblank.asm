@@ -2,11 +2,11 @@ _HBlank::
 	ld a, [H_AUTOBGTRANSFERENABLED]
 	and a ; do we need to transfer the BG Map?
 	jr z, ConvertDMGPaletteIndexesToCGB ; if not, skip to palette conversion
-	ld a, 2
 ; change to wram bank 2
+	ld a, BANK(wAlignedTileMap)
 	ld [rSVBK], a
 ; load hl with tilemap buffer
-	ld hl, $d000
+	ld hl, wAlignedTileMap
 ; do stack copy similar to AutoBGMapTransfer
 	ld [H_SPTEMP], sp
 	coord sp, 0, 0
@@ -36,9 +36,9 @@ TransferBgRowsHBL:
 	ld a, [H_SPTEMP + 1]
 	ld h, a
 	ld sp, hl
-	xor a
-	ld [rSVBK], a
 ConvertDMGPaletteIndexesToCGB:
+	xor a ; ld a, BANK(wCurPalette)
+	ld [rSVBK], a
 	ld a, [wCurPalette]
 	ld e, a
 	ld hl, CGBPalettes

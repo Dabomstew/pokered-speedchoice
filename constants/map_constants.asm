@@ -1,7 +1,12 @@
+biggest_size = 0
+
 mapconst: MACRO
 	const \1
 \1_HEIGHT EQU \2
 \1_WIDTH EQU \3
+IF (\2 + 6)*(\3 + 6) > biggest_size
+biggest_size = (\2 + 6)*(\3 + 6)
+ENDC
 ENDM
 
 	const_def
@@ -253,3 +258,5 @@ ENDM
 	mapconst LORELEIS_ROOM,                  6,  5 ; $F5
 	mapconst BRUNOS_ROOM,                    6,  5 ; $F6
 	mapconst AGATHAS_ROOM,                   6,  5 ; $F7
+	
+BIGGEST_MAP_SIZE EQU biggest_size

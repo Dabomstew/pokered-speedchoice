@@ -1,12 +1,13 @@
-SFX_Withdraw_Deposit_1_Ch4:
-	duty 1
-	pitchenvelope 3, -2
-	squarenote 4, 15, 2, 1280
-	pitchenvelope 2, 2
-	squarenote 4, 14, 2, 1280
-	pitchenvelope 3, -2
-	squarenote 4, 15, 2, 1792
-	pitchenvelope 2, 2
-	squarenote 15, 14, 2, 1792
-	pitchenvelope 0, 0
+SFX_Withdraw_Deposit_1_Ch1: ; 86ab (2:46ab)
+	dutycycle 1
+	unknownsfx0x10 58
+	unknownsfx0x20 4, 242, 0, 5
+	unknownsfx0x10 34
+	unknownsfx0x20 4, 226, 0, 5
+	unknownsfx0x10 58
+	unknownsfx0x20 4, 242, 0, 7
+	unknownsfx0x10 34
+	unknownsfx0x20 15, 226, 0, 7
+	unknownsfx0x10 8
 	endchannel
+; 0x86c8

@@ -1,7 +1,8 @@
-SFX_Intro_Whoosh_Ch7:
-	noisenote 4, 2, -4, 32
-	noisenote 3, 10, 0, 32
-	noisenote 3, 11, 0, 33
-	noisenote 3, 12, 0, 34
-	noisenote 15, 13, 2, 36
+SFX_Intro_Whoosh_Ch1: ; 7c6e5 (1f:46e5)
+	unknownnoise0x20 4, 44, 32
+	unknownnoise0x20 3, 160, 32
+	unknownnoise0x20 3, 176, 33
+	unknownnoise0x20 3, 192, 34
+	unknownnoise0x20 15, 210, 36
 	endchannel
+; 0x7c6f5

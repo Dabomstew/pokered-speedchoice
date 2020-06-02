@@ -1,9 +1,20 @@
 ; The rst vectors are unused.
-SECTION "rst 00", ROM0
-	rst $38
-SECTION "rst 08", ROM0
-	rst $38
+SECTION "Bankswitch", ROM0
+; self-contained bankswitch, use this when not in the home bank
+; switches to the bank in b
+	ld a, [H_LOADEDROMBANK]
+	push af
+	ld a, b
+	rst BankswitchCommon
+	ld bc, BankswitchReturn
+	push bc
+	jp hl
+BankswitchReturn
+	pop bc
+	ld a, b
+	jr _BankswitchCommon
 SECTION "BankswitchCommon", ROM0
+_BankswitchCommon::
 	ld [H_LOADEDROMBANK], a
 	ld [MBC1RomBank], a
 	ret
@@ -300,41 +311,7 @@ LoadFrontSpriteByMonIndex::
 	jp BankswitchCommon
 
 
-PlayCry::
-; Play monster a's cry.
-	call GetCryData
-	call PlaySound
-	jp WaitForSoundToFinish
-
-GetCryData::
-; Load cry data for monster a.
-	dec a
-	ld c, a
-	ld b, 0
-	ld hl, CryData
-	add hl, bc
-	add hl, bc
-	add hl, bc
-
-	ld a, BANK(CryData)
-	call BankswitchHome
-	ld a, [hli]
-	ld b, a ; cry id
-	ld a, [hli]
-	ld [wFrequencyModifier], a
-	ld a, [hl]
-	ld [wTempoModifier], a
-	call BankswitchBack
-
-	; Cry headers have 3 channels,
-	; and start from index $14,
-	; so add 3 times the cry id.
-	ld a, b
-	ld c, $14
-	rlca ; * 2
-	add b
-	add c
-	ret
+; PlayCry has moved to home/audio.asm
 
 DisplayPartyMenu::
 	ld a, [hTilesetType]
@@ -944,55 +921,6 @@ ResetPlayerSpriteData_ClearSpriteData::
 	ld bc, $10
 	xor a
 	jp FillMemory
-
-FadeOutAudio::
-	ld a, [wAudioFadeOutControl]
-	and a ; currently fading out audio?
-	jr nz, .fadingOut
-	ld a, [wd72c]
-	bit 1, a
-	ret nz
-	ld a, $77
-	ld [rNR50], a
-	ret
-.fadingOut
-	ld a, [wAudioFadeOutCounter]
-	and a
-	jr z, .counterReachedZero
-	dec a
-	ld [wAudioFadeOutCounter], a
-	ret
-.counterReachedZero
-	ld a, [wAudioFadeOutCounterReloadValue]
-	ld [wAudioFadeOutCounter], a
-	ld a, [rNR50]
-	and a ; has the volume reached 0?
-	jr z, .fadeOutComplete
-	ld b, a
-	and $f
-	dec a
-	ld c, a
-	ld a, b
-	and $f0
-	swap a
-	dec a
-	swap a
-	or c
-	ld [rNR50], a
-	ret
-.fadeOutComplete
-	ld a, [wAudioFadeOutControl]
-	ld b, a
-	xor a
-	ld [wAudioFadeOutControl], a
-	ld a, $ff
-	ld [wNewSoundID], a
-	call PlaySound
-	ld a, [wAudioSavedROMBank]
-	ld [wAudioROMBank], a
-	ld a, b
-	ld [wNewSoundID], a
-	jp PlaySound
 
 ; this function is used to display sign messages, sprite dialog, etc.
 ; INPUT: [hSpriteIndexOrTextID] = sprite ID or text ID
@@ -2524,13 +2452,8 @@ PlayTrainerMusic::
 	ld a, [wGymLeaderNo]
 	and a
 	ret nz
-	xor a
-	ld [wAudioFadeOutControl], a
 	ld a, $ff
 	call PlaySound
-	ld a, BANK(Music_MeetEvilTrainer)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
 	ld a, [wEngagedTrainerClass]
 	ld b, a
 	ld hl, EvilTrainerList
@@ -2555,8 +2478,7 @@ PlayTrainerMusic::
 .maleTrainer
 	ld a, MUSIC_MEET_MALE_TRAINER
 .PlaySound
-	ld [wNewSoundID], a
-	jp PlaySound
+	jp PlayMusic
 
 INCLUDE "data/trainer_types.asm"
 
@@ -2720,11 +2642,11 @@ CheckBoulderCoords::
 	jp CheckCoords
 
 GetPointerWithinSpriteStateData1::
-	ld h, $c1
+	ld h, (wSpriteStateData1 / $100)
 	jr _GetPointerWithinSpriteStateData
 
 GetPointerWithinSpriteStateData2::
-	ld h, $c2
+	ld h, (wSpriteStateData2 / $100)
 
 _GetPointerWithinSpriteStateData:
 	ld a, [H_SPRITEDATAOFFSET]
@@ -2789,7 +2711,7 @@ SetSpriteMovementBytesToFF::
 
 ; returns the sprite movement byte 1 pointer for sprite [H_SPRITEINDEX] in hl
 GetSpriteMovementByte1Pointer::
-	ld h, $C2
+	ld h, (wSpriteStateData2 / $100)
 	ld a, [H_SPRITEINDEX]
 	swap a
 	add 6
@@ -2878,21 +2800,6 @@ BankswitchHome::
 BankswitchBack::
 ; returns from BankswitchHome
 	ld a, [wBankswitchHomeSavedROMBank]
-	jp BankswitchCommon
-
-Bankswitch::
-; self-contained bankswitch, use this when not in the home bank
-; switches to the bank in b
-	ld a, [H_LOADEDROMBANK]
-	push af
-	ld a, b
-	rst BankswitchCommon
-	ld bc, .Return
-	push bc
-	jp hl
-.Return
-	pop bc
-	ld a, b
 	jp BankswitchCommon
 
 ; displays yes/no choice
@@ -3037,17 +2944,9 @@ LoadTextBoxFrame::
 
 
 FillMemory::
-; Fill bc bytes at hl with a.
-	push de
-	ld d, a
-.loop
-	ld a, d
-	ld [hli], a
-	dec bc
-	ld a, b
-	or c
-	jr nz, .loop
-	pop de
+; Fill bc bytes at hl with a. Return a=0 to make sure legacy code works
+	call ByteFill
+	xor a
 	ret
 
 
@@ -3060,10 +2959,14 @@ UncompressSpriteFromDE::
 	jp UncompressSpriteData
 
 SaveScreenTilesToBuffer2::
+	ld a, BANK(wTileMapBackup2)
+	ld [rSVBK], a
 	coord hl, 0, 0
 	ld de, wTileMapBackup2
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	call CopyData
+	xor a
+	ld [rSVBK], a
 	ret
 
 LoadScreenTilesFromBuffer2::
@@ -3076,10 +2979,14 @@ LoadScreenTilesFromBuffer2::
 LoadScreenTilesFromBuffer2DisableBGTransfer::
 	xor a
 	ld [H_AUTOBGTRANSFERENABLED], a
+	ld a, BANK(wTileMapBackup2)
+	ld [rSVBK], a
 	ld hl, wTileMapBackup2
 	coord de, 0, 0
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	call CopyData
+	xor a
+	ld [rSVBK], a
 	ret
 
 SaveScreenTilesToBuffer1::
@@ -3104,31 +3011,6 @@ DelayFrames::
 	call DelayFrame
 	dec c
 	jr nz, DelayFrames
-	ret
-
-PlaySoundWaitForCurrent::
-	push af
-	call WaitForSoundToFinish
-	pop af
-	jp PlaySound
-
-; Wait for sound to finish playing
-WaitForSoundToFinish::
-	ld a, [wLowHealthAlarm]
-	and $80
-	ret nz
-	push hl
-.waitLoop
-	ld hl, wChannelSoundIDs + Ch4
-	xor a
-	or [hl]
-	inc hl
-	or [hl]
-	inc hl
-	inc hl
-	or [hl]
-	jr nz, .waitLoop
-	pop hl
 	ret
 
 NamePointers::
