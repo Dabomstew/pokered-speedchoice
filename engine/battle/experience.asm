@@ -93,37 +93,15 @@ GainExperience:
 	adc b
 	ld [hl], a
 	jr nc, .expNotMaxedOut
-	callab CalcExperience ; get max exp
-	ld a, [hExperience]
-	ld b, a
-	ld a, [hExperience + 1]
-	ld c, a
-	ld a, [hExperience + 2]
-	ld d, a
+; if we overflowed the most significant byte then EXP is obviously maxed out, so reset it to the cap for this mon
+	call CalcMaxExperience
 	jr .writeExperience
-; if exp isn't obviously maxed out, we should now compare it to the cap for this mon
+; if exp isn't obviously maxed out, we should now compare the actual value to the cap for this mon
 .expNotMaxedOut
 	inc hl
 	inc hl
-	push hl
-	ld a, [wWhichPokemon]
-	ld c, a
-	ld b, 0
-	ld hl, wPartySpecies
-	add hl, bc
-	ld a, [hl] ; species
-	ld [wd0b5], a
-	call GetMonHeader
-	ld d, MAX_LEVEL
-	callab CalcExperience ; get max exp
+	call CalcMaxExperience
 ; compare max exp with current exp
-	ld a, [hExperience]
-	ld b, a
-	ld a, [hExperience + 1]
-	ld c, a
-	ld a, [hExperience + 2]
-	ld d, a
-	pop hl
 	ld a, [hld]
 	sub d
 	ld a, [hld]
@@ -315,6 +293,28 @@ GainExperience:
 	inc a
 	ld [wBoostExpByExpAll], a
 	jp .outerLoop
+
+; calc max experience for current mon and load it into bcd
+CalcMaxExperience:
+	push hl
+	ld a, [wWhichPokemon]
+	ld c, a
+	ld b, 0
+	ld hl, wPartySpecies
+	add hl, bc
+	ld a, [hl] ; species
+	ld [wd0b5], a
+	call GetMonHeader
+	ld d, MAX_LEVEL
+	callab CalcExperience ; get max exp
+	ld a, [hExperience]
+	ld b, a
+	ld a, [hExperience + 1]
+	ld c, a
+	ld a, [hExperience + 2]
+	ld d, a
+	pop hl
+	ret
 
 ; divide d by e; quotient in d, remainder in a
 SingleByteDivide:
