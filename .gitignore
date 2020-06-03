@@ -38,3 +38,6 @@
 # dynamically generated files
 git-revision.asm
 pokered.ini
+
+# rom patches
+*.ips
