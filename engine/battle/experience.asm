@@ -5,36 +5,42 @@ GainExperience:
 	; kill immediately if no exp
 	mboptioncheck EXP_FORMULA, NO_EXP
 	ret z
-	call DivideExpDataByNumMonsGainingExp
+	call CalculateEXPGainDivisors
+; give exp to each participant exp divisors and shared exp divisors, this code requires them to be adjacent in WRAM
+	ld de, wParticipantEXPDivisors
+.outerLoop
 	ld hl, wPartyMon1
-	xor a
+	ld c, PARTY_LENGTH
+	ld b, 0
+.giveLoop
+	ld a, [de]
+	and a
+	jp z, .nextRecipientNoPop
+	ld [wCurrentDivisor], a
+	ld a, b
 	ld [wWhichPokemon], a
-ExperiencePartyLoop ; loop over each mon and add gained exp
-	inc hl
-	ld a, [hli]
-	or [hl] ; is mon's HP 0?
-	jp z, ExperienceNextMon ; if so, go to next mon
+; give exp and stat exp
+	push bc
+	push de
 	push hl
-	ld hl, wPartyGainExpFlags
-	ld a, [wWhichPokemon]
-	ld c, a
-	ld b, FLAG_TEST
-	predef FlagActionPredef
-	ld a, c
-	and a ; is mon's gain exp flag set?
-	pop hl
-	jp z, ExperienceNextMon ; if mon's gain exp flag not set, go to next mon
-	ld de, (wPartyMon1HPExp + 1) - (wPartyMon1HP + 1)
+; stat exp stuff
+	ld de, (wPartyMon1HPExp + 1) - (wPartyMon1)
 	add hl, de
 	ld d, h
 	ld e, l
 	ld hl, wEnemyMonBaseStats
 	ld c, NUM_STATS
 .gainStatExpLoop
+	push de
 	ld a, [hli]
-	ld b, a ; enemy mon base stat
+	ld d, a ; enemy mon base stat
+	ld a, [wCurrentDivisor]
+	ld e, a
+	call SingleByteDivide
+	ld b, d
+	pop de
 	ld a, [de] ; stat exp
-	add b ; add enemy mon base state to stat exp
+	add b ; add result to exp
 	ld [de], a
 	jr nc, .nextBaseStat
 ; if there was a carry, increment the upper byte
@@ -46,7 +52,7 @@ ExperiencePartyLoop ; loop over each mon and add gained exp
 	inc de
 	jr .nextBaseStat
 .maxStatExp ; if the upper byte also overflowed, then we have hit the max stat exp
-	ld a, $ff
+	dec a ; a = $ff
 	ld [de], a
 	inc de
 	ld [de], a
@@ -57,66 +63,49 @@ ExperiencePartyLoop ; loop over each mon and add gained exp
 	inc de
 	jr .gainStatExpLoop
 .statExpDone
+	pop de ; base of party entry, was pushed from hl earlier
+	push de ; store it back for the loop
 	mboptioncheck EXP_FORMULA, BLACKWHITE
-	jp z, BlackWhiteEXP
-	xor a
-	ld [H_MULTIPLICAND], a
-	ld [H_MULTIPLICAND + 1], a
-	ld a, [wEnemyMonBaseExp]
-	ld [H_MULTIPLICAND + 2], a
-	ld a, [wEnemyMonLevel]
-	ld [H_MULTIPLIER], a
-	call Multiply
-	ld a, 7
-	ld [H_DIVISOR], a
-	ld b, 4
-	call Divide
-	ld hl, wPartyMon1OTID - (wPartyMon1DVs - 1)
-	add hl, de
-	ld b, [hl] ; party mon OTID
-	inc hl
-	ld a, [wPlayerID]
-	cp b
-	jr nz, .tradedMon
-	ld b, [hl]
-	ld a, [wPlayerID + 1]
-	cp b
-	ld a, 0
-	jr z, .next
-.tradedMon
-	call BoostExp ; traded mon exp boost
-	ld a, 1
-.next
-	ld [wGainBoostedExp], a
-	ld a, [wIsInBattle]
-	dec a ; is it a trainer battle?
-	call nz, BoostExp ; if so, boost exp
-	inc hl
-	inc hl
-	inc hl
+	jr z, .doBW
+	call CalculateNonScalingExperience
+	jr .continue
+.doBW
+	call CalculateScalingExperience
+.continue
 ; add the gained exp to the party mon's exp
-	xor a
-	ld [wExpAmountGained], a
+	pop de ; base of party entry, was pushed from hl earlier
+	push de ; store it back for the loop
+	ld hl, (wPartyMon1Exp + 2 - wPartyMon1)
+	add hl, de
 	ld b, [hl]
-	ld a, [H_QUOTIENT + 3]
+	ld a, [H_PRODUCT + 3]
 	ld [wExpAmountGained + 2], a
 	add b
 	ld [hld], a
 	ld b, [hl]
-	ld a, [H_QUOTIENT + 2]
+	ld a, [H_PRODUCT + 2]
 	ld [wExpAmountGained + 1], a
 	adc b
+	ld [hld], a
+	ld b, [hl]
+	ld a, [H_PRODUCT + 1]
+	ld [wExpAmountGained], a
+	adc b
 	ld [hl], a
-	jr nc, .noCarry
-	dec hl
-	inc [hl]
+	jr nc, .expNotMaxedOut
+	callab CalcExperience ; get max exp
+	ld a, [hExperience]
+	ld b, a
+	ld a, [hExperience + 1]
+	ld c, a
+	ld a, [hExperience + 2]
+	ld d, a
+	jr .writeExperience
+; if exp isn't obviously maxed out, we should now compare it to the cap for this mon
+.expNotMaxedOut
 	inc hl
-.noCarry
-; calculate exp for the mon at max level, and cap the exp at that value
 	inc hl
-ExperienceReturnPoint::
 	push hl
-	callab SRAMStatsExperienceGain
 	ld a, [wWhichPokemon]
 	ld c, a
 	ld b, 0
@@ -143,6 +132,7 @@ ExperienceReturnPoint::
 	sbc b
 	jr c, .next2
 ; the mon's exp is greater than the max exp, so overwrite it with the max exp
+.writeExperience
 	ld a, b
 	ld [hli], a
 	ld a, c
@@ -151,12 +141,29 @@ ExperienceReturnPoint::
 	ld [hld], a
 	dec hl
 .next2
+; print text
 	push hl
+	ld a, [wBoostExpByExpAll]
+	and a
+	jr z, .printIndividual
+	ld a, [EXP_SPLITTING_ADDRESS]
+	and EXP_SPLITTING_MASK
+	jr z, .printIndividual
+	ld a, [wPrintedShareText]
+	and a
+	jr nz, .afterPrinting
+	inc a
+	ld [wPrintedShareText], a
+	ld hl, GainedWithShareText
+	call PrintText
+	jr .afterPrinting
+.printIndividual
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	ld hl, GainedText
 	call PrintText
+.afterPrinting
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	call LoadMonData
@@ -169,7 +176,7 @@ ExperienceReturnPoint::
 	ld a, [hl] ; current level
 	ld [wTempLevel], a ; store current level
 	cp d
-	jp z, ExperienceNextMon ; if level didn't change, go to next mon
+	jp z, .nextRecipient ; if level didn't change, go to next mon
 	ld a, [wCurEnemyLVL]
 	push af
 	push hl
@@ -289,82 +296,160 @@ ExperienceReturnPoint::
 	pop hl
 	pop af
 	ld [wCurEnemyLVL], a
-
-ExperienceNextMon
-	ld a, [wPartyCount]
-	ld b, a
-	ld a, [wWhichPokemon]
-	inc a
-	cp b
-	jr z, .done
-	ld [wWhichPokemon], a
-	ld bc, wPartyMon2 - wPartyMon1
-	ld hl, wPartyMon1
-	call AddNTimes
-	jp ExperiencePartyLoop
-.done
-	ld hl, wPartyGainExpFlags
-	xor a
-	ld [hl], a ; clear gain exp flags
-	ld a, [wPlayerMonNumber]
-	ld c, a
-	ld b, FLAG_SET
-	push bc
-	predef FlagActionPredef ; set the gain exp flag for the mon that is currently out
-	ld hl, wPartyFoughtCurrentEnemyFlags
-	xor a
-	ld [hl], a
+.nextRecipient
+	pop hl
+	pop de
 	pop bc
-	predef_jump FlagActionPredef ; set the fought current enemy flag for the mon that is currently out
+.nextRecipientNoPop
+	inc de
+	push bc
+	ld bc, wPartyMon2 - wPartyMon1
+	add hl, bc
+	pop bc
+	inc b
+	dec c
+	jp nz, .giveLoop
+	ld a, [wBoostExpByExpAll]
+	and a
+	ret nz
+	inc a
+	ld [wBoostExpByExpAll], a
+	jp .outerLoop
 
-; divide enemy base stats, catch rate, and base exp by the number of mons gaining exp
-DivideExpDataByNumMonsGainingExp:
-	ld a, [wPartyGainExpFlags]
-	ld b, a
+; divide d by e; quotient in d, remainder in a
+SingleByteDivide:
 	xor a
-	ld c, $8
-	ld d, $0
-.countSetBitsLoop ; loop to count set bits in wPartyGainExpFlags
-	xor a
-	srl b
-	adc d
-	ld d, a
-	dec c
-	jr nz, .countSetBitsLoop
-	ld [wGainingExp], a
-	cp $2
-	ret c ; return if only one mon is gaining exp
-	ld [wd11e], a ; store number of mons gaining exp
-	ld hl, wEnemyMonBaseStats
-	ld c, wEnemyMonBaseExp + 1 - wEnemyMonBaseStats
-.divideLoop
-	xor a
-	ld [H_DIVIDEND], a
-	ld a, [hl]
-	ld [H_DIVIDEND + 1], a
-	ld a, [wd11e]
-	ld [H_DIVISOR], a
-	ld b, $2
-	call Divide ; divide value by number of mons gaining exp
-	ld a, [H_QUOTIENT + 3]
-	ld [hli], a
-	dec c
-	jr nz, .divideLoop
+	ld b, 8
+.loop
+	sla d
+	rla
+	cp e
+	jr c, .dontsubinc
+	sub e
+	inc d
+.dontsubinc
+	dec b
+	jr nz, .loop
 	ret
 
-; multiplies exp by 1.5
-BoostExp:
-	ld a, [H_QUOTIENT + 2]
+CalculateEXPGainDivisors:
+	ld bc, wEXPCalcsEnd - wHasExpAll
+	ld hl, wHasExpAll
+	xor a
+	call ByteFill
+	ld b, EXP_ALL
+	call IsItemInBag
+	ld a, 0
+	jr z, .write
+	inc a
+.write
+	ld [wHasExpAll], a
+	ld a, [wPartyGainExpFlags]
+	ld b, 0
+	ld c, PARTY_LENGTH
+.countSetBitsLoop ; loop to count set bits in wPartyGainExpFlags
+	srl a
+	jr nc, .next
+	inc b
+.next
+	dec c
+	jr nz, .countSetBitsLoop
+	ld a, b
+	ld [wParticipantCount], a
+; what behavior do we actually have?
+; vanilla = upper bit cleared, gen6+ = upper bit set
+; vanilla = divide by number of participants and by a further 2 if no exp share, gen6+ = all participants get full exp
+	ld a, [EXP_SPLITTING_ADDRESS]
+	bit EXP_SPLITTING_SHIFT + 1, a
+	ld a, 1
+	jr nz, .setBaseValue
+	ld a, [wParticipantCount]
 	ld b, a
-	ld a, [H_QUOTIENT + 3]
-	ld c, a
-	srl b
-	rr c
-	add c
-	ld [H_QUOTIENT + 3], a
-	ld a, [H_QUOTIENT + 2]
-	adc b
-	ld [H_QUOTIENT + 2], a
+	ld a, [wHasExpAll]
+	and a
+	ld a, b
+	jr z, .setBaseValue
+	sla a
+.setBaseValue
+	ld b, a
+	ld d, PARTY_LENGTH
+	ld a, [wPartyGainExpFlags]
+	ld e, a
+	ld a, b
+	ld hl, wParticipantEXPDivisors
+.participantLoop
+	srl e
+	jr nc, .nextParticipant
+	ld [hl], a
+.nextParticipant
+	inc hl
+	dec d
+	jr nz, .participantLoop
+; next up, calc exp split flags
+; behavior heavily changes depending on exp splitting flag
+	ld a, [EXP_SPLITTING_ADDRESS]
+	bit EXP_SPLITTING_SHIFT + 1, a
+	jr z, .vanillaSplitting ; %00 or %01 = vanilla behavior
+	bit EXP_SPLITTING_SHIFT, a
+	jr nz, .splitToNonParticipants ; %11 = always split to non-participants
+	ld a, [wHasExpAll]
+	and a
+	ret z ; %10 = split to non-participants if exp share (all) item obtained
+.splitToNonParticipants
+; give 50% exp to ALL alive non-participants
+	ld c, 0
+	ld b, c
+	ld de, wParticipantEXPDivisors
+	ld hl, wPartyMon1HP
+.splitLoop1
+	push hl
+	ld a, [de]
+	and a
+	jr nz, .nextSplit ; don't give to participants
+	ld a, [hli]
+	or [hl]
+	jr z, .nextSplit ; don't give to dedmons
+	ld hl, wSharedEXPDivisors
+	add hl, bc
+	ld [hl], 2
+.nextSplit
+	pop hl
+	inc de
+	push bc
+	ld c, wPartyMon2HP - wPartyMon1HP
+	add hl, bc
+	pop bc
+	inc c
+	ld a, [wPartyCount]
+	cp c
+	jr nz, .splitLoop1
+	ret
+.vanillaSplitting
+; split exp/(party count*2) to all alive mons if expall in bag. the divisor for the split includes dead mons intentionally
+	ld a, [wHasExpAll]
+	and a
+	ret z
+	ld c, 0
+	ld b, c
+	ld hl, wPartyMon1HP
+	ld de, wSharedEXPDivisors
+.splitLoop2
+	ld a, [hli]
+	or [hl]
+	jr z, .nextSplit2 ; don't give to ded mons
+	ld a, [wPartyCount]
+	sla a
+	ld [de], a
+.nextSplit2
+	push bc
+	ld c, wPartyMon2HP - (wPartyMon1HP + 1)
+	add hl, bc
+	pop bc
+	inc de
+	inc c
+	ld a, [wPartyCount]
+	cp c
+	jr nz, .splitLoop2
 	ret
 
 GainedText:
@@ -393,7 +478,6 @@ GainedText:
 	ret z
 	ld hl, BoostedLongText
 	ret
-	
 
 WithExpAllText:
 	TX_FAR _WithExpAllText
@@ -407,7 +491,7 @@ BoostedText:
 ExpPointsText:
 	TX_FAR _ExpPointsText
 	db "@"
-	
+
 BoostedLongText:
 	TX_FAR _BoostedText
 
@@ -419,3 +503,31 @@ GrewLevelText:
 	TX_FAR _GrewLevelText
 	TX_SFX_LEVEL_UP
 	db "@"
+
+GainedWithShareText:
+	TX_ASM
+	ld a, [EXP_SPLITTING_ADDRESS]
+	and EXP_SPLITTING_MASK
+	cp EXP_SPLITTING_NOSPAM << EXP_SPLITTING_SHIFT
+	ld hl, ExpAllTruncatedText
+	ret z
+	cp EXP_SPLITTING_EXPSHARE << EXP_SPLITTING_SHIFT
+	ld hl, ExpShareText
+	ret z
+	ld hl, AlwaysExpShareText
+	ret
+
+ExpAllTruncatedText:
+	TX_FAR _ExpAllTruncatedText
+	db "@"
+
+ExpShareText:
+	TX_FAR _ExpShareText
+	db "@"
+
+AlwaysExpShareText:
+	TX_FAR _AlwaysExpShareText
+	db "@"
+
+INCLUDE "engine/battle/experience_nonscaling.asm"
+INCLUDE "engine/battle/experience_scaling.asm"

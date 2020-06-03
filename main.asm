@@ -1112,8 +1112,6 @@ INCLUDE "engine/menu/diploma.asm"
 
 INCLUDE "engine/overworld/trainers.asm"
 
-INCLUDE "engine/battle/experience_bw.asm"
-
 
 SECTION "bank16", ROMX
 

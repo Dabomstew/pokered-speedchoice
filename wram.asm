@@ -319,11 +319,37 @@ wSerialEnemyMonsPatchList:: ; c5d0
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
 	ds 160
 
+UNION
 wTempPic::
+	ds BIGGEST_MAP_SIZE
+NEXTU
 wTempLevel::
+	ds 1
+wHasExpAll::
+	ds 1
+wParticipantCount::
+	ds 1
+wParticipantEXPDivisors::
+	ds PARTY_LENGTH
+wSharedEXPDivisors::
+	ds PARTY_LENGTH
+wCurrentDivisor::
+	ds 1
+wPrintedShareText::
+	ds 1
+wBWXPScratch1::
+	ds 5
+wBWXPScratch2::
+	ds 5
+wBWXPScratch3::
+	ds 1
+wEXPCalcsEnd::
+	ds BIGGEST_MAP_SIZE - (PARTY_LENGTH*2 + 5)
+NEXTU
 wOverworldMap:: ; c6e8
 	ds BIGGEST_MAP_SIZE
 wOverworldMapEnd::
+ENDU
 
 wRedrawRowOrColumnSrcTiles:: ; cbfc
 ; the tiles of the row or column to be redrawn by RedrawRowOrColumn

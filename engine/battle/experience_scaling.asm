@@ -1,11 +1,9 @@
-BWXP_MAX_LEVEL EQU 100
-
-; requires de = current party mon struct
-BlackWhiteEXP::
+; input de = base of party mon entry
+CalculateScalingExperience::
 	ld a, [wEnemyMonLevel]
-	cp BWXP_MAX_LEVEL + 1
+	cp MAX_LEVEL + 1
 	jr c, .calc2LPlus10
-	ld a, BWXP_MAX_LEVEL
+	ld a, MAX_LEVEL
 	ld [wEnemyMonLevel], a
 .calc2LPlus10
 ; start with 2L + 10 part
@@ -21,21 +19,12 @@ BlackWhiteEXP::
 	ld a, [wEnemyMonLevel]
 	ld [H_MULTIPLIER], a
 	call Multiply
-; divide by s (num of pokes used)
+; divide by current divisor based on EXP_SPLITTING preference
 	push bc
-	ld a, [wGainingExp]
+	ld a, [wCurrentDivisor]
 	ld [H_DIVISOR], a
 	ld b, $4
 	call Divide
-; divide by 2 if EXP ALL in bag
-    ld b, EXP_ALL
-	call IsItemInBag
-    jr z, .divideConstant
-    ld a, 2
-    ld [H_DIVISOR], a
-    ld b, $4
-    call Divide
-.divideConstant
 ; divide by 7 (constant)
 	ld a, $7
 	ld [H_DIVISOR], a
@@ -43,7 +32,7 @@ BlackWhiteEXP::
 	call Divide
 	pop bc
 ; copy the result so far into scratch 1
-	ld hl, wEnemyMonMoves
+	ld hl, wBWXPScratch1
 	ld a, [H_PRODUCT]
 	ld [hli], a
 	ld a, [H_PRODUCT+1]
@@ -75,7 +64,7 @@ BlackWhiteEXP::
 	ld a, [H_BIGMULTIPLICAND + 4]
 	push af
 ; get back the original base
-	ld hl, wEnemyMonMoves
+	ld hl, wBWXPScratch1
 	ld a, [hli]
 	ld [H_PRODUCT], a
 	ld a, [hli]
@@ -128,12 +117,12 @@ BlackWhiteEXP::
 	ld a, [wEnemyMonLevel]
 	ld b, a
 ; deal with our own level (and cap it if need be)
-	ld hl, wPartyMon1Level - (wPartyMon1DVs - 1)
+	ld hl, wPartyMon1Level - wPartyMon1
 	add hl, de ; de = own mon offset set by old code
 	ld a, [hl]
-	cp BWXP_MAX_LEVEL + 1
+	cp MAX_LEVEL + 1
 	jr c, .calcLLpPlus10
-	ld a, BWXP_MAX_LEVEL
+	ld a, MAX_LEVEL
 .calcLLpPlus10
 ; bwxp rebalance: exp will never be reduced (but divisor is increased from 5 to 7)
 ; so if Lp >= L, do (2L+10) on the bottom too [really should be Lp > L, but >= is easier to test]
@@ -155,13 +144,13 @@ BlackWhiteEXP::
 	ld a, [H_BIGMULTIPLICAND + 4]
 	ld l, a
 	ld a, [H_BIGMULTIPLICAND]
-	ld [wEnemyMonPP], a
+	ld [wBWXPScratch3], a
 ; now we can move on and do the 2.5 power of L+Lp+10
 	ld a, b
 	call BWXP_Power25Calculator
 	call BWXP_SwapRamWithDEHL
 ; get the old MSB back from storage, the divisor here will never be 40-bit
-	ld a, [wEnemyMonPP]
+	ld a, [wBWXPScratch3]
 	ld [H_BIGMULTIPLICAND], a
 ; do the big division (H_BIGMULTIPLICAND / dehl)
 	call BWXP_BigDivision
@@ -175,13 +164,13 @@ BlackWhiteEXP::
 	ld a, $0
 	adc b
 	ld [H_PRODUCT + 2], a
-	ld a, [wEnemyMonPP]
+	ld a, [wBWXPScratch3]
 	adc $0
 	ld [H_PRODUCT + 1], a
 ; now we need that offset into partymon again
 ; respect trade flag
 	pop de
-	ld hl, wPartyMon1OTID - (wPartyMon1DVs - 1)
+	ld hl, wPartyMon1OTID - wPartyMon1
 	add hl, de
 	ld b, [hl]
 	inc hl
@@ -200,41 +189,7 @@ BlackWhiteEXP::
 
 .writeBoostedFlag
 	ld [wGainBoostedExp], a
-; it's time to actually give them the new EXP
-; also store it in wEnemyMonMoves to be printed in text later
-; last byte of EXP is +3 from second byte of TID
-	inc hl
-	inc hl
-	inc hl
-	ld b, [hl]
-	ld a, [H_PRODUCT + 3]
-	ld [wExpAmountGained + 2], a
-	add b
-	ld [hld], a
-	ld b, [hl]
-	ld a, [H_PRODUCT + 2]
-	ld [wExpAmountGained + 1], a
-	adc b
-	ld [hld], a
-	ld b, [hl]
-	ld a, [H_PRODUCT + 1]
-	ld [wExpAmountGained], a
-	adc b
-	ld [hl], a
-	jr nc, .expNotMaxedOut
-; maxed out exp, write FFFFFF
-	ld a, $ff
-	ld [hli], a
-	ld [hli], a
-	ld [hl], a
-	jr .done
-
-.expNotMaxedOut
-	inc hl
-	inc hl
-
-.done
-	jp ExperienceReturnPoint
+	ret
 
 BWXP_Power25Calculator::
 ; calc (a^2.5), stored in the multiplication bytes
@@ -303,7 +258,7 @@ BWXP_BigMult:
 	ld b, 8
 	xor a
 	ld [H_BIGMULTIPLICAND], a
-	ld [wEnemyMonPP], a
+	ld [wBWXPScratch3], a
 	ld [H_MULTIPLYBUFFER], a
 	ld [H_MULTIPLYBUFFER + 1], a
 	ld [H_MULTIPLYBUFFER + 2], a
@@ -333,11 +288,11 @@ BWXP_BigMult:
 	ld a, [H_BIGMULTIPLICAND + 1]
 	adc c
 	ld [H_MULTIPLYBUFFER], a
-	ld a, [wEnemyMonPP]
+	ld a, [wBWXPScratch3]
 	ld c, a
 	ld a, [H_BIGMULTIPLICAND]
 	adc c
-	ld [wEnemyMonPP], a
+	ld [wBWXPScratch3], a
 
 .next
 	dec b
@@ -365,7 +320,7 @@ BWXP_BigMult:
 	ld [H_BIGMULTIPLICAND + 2], a
 	ld a, [H_MULTIPLYBUFFER]
 	ld [H_BIGMULTIPLICAND + 1], a
-	ld a, [wEnemyMonPP]
+	ld a, [wBWXPScratch3]
 	ld [H_BIGMULTIPLICAND], a
 	pop bc
 	ret
@@ -382,7 +337,7 @@ BWXP_SwapRamWithDEHL:
 	ld c, l
 ; swap FF95-FF98 and debc
 ; backup debc
-	ld hl, wEnemyMonMoves
+	ld hl, wBWXPScratch1
 	ld a, d
 	ld [hli], a
 	ld a, e
@@ -400,7 +355,7 @@ BWXP_SwapRamWithDEHL:
 	ld a, [H_PRODUCT + 3]
 	ld c, a
 ; move backup into FF95-98
-	ld hl, wEnemyMonMoves
+	ld hl, wBWXPScratch1
 	ld a, [hli]
 	ld [H_PRODUCT], a
 	ld a, [hli]
@@ -421,20 +376,20 @@ BWXP_SwapRamWithDEHL:
 ; Inputs
 ; H_BIGMULTIPLICAND: 40bit top
 ; de:hl : 32bit bottom
-; Scratch space: wEnemyMonMoves scratch1
-; wEnemyMonDVs + 1 scratch2
-; wEnemyMonPP:bc result
+; Scratch space: wBWXPScratch1 scratch1
+; wBWXPScratch2 scratch2
+; wBWXPScratch3:bc result
 ; translation to the ARM:
-; R0 is wEnemyMonPP:bc
+; R0 is wBWXPScratch3:bc
 ; R1 is [H_BIGMULTIPLICAND-H_BIGMULTIPLICAND+4]
-; R2 is [wEnemyMonMoves-wEnemyMonMoves+4]
-; R3 is [wEnemyMonDVs + 1-wEnemyMonDVs + 1+4]
+; R2 is [wBWXPScratch1-wBWXPScratch1+4]
+; R3 is [wBWXPScratch2-wBWXPScratch2+4]
 ;************************************
 BWXP_BigDivision::
 ; Initialize result
 	ld bc, $0000
 	xor a
-	ld [wEnemyMonPP], a
+	ld [wBWXPScratch3], a
 ; Check for div/0 and don't divide at all if it happens
 	ld a, l
 	and a
@@ -453,13 +408,13 @@ BWXP_BigDivision::
 ; clear temp storage
 	xor a
 	push hl
-	ld hl, wEnemyMonMoves
+	ld hl, wBWXPScratch1
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld hl, wEnemyMonDVs + 1
+	ld hl, wBWXPScratch2
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a
@@ -471,40 +426,40 @@ BWXP_BigDivision::
 	pop hl
 ; copy initial value of de:hl into the lower 4 bytes of scratch1
 	ld a, l
-	ld [wEnemyMonMoves + 4], a
+	ld [wBWXPScratch1 + 4], a
 	ld a, h
-	ld [wEnemyMonMoves + 3], a
+	ld [wBWXPScratch1 + 3], a
 	ld a, e
-	ld [wEnemyMonMoves + 2], a
+	ld [wBWXPScratch1 + 2], a
 	ld a, d
-	ld [wEnemyMonMoves + 1], a
+	ld [wBWXPScratch1 + 1], a
 ; setup for the division
 .setup
-	ld hl, wEnemyMonMoves
+	ld hl, wBWXPScratch1
 	ld de, H_BIGMULTIPLICAND
 	call BWXP_FortyBitCompare
 	jr nc, .loop
-	ld hl, wEnemyMonMoves + 4
+	ld hl, wBWXPScratch1 + 4
 	call BWXP_FortyBitLeftShift
-	ld hl, wEnemyMonDVs + 1 + 4
+	ld hl, wBWXPScratch2 + 4
 	call BWXP_FortyBitLeftShift
 	jr .setup
 
 .loop
-	ld hl, wEnemyMonMoves
+	ld hl, wBWXPScratch1
 	ld de, H_BIGMULTIPLICAND
 	call BWXP_FortyBitCompare
 	jr nc, .aftersubtract
 	ld de, H_BIGMULTIPLICAND + 4
-	ld hl, wEnemyMonMoves + 4
+	ld hl, wBWXPScratch1 + 4
 	call BWXP_FortyBitSubtract
 	call BWXP_BigDiv_AccumulateAnswer
 
 .aftersubtract
-	ld hl, wEnemyMonDVs + 1
+	ld hl, wBWXPScratch2
 	call BWXP_FortyBitRightShift
 	jr c, .done ; if carry is set, the accumulator finished so we're done.
-	ld hl, wEnemyMonMoves
+	ld hl, wBWXPScratch1
 	call BWXP_FortyBitRightShift
 	jr .loop
 
@@ -534,17 +489,17 @@ BWXP_FortyBitSubtract::
 ;*****
 BWXP_BigDiv_AccumulateAnswer::
 	push de
-	ld a, [wEnemyMonDVs + 1 + 2]
+	ld a, [wBWXPScratch2 + 2]
 	and a
 	jr z, .checkSecondByte
 	ld d, a
-	ld a, [wEnemyMonPP]
+	ld a, [wBWXPScratch3]
 	or d
-	ld [wEnemyMonPP], a
+	ld [wBWXPScratch3], a
 	jr .done
 
 .checkSecondByte
-	ld a, [wEnemyMonDVs + 1 + 3]
+	ld a, [wBWXPScratch2 + 3]
 	and a
 	jr z, .checkThirdByte
 	ld d, a
@@ -554,7 +509,7 @@ BWXP_BigDiv_AccumulateAnswer::
 	jr .done
 
 .checkThirdByte
-	ld a, [wEnemyMonDVs + 1 + 4]
+	ld a, [wBWXPScratch2 + 4]
 	and a
 	jr z, .done
 	ld d, a

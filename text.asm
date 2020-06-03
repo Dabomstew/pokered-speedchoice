@@ -1467,6 +1467,23 @@ _ExpPointsLongText::
 	TX_NUM wExpAmountGained, 3, 8
 	text " EXP!"
 	prompt
+	
+_ExpAllTruncatedText::
+	text "Party #MON"
+	line "gained EXP"
+	cont "with EXP ALL!"
+	prompt
+	
+_ExpShareText::
+	text "Party #MON"
+	line "gained EXP"
+	cont "with EXP SHARE!"
+	prompt
+	
+_AlwaysExpShareText::
+	text "Party #MON"
+	line "gained EXP!"
+	prompt
 
 _GrewLevelText::
 	TX_RAM wcd6d
