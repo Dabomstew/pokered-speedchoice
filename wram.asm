@@ -344,7 +344,9 @@ wBWXPScratch2::
 wBWXPScratch3::
 	ds 1
 wEXPCalcsEnd::
-	ds BIGGEST_MAP_SIZE - (PARTY_LENGTH*2 + 5)
+wTempOAMBuffer::
+	ds 160
+	ds BIGGEST_MAP_SIZE - (PARTY_LENGTH*2 + 176)
 NEXTU
 wOverworldMap:: ; c6e8
 	ds BIGGEST_MAP_SIZE

@@ -234,17 +234,26 @@ GainExperience:
 	callab ApplyBadgeStatBoosts
 	callab DrawPlayerHUDAndHPBar
 	callab PrintEmptyString
-	call SaveScreenTilesToBuffer1
 .printGrewLevelText
 	ld hl, GrewLevelText
 	call PrintText
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	call LoadMonData
+	call SaveScreenTilesToBuffer1
+	ld hl, wOAMBuffer
+	ld bc, 160
+	ld de, wTempOAMBuffer
+	call CopyData
+	call HideSprites
 	ld d, $1
 	callab PrintStatsBox
 	call WaitForTextScrollButtonPress
 	call LoadScreenTilesFromBuffer1
+	ld hl, wTempOAMBuffer
+	ld bc, 160
+	ld de, wOAMBuffer
+	call CopyData
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	ld a, [wd0b5]
