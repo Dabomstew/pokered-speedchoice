@@ -2062,8 +2062,7 @@ Music_StereoPanning:
 ; stereo panning
 ; params: 1
 	; stereo on?
-	ld a, [wOptions]
-	bit STEREO, a
+	sboptioncheck STEREO
 	jr nz, Music_Panning
 	; skip param
 	call GetMusicByte
@@ -2528,8 +2527,7 @@ _PlayCry::
 ; Stereo only: Play cry from the monster's side.
 ; This only applies in-battle.
 
-	ld a, [wOptions]
-	bit STEREO, a
+	sboptioncheck STEREO
 	jr z, .next
 
 ; [Tracks] &= [wCryTracks]
@@ -2719,8 +2717,7 @@ PlayStereoSFX::
 	call MusicOff
 
 ; standard procedure if stereo's off
-	ld a, [wOptions]
-	bit STEREO, a
+	sboptioncheck STEREO
 	jp z, _PlaySFX
 
 ; else, let's go ahead with this
@@ -2907,8 +2904,7 @@ INCLUDE "audio/drumkits.asm"
 GetLRTracks:
 ; gets the default sound l/r channels
 ; stores mono/stereo table in hl
-	ld a, [wOptions]
-	bit STEREO, a
+	sboptioncheck STEREO
 	; made redundant, could have had a purpose in gold
 	jr nz, .stereo
 	ld hl, MonoTracks

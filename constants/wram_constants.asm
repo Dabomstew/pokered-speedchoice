@@ -1,14 +1,25 @@
 ; macros for options
 optionbyte = 0
+optiontype = 0
 optionbytestart: MACRO
 optionbyte = optionbyte + 1
+optionbit = 0
+ENDM
+
+nextoptiontype: MACRO
+optiontype = optiontype + 1
+optionbyte = 0
 optionbit = 0
 ENDM
 
 sboption: MACRO
 \1 EQU optionbit
 \1_VAL EQU (1 << optionbit)
+IF optiontype == 0
+\1_ADDRESS EQUS "wOptions + {optionbyte} - 1"
+ELSE
 \1_ADDRESS EQUS "wPermanentOptions + {optionbyte} - 1"
+ENDC
 optionbit = optionbit + 1
 ENDM
 
@@ -16,7 +27,11 @@ mboption: MACRO
 \1_SHIFT EQU optionbit
 \1_SIZE EQU \2
 \1_MASK EQU (1 << (optionbit + \2)) - (1 << optionbit)
+IF optiontype == 0
+\1_ADDRESS EQUS "wOptions + {optionbyte} - 1"
+ELSE
 \1_ADDRESS EQUS "wPermanentOptions + {optionbyte} - 1"
+ENDC
 optionbit = optionbit + \2
 ENDM
 
@@ -31,6 +46,22 @@ mboptioncheck: MACRO
 	ld a, [\1_ADDRESS]
 	and \1_MASK
 	cp \1_\2 << \1_SHIFT
+ENDM
+
+pushalloptions: MACRO
+	ld hl, wOptions
+	rept NUM_OPTIONS_BYTES
+	ld a, [hli]
+	push af
+	endr
+ENDM
+	
+popalloptions: MACRO
+	ld hl, wOptions + NUM_OPTIONS_BYTES - 1
+	rept NUM_OPTIONS_BYTES
+	pop af
+	ld [hld], a
+	endr
 ENDM
 
 ; wOptions:
@@ -49,9 +80,11 @@ TEXT_SLOW    EQU %11
 ; wOptions2:
 	optionbytestart
 	mboption FRAME, 4
+	
+NUM_OPTIONS_BYTES EQU optionbyte
 
 ; permaoptions
-optionbyte = 0
+	nextoptiontype
 	optionbytestart
 	mboption SPINNERS, 2 ; 0
 	sboption MAX_RANGE ; 2

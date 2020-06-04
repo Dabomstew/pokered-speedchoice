@@ -29,8 +29,7 @@ TransformEffect_:
 	ld hl, HideSubstituteShowMonAnim
 	ld b, BANK(HideSubstituteShowMonAnim)
 	call nz, Bankswitch
-	ld a, [wOptions]
-	bit BATTLE_SHOW_ANIMATIONS, a
+	sboptioncheck BATTLE_SHOW_ANIMATIONS
 	ld hl, PlayCurrentMoveAnimation
 	ld b, BANK(PlayCurrentMoveAnimation)
 	jr nz, .gotAnimToPlay

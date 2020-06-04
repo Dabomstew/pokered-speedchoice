@@ -1,8 +1,7 @@
 SetDefaultNames:
 	ld a, [wLetterPrintingDelayFlags]
 	push af
-	ld a, [wOptions]
-	push af
+	pushalloptions
 	ld a, [wd732]
 	push af
 	ld a, [wCurPalette]
@@ -21,8 +20,7 @@ SetDefaultNames:
 	ld [wLastPalette], a ; force reload just in case vblank/hblank happened
 	pop af
 	ld [wd732], a
-	pop af
-	ld [wOptions], a
+	popalloptions
 	pop af
 	ld [wLetterPrintingDelayFlags], a
 	ld a, [wOptionsInitialized]

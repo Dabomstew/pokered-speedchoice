@@ -60,14 +60,14 @@ OptionsMenuCommon::
 	cp "@"
 	jr nz, .exit
 .nameMissing
-	ld a, [wOptions]
+	ld a, [HOLD_TO_MASH_ADDRESS]
 	push af
-	and $ff ^ (1 << HOLD_TO_MASH)
-	ld [wOptions], a
+	and $ff ^ HOLD_TO_MASH_VAL
+	ld [HOLD_TO_MASH_ADDRESS], a
 	ld hl, NameNotSetText
 	call PrintText
 	pop af
-	ld [wOptions], a
+	ld [HOLD_TO_MASH_ADDRESS], a
 	jr .pageLoad
 .exit
 	pop af

@@ -18,8 +18,7 @@ ExternalClockTradeAnim:
 	ld de, ExternalClockTradeFuncSequence
 
 TradeAnimCommon:
-	ld a, [wOptions]
-	push af
+	pushalloptions
 	ld a, [hSCY]
 	push af
 	ld a, [hSCX]
@@ -52,8 +51,7 @@ TradeAnimCommon:
 	ld [hSCX], a
 	pop af
 	ld [hSCY], a
-	pop af
-	ld [wOptions], a
+	popalloptions
 	ret
 
 addtradefunc: MACRO

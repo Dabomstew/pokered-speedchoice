@@ -2355,17 +2355,7 @@ wPlayerMoney:: ; d347
 wRivalName:: ; d34a
 	ds NAME_LENGTH
 
-wOptions:: ; d355
-; bit 7 = battle animation
-; 0: On
-; 1: Off
-; bit 6 = battle style
-; 0: Shift
-; 1: Set
-; bits 0-3 = text speed (number of frames to delay after printing a letter)
-; 1: Fast
-; 3: Medium
-; 5: Slow
+wLegacyOptions:: ; d355
 	ds 1
 
 wObtainedBadges:: ; d356
@@ -2592,11 +2582,11 @@ wSpeedchoiceFlags::
 ; bit 2: in HoF done screen, kill music instead of playing default map music
 ; bit 3: evolution or giftmon just happened, check 151 dex on next overworld frame
 	ds 1
-wOptions2::
-	ds 1
+wOptions::
+	ds NUM_OPTIONS_BYTES
 	
 wMainDataBlock1End::
-	ds 92
+	ds 93 - NUM_OPTIONS_BYTES
 
 wMainDataBlock2Start::
 wNumSigns:: ; d4b0

@@ -44,8 +44,7 @@ SubstituteEffect_:
 	ld h, b
 	ld l, c
 	set HAS_SUBSTITUTE_UP, [hl]
-	ld a, [wOptions]
-	bit BATTLE_SHOW_ANIMATIONS, a ; battle animation is enabled?
+	sboptioncheck BATTLE_SHOW_ANIMATIONS ; battle animation is enabled?
 	ld hl, PlayCurrentMoveAnimation
 	ld b, BANK(PlayCurrentMoveAnimation)
 	jr nz, .animationEnabled

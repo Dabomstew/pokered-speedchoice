@@ -146,7 +146,7 @@ Options_Palette:
 NUM_TEXTBOX_FRAMES EQUS "((TextBoxFramesEnd - TextBoxFrames)/2 + 1)"
 	
 Options_Frame:
-	ld a, [wOptions2]
+	ld a, [FRAME_ADDRESS]
 	and FRAME_MASK
 	ld c, a
 	ld a, [hJoyPressed]
@@ -173,10 +173,10 @@ Options_Frame:
 	dec c
 
 .Save
-	ld a, [wOptions2]
+	ld a, [FRAME_ADDRESS]
 	and $ff ^ FRAME_MASK
 	or c
-	ld [wOptions2], a
+	ld [FRAME_ADDRESS], a
 	push bc
 	call LoadTextBoxTilePatterns
 	pop bc

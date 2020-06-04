@@ -1445,8 +1445,7 @@ EnemySendOutFirstMon:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .next4
-	ld a, [wOptions]
-	bit BATTLE_SHIFT, a
+	sboptioncheck BATTLE_SHIFT
 	jr z, .next4
 	ld hl, TrainerAboutToUseText
 	call PrintText

@@ -18,7 +18,7 @@ _LoadTextBoxTilePatterns::
 
 _LoadTextBoxFrame::
 ; load the custom frame if set
-	ld a, [wOptions2]
+	ld a, [FRAME_ADDRESS]
 	and FRAME_MASK
 	ret z
 	dec a

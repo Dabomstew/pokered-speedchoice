@@ -1026,7 +1026,7 @@ AfterDisplayingTextID::
 
 ; loop to hold the dialogue box open as long as the player keeps holding down the A button
 HoldTextDisplayOpen::
-	ld a, [wOptions]
+	ld a, [HOLD_TO_MASH_ADDRESS]
 	and HOLD_TO_MASH_VAL
 	jr nz, CloseTextDisplay
 	call Joypad
@@ -3214,13 +3214,13 @@ JoypadLowSensitivity::
 	ret
 	
 WaitForTextScrollButtonPressNoHTM::
-	ld a, [wOptions]
+	ld a, [HOLD_TO_MASH_ADDRESS]
 	push af
-	and $ff ^ (1 << HOLD_TO_MASH)
-	ld [wOptions], a
+	and $ff ^ HOLD_TO_MASH_VAL
+	ld [HOLD_TO_MASH_ADDRESS], a
 	call WaitForTextScrollButtonPress
 	pop af
-	ld [wOptions], a
+	ld [HOLD_TO_MASH_ADDRESS], a
 	ret
 
 WaitForTextScrollButtonPress::
@@ -3244,8 +3244,7 @@ WaitForTextScrollButtonPress::
 	pop hl
 	call JoypadLowSensitivity
 	predef CableClub_Run
-	ld a, [wOptions]
-	and (1 << HOLD_TO_MASH)
+	sboptioncheck HOLD_TO_MASH
 	ld a, [hJoyHeld]
 	jr nz, .check
 	ld a, [hJoy5]
@@ -3326,7 +3325,7 @@ PrintLetterDelay::
 	ld a, [wLetterPrintingDelayFlags]
 	bit 0, a
 	jr z, .waitOneFrame
-	ld a, [wOptions]
+	ld a, [TEXT_SPEED_ADDRESS]
 	and TEXT_SPEED_MASK
 	jr z, .done ; instant
 	dec a

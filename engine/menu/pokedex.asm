@@ -575,8 +575,7 @@ ShowPokedexDataInternal:
 	ld [$fff4], a
 .waitForButtonPress
 	call JoypadLowSensitivity
-	ld a, [wOptions]
-	and HOLD_TO_MASH_VAL
+	sboptioncheck HOLD_TO_MASH
 	ld a, [hJoy5]
 	jr z, .check
 	ld a, [hJoyHeld]

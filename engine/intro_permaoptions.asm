@@ -11,14 +11,14 @@ IntroPermaOptions::
 	ld [hli], a
 	endr
 	ld [hl], a
-	ld a, [wOptions]
+	ld a, [HOLD_TO_MASH_ADDRESS]
 	push af
-	and $ff ^ (1 << HOLD_TO_MASH)
-	ld [wOptions], a
+	and $ff ^ HOLD_TO_MASH_VAL
+	ld [HOLD_TO_MASH_ADDRESS], a
 	ld hl, PleaseSetOptions
 	call PrintText
 	pop af
-	ld [wOptions], a
+	ld [HOLD_TO_MASH_ADDRESS], a
 	ld a, "@"
 	ld [wPlayerName], a
 	ld [wRivalName], a
