@@ -527,11 +527,28 @@ ItemUseBall:
 	ld [wd11e], a
 	ld a, [wBattleType]
 	dec a ; is this the old man battle?
-	jr z, .oldManCaughtMon ; if so, don't give the player the caught Pokémon
+	jp z, .oldManCaughtMon ; if so, don't give the player the caught Pokémon
 
 	ld hl, ItemUseBallText05
 	call PrintText
+	
+; give catch EXP.
+	sboptioncheck CATCH_EXP
+	jr z, .noCatchExp
+	ld a, [wEnemyMonSpecies]
+	push af
+	ld a, [wWhichPokemon]
+	push af
+	callab GainExperience
+	pop af
+	ld [wWhichPokemon], a
+	pop af
+	ld [wEnemyMonSpecies], a
+	ld [wCapturedMonSpecies], a
+	ld [wcf91], a
+	ld [wd11e], a
 
+.noCatchExp
 ; Add the caught Pokémon to the Pokédex.
 	predef IndexToPokedex
 	ld a, [wd11e]

@@ -67,10 +67,10 @@ GainExperience:
 	push de ; store it back for the loop
 	mboptioncheck EXP_FORMULA, BLACKWHITE
 	jr z, .doBW
-	call CalculateNonScalingExperience
+	call CalculateNonScalingExperienceGain
 	jr .continue
 .doBW
-	call CalculateScalingExperience
+	call CalculateScalingExperienceGain
 .continue
 ; add the gained exp to the party mon's exp
 	pop de ; base of party entry, was pushed from hl earlier
@@ -121,6 +121,10 @@ GainExperience:
 .next2
 ; print text
 	push hl
+; must always load name in case of gaining level
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMonNicks
+	call GetPartyMonName
 	ld a, [wBoostExpByExpAll]
 	and a
 	jr z, .printIndividual
@@ -136,9 +140,6 @@ GainExperience:
 	call PrintText
 	jr .afterPrinting
 .printIndividual
-	ld a, [wWhichPokemon]
-	ld hl, wPartyMonNicks
-	call GetPartyMonName
 	ld hl, GainedText
 	call PrintText
 .afterPrinting
@@ -318,6 +319,10 @@ CalcMaxExperience:
 
 ; divide d by e; quotient in d, remainder in a
 SingleByteDivide:
+; check for fast exit if e=1; worth it given how often the divisor will be 1 for this code
+	ld a, e
+	dec a
+	ret z
 	xor a
 	ld b, 8
 .loop

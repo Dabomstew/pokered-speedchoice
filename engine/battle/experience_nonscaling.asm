@@ -1,5 +1,5 @@
 ; input de = base of party mon entry
-CalculateNonScalingExperience:
+CalculateNonScalingExperienceGain:
 	xor a
 	ld [H_MULTIPLICAND], a
 	ld [H_MULTIPLICAND + 1], a

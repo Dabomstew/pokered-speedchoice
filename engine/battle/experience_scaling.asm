@@ -1,5 +1,5 @@
 ; input de = base of party mon entry
-CalculateScalingExperience::
+CalculateScalingExperienceGain::
 	ld a, [wEnemyMonLevel]
 	cp MAX_LEVEL + 1
 	jr c, .calc2LPlus10
