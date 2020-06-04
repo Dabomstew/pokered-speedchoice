@@ -49,18 +49,20 @@ mboptioncheck: MACRO
 ENDM
 
 pushalloptions: MACRO
-	ld hl, wOptions
+obtemp = 0
 	rept NUM_OPTIONS_BYTES
-	ld a, [hli]
+	ld a, [wOptions + obtemp]
 	push af
+obtemp = obtemp + 1
 	endr
 ENDM
 	
 popalloptions: MACRO
-	ld hl, wOptions + NUM_OPTIONS_BYTES - 1
+obtemp = NUM_OPTIONS_BYTES - 1
 	rept NUM_OPTIONS_BYTES
 	pop af
-	ld [hld], a
+	ld [wOptions + obtemp], a
+obtemp = obtemp - 1
 	endr
 ENDM
 
