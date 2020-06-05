@@ -1788,3 +1788,7 @@ INCLUDE "engine/pic_sets.asm"
 SECTION "Bill's PC", ROMX
 
 INCLUDE "engine/menu/bills_pc.asm"
+
+SECTION "choose quantity", ROMX
+
+INCLUDE "engine/choose_quantity.asm"
