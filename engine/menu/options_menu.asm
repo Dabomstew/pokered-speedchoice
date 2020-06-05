@@ -141,7 +141,7 @@ ENDM
 
 OptionsMenuScreens:
 	; default options page 1
-	options_menu 6, MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
+	options_menu 7, MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
 	; permaoptions page 1-3
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	options_menu 7, PermaOptions2String, PermaOptions2Pointers, START

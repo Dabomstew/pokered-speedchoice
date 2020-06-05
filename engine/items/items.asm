@@ -65,7 +65,7 @@ ItemUsePtrTable:
 	dw ItemUseEvoStone   ; LEAF_STONE
 	dw UnusableItem      ; CARD_KEY
 	dw UnusableItem      ; NUGGET
-	dw UnusableItem      ; ??? PP_UP
+	dw ItemUseWorldChanger; WORLD_CHANGER
 	dw ItemUsePokedoll   ; POKE_DOLL
 	dw ItemUseMedicine   ; FULL_HEAL
 	dw ItemUseMedicine   ; REVIVE
@@ -691,8 +691,11 @@ ItemUseBicycle:
 	ld [hJoyHeld], a ; current joypad state
 	inc a
 	ld [wWalkBikeSurfState], a ; change player state to bicycling
-	ld hl, GotOnBicycleText
+	mboptioncheck BIKE_MUSIC, NONE
+	jr z, .noMusicChangeOn
 	call PlayDefaultMusic ; play bike riding music
+.noMusicChangeOn
+	ld hl, GotOnBicycleText
 .printText
 ; no text if select to bike
 	ld a, [wOverworldSelectFlags]
@@ -2164,6 +2167,9 @@ PPRestoredText:
 ; for items that can't be used from the Item menu
 UnusableItem:
 	jp ItemUseNotTime
+
+ItemUseWorldChanger:
+	jpab PermaOptionsMenu
 
 ItemUseTMHM:
 	ld a, [wIsInBattle]

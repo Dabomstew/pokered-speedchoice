@@ -10,7 +10,9 @@ MainOptionsString::
 	db "FRAME<LNBRK>"
 	db "        :TYPE <LNBRK>"
 	db "PALETTE<LNBRK>"
-	db " :@"
+	db " :<LNBRK>"
+	db "BIKE MUSIC<LNBRK>"
+	db "        :@"
 	
 
 MainOptionsPointers::
@@ -20,6 +22,7 @@ MainOptionsPointers::
 	dw Options_BattleStyle
 	dw Options_Frame
 	dw Options_Palette
+	dw Options_BikeMusic
 	dw Options_OptionsPage
 ; e42f5
 
@@ -194,4 +197,23 @@ Options_Frame:
 	call PrintNumber
 	and a
 	ret
+	
+Options_BikeMusic:
+	ld hl, .Data
+	jp Options_Multichoice
+	
+.Data:
+	multichoiceoptiondata BIKE_MUSIC_ADDRESS, BIKE_MUSIC_SHIFT, BIKE_MUSIC_SIZE, 15, NUM_OPTIONS, .Strings
+.Strings:
+	dw .Normal
+	dw .Yellow
+	dw .None
+.Strings_End:
+	
+.Normal
+	db "NORMAL@"
+.Yellow
+	db "YELLOW@"
+.None
+	db "NONE  @"
 

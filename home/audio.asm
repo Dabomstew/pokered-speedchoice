@@ -24,6 +24,13 @@ PlayDefaultMusicCommon::
 	jr z, .walking
 	cp $2
 	jr z, .surfing
+	mboptionload BIKE_MUSIC
+	jr z, .bike
+	cp BIKE_MUSIC_NONE << BIKE_MUSIC_SHIFT
+	jr z, .walking
+	call CheckForNoBikingMusicMap
+	jr c, .walking
+.bike
 	ld a, MUSIC_BIKE_RIDING
 	jr .next
 
@@ -54,6 +61,26 @@ PlayDefaultMusicCommon::
 	inc a
 .doFade
 	ld [wMusicFade], a
+	ret
+
+; taken verbatim from pokeyellow
+CheckForNoBikingMusicMap::
+; probably used to not change music upon getting on bike
+	ld a, [wCurMap]
+	cp ROUTE_23
+	jr z, .found
+	cp VICTORY_ROAD_1F
+	jr z, .found
+	cp VICTORY_ROAD_2F
+	jr z, .found
+	cp VICTORY_ROAD_3F
+	jr z, .found
+	cp INDIGO_PLATEAU
+	jr z, .found
+	and a
+	ret
+.found
+	scf
 	ret
 
 ; plays sfx specified by a. If value is $ff, music is stopped

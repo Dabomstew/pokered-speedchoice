@@ -48,6 +48,12 @@ mboptioncheck: MACRO
 	cp \1_\2 << \1_SHIFT
 ENDM
 
+; load a multi bit option but don't check for a specific value yet
+mboptionload: MACRO
+	ld a, [\1_ADDRESS]
+	and \1_MASK
+ENDM
+
 pushalloptions: MACRO
 obtemp = 0
 	rept NUM_OPTIONS_BYTES
@@ -82,6 +88,11 @@ TEXT_SLOW    EQU %11
 ; wOptions2:
 	optionbytestart
 	mboption FRAME, 4
+	mboption BIKE_MUSIC, 2
+	
+BIKE_MUSIC_NORMAL EQU %00
+BIKE_MUSIC_YELLOW EQU %01
+BIKE_MUSIC_NONE   EQU %10
 	
 NUM_OPTIONS_BYTES EQU optionbyte
 
