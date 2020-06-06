@@ -646,7 +646,7 @@ PrintMonStats:
 	call PlaceString
 	pop hl
 	pop de
-	ld bc, 4
+	ld bc, 6
 	add hl, bc
 	push hl
 	ld hl, wPartyMon1DVs - wPartyMon1
@@ -655,17 +655,6 @@ PrintMonStats:
 	ld b, a
 	ld c, [hl]
 	pop hl
-	push bc
-	swap b
-	call PrintHexDigit
-	swap b
-	call PrintHexDigit
-	ld b, c
-	swap b
-	call PrintHexDigit
-	swap b
-	call PrintHexDigit
-	pop bc
 ; calc hp dv
 	xor a
 	bit 4, b
@@ -684,16 +673,12 @@ PrintMonStats:
 	jr z, .noSpc
 	inc a
 .noSpc
-	inc hl
-	inc hl
 	call PrintDV
 	ld a, b
 	swap a
 	and $0F
 	call PrintDV
 	push bc
-	ld bc, 8
-	add hl, bc
 	pop bc
 	ld a, b
 	and $0F
@@ -712,15 +697,11 @@ PrintMonStats:
 	ld d, h
 	ld e, l
 	pop hl
-	ld bc, 7
-	add hl, bc
-	call PrintStatEXP
-	ld bc, 13
+	ld bc, -(SCREEN_WIDTH*5 - 6)
 	add hl, bc
 	call PrintStatEXP
 	call PrintStatEXP
-	ld bc, 6
-	add hl, bc
+	call PrintStatEXP
 	call PrintStatEXP
 	call PrintStatEXP
 	pop bc
@@ -733,19 +714,19 @@ PrintStatEXP:
 	pop de
 	inc de
 	inc de
-	inc hl
-	inc hl
+	ld bc, SCREEN_WIDTH - 5
+	add hl, bc
 	ret
 	
 PrintDV:
-	inc hl
-	inc hl
 	push de
 	push bc
 	ld [wBuffer], a
 	lb bc, PRINTNUM_LEADINGZEROS | 1, 2
 	ld de, wBuffer
 	call PrintNumber
+	ld bc, SCREEN_WIDTH - 2
+	add hl, bc
 	pop bc
 	pop de
 	ret
@@ -762,11 +743,11 @@ DVsString:
 	db "DVs @"
 	
 StatsTemplate:
-	db "DVs XXXX / Hxx Axx<LNBRK>"
-	db "       Dxx Sxx Cxx<LNBRK>"
-	db "SXP H     <LNBRK>"
-	db "    A      D     <LNBRK>"
-	db "    S      C     @"
+	db "HP  DVxx SXP<LNBRK>"
+	db "ATK DVxx SXP<LNBRK>"
+	db "DEF DVxx SXP<LNBRK>"
+	db "SPD DVxx SXP<LNBRK>"
+	db "SPC DVxx SXP@"
 	
 Print2ByteCompare:
 	ld bc, SCREEN_WIDTH - 3

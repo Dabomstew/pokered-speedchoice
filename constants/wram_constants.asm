@@ -146,9 +146,9 @@ RACEGOAL_151DEX    EQU %10
 	sboption DEX_AREA_BEEP ; 7
 	
 	optionbytestart
-	sboption DONT_SKIP_MOVES
-	mboption EXP_SPLITTING, 2
-	sboption CATCH_EXP
+	sboption DONT_SKIP_MOVES ; 0
+	mboption EXP_SPLITTING, 2 ; 1
+	sboption CATCH_EXP ; 3
 
 EXP_SPLITTING_VANILLA     EQU %00
 EXP_SPLITTING_NOSPAM      EQU %01
