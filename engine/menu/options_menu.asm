@@ -1,8 +1,8 @@
 FIRST_OPTIONS_PAGEID EQU 0
-NUM_OPTIONS_PAGES EQU 2
+NUM_OPTIONS_PAGES EQUS "((PermaOptionsMenuScreens - OptionsMenuScreens)/6)"
 
-FIRST_PERMAOPTIONS_PAGEID EQU NUM_OPTIONS_PAGES
-NUM_PERMAOPTIONS_PAGES EQU 4
+FIRST_PERMAOPTIONS_PAGEID EQUS "((PermaOptionsMenuScreens - OptionsMenuScreens)/6)"
+NUM_PERMAOPTIONS_PAGES EQUS "((PermaOptionsMenuScreensEnd - PermaOptionsMenuScreens)/6)"
 
 PermaOptionsMenu::
 	ld a, FIRST_PERMAOPTIONS_PAGEID
@@ -144,10 +144,13 @@ OptionsMenuScreens:
 	options_menu 6, MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
 	options_menu 2, MainOptions2String, MainOptions2Pointers, (START | B_BUTTON)
 	; permaoptions page 1-3
+PermaOptionsMenuScreens:
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	options_menu 7, PermaOptions2String, PermaOptions2Pointers, START
 	options_menu 7, PermaOptions3String, PermaOptions3Pointers, START
-	options_menu 7, PermaOptions4String, PermaOptions4Pointers, START
+	options_menu 6, PermaOptions4String, PermaOptions4Pointers, START
+	options_menu 2, PermaOptions5String, PermaOptions5Pointers, START
+PermaOptionsMenuScreensEnd:
 
 GetOptionPointer:
 	ld a, [wOptionsMenuCount]
@@ -489,6 +492,7 @@ INCLUDE "engine/menu/options/perma_options.asm"
 INCLUDE "engine/menu/options/perma_options_2.asm"
 INCLUDE "engine/menu/options/perma_options_3.asm"
 INCLUDE "engine/menu/options/perma_options_4.asm"
+INCLUDE "engine/menu/options/perma_options_5.asm"
 
 NameNotSetText::
 	text "Please set the"

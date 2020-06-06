@@ -131,6 +131,7 @@ SELECTTO_JACK EQU %10
 	mboption STARTIN, 4 ; 0 - there are only 5 atm, but leaving space for up to 16
 	mboption RACEGOAL, 2 ; 4
 	sboption START_WITH_DRINK ; 6
+	sboption ROD_ALWAYS_SUCCEEDS ; 7
 
 RACEGOAL_MANUAL    EQU %00
 RACEGOAL_ELITEFOUR EQU %01

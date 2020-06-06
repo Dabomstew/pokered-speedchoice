@@ -1850,6 +1850,12 @@ ItemUseOldRod:
 ItemUseGoodRod:
 	call FishingInit
 	jp c, ItemUseNotTime
+	sboptioncheck ROD_ALWAYS_SUCCEEDS
+	jr z, .RandomLoop
+; always get a mon, but need to pick still
+	call Random
+	and 1
+	jr .pickMon
 .RandomLoop
 	call Random
 	srl a
@@ -1857,6 +1863,7 @@ ItemUseGoodRod:
 	and %11
 	cp 2
 	jr nc, .RandomLoop
+.pickMon
 	; choose which monster appears
 	ld hl, GoodRodMons
 	add a
@@ -2890,7 +2897,15 @@ ReadSuperRodData:
 	ld b, [hl] ; how many mons in group
 	inc hl ; point to data
 	ld e, $0 ; no bite yet
-
+	
+	sboptioncheck ROD_ALWAYS_SUCCEEDS
+	jr z, .RandomLoop
+.RandomAlwaysWorksLoop
+	call Random
+	and %11
+	cp b
+	jr nc, .RandomAlwaysWorksLoop
+	jr .pickMon
 .RandomLoop
 	call Random
 	srl a
@@ -2899,7 +2914,7 @@ ReadSuperRodData:
 	and %11 ; 2-bit random number
 	cp b
 	jr nc, .RandomLoop ; if a is greater than the number of mons, regenerate
-
+.pickMon
 	; get the mon
 	add a
 	ld c, a

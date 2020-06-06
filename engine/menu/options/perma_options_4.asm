@@ -9,9 +9,7 @@ PermaOptions4String::
 	db "        :<LNBRK>"
 	db "SELECT TO<LNBRK>"
 	db "        :<LNBRK>"
-	db "BOAT<LNBRK>"
-	db "        :<LNBRK>"
-	db "POKéMON PICS<LNBRK>"
+	db "RODS ALWAYS WORK<LNBRK>"
 	db "        :@"
 
 PermaOptions4Pointers::
@@ -20,8 +18,7 @@ PermaOptions4Pointers::
 	dw Options_SkipLevelupMoves
 	dw Options_MetronomeOnly
 	dw Options_SelectTo
-	dw Options_Boat
-	dw Options_PokemonPics
+	dw Options_RodsAlwaysWork
 	dw Options_PermaOptionsPage
 	
 Options_DexAreaBeep::
@@ -74,36 +71,9 @@ Options_SelectTo::
 	db "BIKE@"
 .Jack
 	db "JACK@"
-	
-Options_Boat::
-	ld hl, BACKWARDS_BOAT_ADDRESS
-	ld b, BACKWARDS_BOAT
-	ld c, 13
-	ld de, .NormalMeme
-	jp Options_TrueFalse
-.NormalMeme
-	dw .Off
-	dw .On
-.Off
-	db "NORMAL@"
-.On
-	db "MEME  @"
 
-Options_PokemonPics:
-	ld hl, .Data
-	jp Options_Multichoice
-	
-.Data:
-	multichoiceoptiondata PICSET_ADDRESS, PICSET_SHIFT, PICSET_SIZE, 15, NUM_OPTIONS, .Strings
-.Strings:
-	dw .Normal
-	dw .Green
-	dw .Yellow
-.Strings_End:
-	
-.Normal
-	db "NORMAL@"
-.Green
-	db "GREEN @"
-.Yellow
-	db "YELLOW@"
+Options_RodsAlwaysWork::
+	ld hl, ROD_ALWAYS_SUCCEEDS_ADDRESS
+	ld b, ROD_ALWAYS_SUCCEEDS
+	ld c, 13
+	jp Options_OnOff
