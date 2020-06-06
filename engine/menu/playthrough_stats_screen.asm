@@ -697,13 +697,11 @@ PrintMonStats:
 	ld d, h
 	ld e, l
 	pop hl
-	ld bc, -(SCREEN_WIDTH*5 - 6)
+	ld bc, -(SCREEN_WIDTH*5 - 7)
 	add hl, bc
+	rept 5
 	call PrintStatEXP
-	call PrintStatEXP
-	call PrintStatEXP
-	call PrintStatEXP
-	call PrintStatEXP
+	endr
 	pop bc
 	ret
 	
