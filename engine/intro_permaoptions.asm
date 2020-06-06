@@ -151,12 +151,28 @@ PrintPermaOptionsToScreen::
 	ld [hl], ":"
 	inc hl
 	inc hl
-	ld de, RandomizerCheckValue
+	push hl
+	ld hl, RandomizerCheckValue
+	ld de, wBuffer
+	ld bc, 4
+	call CopyData
+bnum = 0
+	rept NUM_PERMAOPTIONS_BYTES
+bnum = bnum + 1
+if bnum % 4 == 1
+	ld hl, wBuffer
+endc
+	ld a, [wPermanentOptions + bnum - 1]
+	xor [hl]
+	ld [hli], a
+	endr
+	pop hl
+	ld de, wBuffer
 	ld c, 4
 .checkValueLoop
 	ld a, [de]
 	inc de
-	call PrintHexValueXoredWithOptions
+	call PrintHexByte
 	dec c
 	jr nz, .checkValueLoop
 	ret
@@ -187,17 +203,9 @@ PlaceStringIncHL::
 	pop bc
 	ret
 	
-PrintHexValueXoredWithOptions::
+PrintHexByte::
 ; a contains the value to be displayed
-	push hl
-	ld hl, wPermanentOptions
-	rept NUM_PERMAOPTIONS_BYTES - 1
-	xor [hl]
-	inc hl
-	endr
-	xor [hl]
 	ld b, a
-	pop hl
 ; upper nibble
 	swap b
 	call .printNibble
