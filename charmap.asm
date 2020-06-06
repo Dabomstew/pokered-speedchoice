@@ -228,6 +228,8 @@ charmap "x", $B7
 charmap "y", $B8
 charmap "z", $B9
 
+charmap "£", $C6
+
 charmap "'d", $D0
 charmap "'l", $D1
 charmap "'m", $D2
@@ -242,6 +244,8 @@ charmap "'", $E0
 charmap "<PK>", $E1
 charmap "<MN>", $E2
 charmap "-", $E3
+charmap "<", $E4
+charmap ">", $E5
 charmap "?", $E6
 charmap "!", $E7
 charmap ".", $E8

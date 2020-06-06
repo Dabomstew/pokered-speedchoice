@@ -1227,6 +1227,9 @@ wOptionsNextMenuID:: ds 1
 wOptionsMenuID:: ds 1
 wPlayStatsPageType:: ; 0 = normal, 1 = moves used
 wOptionsMenuPreset:: ds 1
+wPlayerMonStatsSource:: ds 1
+wPlayerMonStatsOffset:: ds 1
+wPlayerMonStatsBoxPointer:: ds 2
 
 wActionResultOrTookBattleTurn:: ; cd6a
 ; This has overlapping related uses.
