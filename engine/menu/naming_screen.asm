@@ -11,6 +11,11 @@ AskName:
 	ld a, [wcf91]
 	ld [wd11e], a
 	call GetMonName
+	sboptioncheck SKIP_NICKNAMING
+	jr z, .askNickname
+	pop hl
+	jr .declinedNickname
+.askNickname
 	ld hl, DoYouWantToNicknameText
 	call PrintText
 	coord hl, 14, 7

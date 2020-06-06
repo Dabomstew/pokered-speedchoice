@@ -47,6 +47,8 @@ _GivePokemon:
 .addToParty
 	call SetPokedexOwnedFlag
 	call AddPartyMon
+	ld hl, wSpeedchoiceFlags
+	set DEX_RACEGOAL_CHECK, [hl]
 	ld a, 1
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld [wAddedToParty], a

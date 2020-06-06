@@ -1,7 +1,7 @@
 FIRST_OPTIONS_PAGEID EQU 0
-NUM_OPTIONS_PAGES EQU 1
+NUM_OPTIONS_PAGES EQU 2
 
-FIRST_PERMAOPTIONS_PAGEID EQU 1
+FIRST_PERMAOPTIONS_PAGEID EQU NUM_OPTIONS_PAGES
 NUM_PERMAOPTIONS_PAGES EQU 4
 
 PermaOptionsMenu::
@@ -141,7 +141,8 @@ ENDM
 
 OptionsMenuScreens:
 	; default options page 1
-	options_menu 7, MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
+	options_menu 6, MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
+	options_menu 2, MainOptions2String, MainOptions2Pointers, (START | B_BUTTON)
 	; permaoptions page 1-3
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	options_menu 7, PermaOptions2String, PermaOptions2Pointers, START
@@ -483,6 +484,7 @@ endr
 NUM_OPTIONS EQUS "((.Strings_End - .Strings)/2)"
 
 INCLUDE "engine/menu/options/main_options.asm"
+INCLUDE "engine/menu/options/main_options_2.asm"
 INCLUDE "engine/menu/options/perma_options.asm"
 INCLUDE "engine/menu/options/perma_options_2.asm"
 INCLUDE "engine/menu/options/perma_options_3.asm"

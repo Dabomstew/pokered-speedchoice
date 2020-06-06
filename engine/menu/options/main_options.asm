@@ -7,31 +7,26 @@ MainOptionsString::
 	db "        :<LNBRK>"
 	db "BATTLE STYLE<LNBRK>"
 	db "        :<LNBRK>"
-	db "FRAME<LNBRK>"
-	db "        :TYPE <LNBRK>"
-	db "PALETTE<LNBRK>"
-	db " :<LNBRK>"
 	db "BIKE MUSIC<LNBRK>"
+	db "        :<LNBRK>"
+	db "GIVE NICKNAMES<LNBRK>"
 	db "        :@"
-	
 
 MainOptionsPointers::
 	dw Options_TextSpeed
 	dw Options_HoldToMash
 	dw Options_BattleScene
 	dw Options_BattleStyle
-	dw Options_Frame
-	dw Options_Palette
 	dw Options_BikeMusic
+	dw Options_Nicknames
 	dw Options_OptionsPage
-; e42f5
 
 Options_TextSpeed:
 	ld hl, .Data
 	jp Options_Multichoice
 	
 .Data:
-	multichoiceoptiondata wOptions, TEXT_SPEED_SHIFT, TEXT_SPEED_SIZE, 3, NUM_OPTIONS, .Strings
+	multichoiceoptiondata TEXT_SPEED_ADDRESS, TEXT_SPEED_SHIFT, TEXT_SPEED_SIZE, 3, NUM_OPTIONS, .Strings
 
 .Strings
 	dw .Inst
@@ -51,13 +46,13 @@ Options_TextSpeed:
 	db "SLOW@"
 
 Options_BattleScene:
-	ld hl, wOptions
+	ld hl, BATTLE_SHOW_ANIMATIONS_ADDRESS
 	ld b, BATTLE_SHOW_ANIMATIONS
 	ld c, 7
 	jp Options_OnOff
 
 Options_BattleStyle:
-	ld hl, wOptions
+	ld hl, BATTLE_SHIFT_ADDRESS
 	ld b, BATTLE_SHIFT
 	ld c, 9
 	ld de, .ShiftSet
@@ -72,138 +67,17 @@ Options_BattleStyle:
 	db "SET  @"
 
 Options_HoldToMash:
-	ld hl, wOptions
+	ld hl, HOLD_TO_MASH_ADDRESS
 	ld b, HOLD_TO_MASH
 	ld c, 5
 	jp Options_OnOff
-
-Options_Palette:
-	ld a, [wCurPalette]
-	ld c, a
-	ld a, [hJoyPressed]
-	bit BIT_D_LEFT, a
-	jr nz, .LeftPressed
-	bit BIT_D_RIGHT, a
-	jr z, .NonePressed
-	ld a, c ; right pressed
-	cp NUM_GBC_PALETTES
-	jr c, .Increase
-	ld c, $ff
-
-.Increase
-	inc c
-	jr .Save
-
-.LeftPressed
-	ld a, c
-	and a
-	jr nz, .Decrease
-	ld c, NUM_GBC_PALETTES + 1
-
-.Decrease
-	dec c
-
-.Save
-	ld a, c
-	ld [wCurPalette], a
-
-.NonePressed
-	ld l, c
-	ld h, 0
-	ld b, h
-	add hl, hl ; *2
-	add hl, hl ; *4
-	add hl, bc
-	add hl, bc
-	add hl, bc ; *7
-	add hl, hl ; *14
-	add hl, bc ; *15
-	ld bc, .Strings
-	add hl, bc
-	ld e, l
-	ld d, h
-	hlcoord 4, 13
-	call PlaceString
-	and a
-	ret
-
-.Strings
-	db "DEFAULT       @"
-	db "BROWN         @"
-	db "RED           @"
-	db "DARK BROWN    @"
-	db "PASTEL        @"
-	db "ORANGE        @"
-	db "YELLOW        @"
-	db "BLUE          @"
-	db "DARK BLUE     @"
-	db "GRAY          @"
-	db "GREEN         @"
-	db "DARK GREEN    @"
-	db "INVERTED      @"
-	db "<pkmn> BLUE        @"
-	db "TRUE INVERTED @"
-	db "CHEATER PASTEL@"
-	db "HOT PINK      @"
-	
-NUM_TEXTBOX_FRAMES EQUS "((TextBoxFramesEnd - TextBoxFrames)/2 + 1)"
-	
-Options_Frame:
-	ld a, [FRAME_ADDRESS]
-	and FRAME_MASK
-	ld c, a
-	ld a, [hJoyPressed]
-	bit BIT_D_LEFT, a
-	jr nz, .LeftPressed
-	bit BIT_D_RIGHT, a
-	jr z, .NonePressed
-	ld a, c ; right pressed
-	cp NUM_TEXTBOX_FRAMES - 1
-	jr c, .Increase
-	ld c, $ff
-
-.Increase
-	inc c
-	jr .Save
-
-.LeftPressed
-	ld a, c
-	and a
-	jr nz, .Decrease
-	ld c, NUM_TEXTBOX_FRAMES
-
-.Decrease
-	dec c
-
-.Save
-	ld a, [FRAME_ADDRESS]
-	and $ff ^ FRAME_MASK
-	or c
-	ld [FRAME_ADDRESS], a
-	push bc
-	call LoadTextBoxTilePatterns
-	pop bc
-.NonePressed
-	inc c
-	ld a, c
-	ld [wBuffer], a
-	ld de, wBuffer
-	coord hl, 16, 11
-; empty the space for the new number
-	ld a, " "
-	ld [hli], a
-	ld [hld], a
-	lb bc, PRINTNUM_LEFTALIGN | 1, 2
-	call PrintNumber
-	and a
-	ret
 	
 Options_BikeMusic:
 	ld hl, .Data
 	jp Options_Multichoice
 	
 .Data:
-	multichoiceoptiondata BIKE_MUSIC_ADDRESS, BIKE_MUSIC_SHIFT, BIKE_MUSIC_SIZE, 15, NUM_OPTIONS, .Strings
+	multichoiceoptiondata BIKE_MUSIC_ADDRESS, BIKE_MUSIC_SHIFT, BIKE_MUSIC_SIZE, 11, NUM_OPTIONS, .Strings
 .Strings:
 	dw .Normal
 	dw .Yellow
@@ -217,3 +91,17 @@ Options_BikeMusic:
 .None
 	db "NONE  @"
 
+Options_Nicknames:
+	ld hl, SKIP_NICKNAMING_ADDRESS
+	ld b, SKIP_NICKNAMING
+	ld c, 13
+	ld de, .Options
+	jp Options_TrueFalse
+.Options
+	dw .Yes
+	dw .No
+
+.Yes
+	db "YES@"
+.No
+	db "NO @"
