@@ -148,7 +148,7 @@ PermaOptionsMenuScreens:
 	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
 	options_menu 7, PermaOptions2String, PermaOptions2Pointers, START
 	options_menu 7, PermaOptions3String, PermaOptions3Pointers, START
-	options_menu 6, PermaOptions4String, PermaOptions4Pointers, START
+	options_menu 7, PermaOptions4String, PermaOptions4Pointers, START
 	options_menu 2, PermaOptions5String, PermaOptions5Pointers, START
 PermaOptionsMenuScreensEnd:
 

@@ -103,6 +103,7 @@ const_value = 0
 	const HS_VICTORY_ROAD_2F_ITEM_3        ; 5E X
 	const HS_VICTORY_ROAD_2F_ITEM_4        ; 5F X
 	const HS_VICTORY_ROAD_2F_BOULDER       ; 60
+	const HS_VICTORY_ROAD_2F_EXITBOULDER
 	const HS_BILL_POKEMON                  ; 61
 	const HS_BILL_1                        ; 62
 	const HS_BILL_2                        ; 63
@@ -129,6 +130,8 @@ const_value = 0
 	const HS_VICTORY_ROAD_3F_ITEM_1        ; 78 X
 	const HS_VICTORY_ROAD_3F_ITEM_2        ; 79 X
 	const HS_VICTORY_ROAD_3F_BOULDER       ; 7A
+	const HS_VICTORY_ROAD_3F_EXITBOULDER_1
+	const HS_VICTORY_ROAD_3F_EXITBOULDER_2
 	const HS_ROCKET_HIDEOUT_B1F_ITEM_1     ; 7B X
 	const HS_ROCKET_HIDEOUT_B1F_ITEM_2     ; 7C X
 	const HS_ROCKET_HIDEOUT_B2F_ITEM_1     ; 7D X
@@ -220,6 +223,7 @@ const_value = 0
 	const HS_CERULEAN_CAVE_B1F_ITEM_2      ; D3 X
 	const HS_VICTORY_ROAD_1F_ITEM_1        ; D4 X
 	const HS_VICTORY_ROAD_1F_ITEM_2        ; D5 X
+	const HS_VICTORY_ROAD_1F_EXITBOULDER
 	const HS_CHAMPIONS_ROOM_OAK            ; D6
 	const HS_SEAFOAM_ISLANDS_1F_BOULDER_1  ; D7
 	const HS_SEAFOAM_ISLANDS_1F_BOULDER_2  ; D8

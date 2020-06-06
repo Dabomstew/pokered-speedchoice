@@ -43,6 +43,8 @@ OakSpeech:
 	call nz, HideShowObjectsKeyItemRando
 	sboptioncheck EARLY_VICTORY_ROAD
 	call nz, HideShowGuardsEarlyVR
+	sboptioncheck FAST_VICTORY_ROAD
+	call nz, HideBouldersFastVR
 	call ClearScreen
 	call OakSpeechBagItems
 	call OakSpeechBoxItems
@@ -258,8 +260,19 @@ HideShowGuardsEarlyVR:
 	predef ShowObject
 ; hide the boulderbadge guard
 	ld a, HS_ROUTE_22_GATE_GUARD
+HideObjectInA:
 	ld [wMissableObjectIndex], a
 	predef_jump HideObject
+	
+HideBouldersFastVR:
+	ld a, HS_VICTORY_ROAD_1F_EXITBOULDER
+	call HideObjectInA
+	ld a, HS_VICTORY_ROAD_2F_EXITBOULDER
+	call HideObjectInA
+	ld a, HS_VICTORY_ROAD_3F_EXITBOULDER_1
+	call HideObjectInA
+	ld a, HS_VICTORY_ROAD_3F_EXITBOULDER_2
+	jp HideObjectInA
 	
 OakSpeechBagItems::
 	sboptioncheck START_WITH_BIKE

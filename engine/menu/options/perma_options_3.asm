@@ -7,12 +7,13 @@ PermaOptions3String::
 	db "        :<LNBRK>"
 	db "EARLY V. ROAD<LNBRK>"
 	db "        :<LNBRK>"
+	db "FAST V. ROAD<LNBRK>"
+	db "        :<LNBRK>"
 	db "B TO GO FAST<LNBRK>"
 	db "        :<LNBRK>"
 	db "START WITH BIKE<LNBRK>"
-	db "        :<LNBRK>"
-	db "START WITH DRINK<LNBRK>"
 	db "        :@"
+	
 	
 
 PermaOptions3Pointers::
@@ -20,9 +21,9 @@ PermaOptions3Pointers::
 	dw Options_BetterGameCorner
 	dw Options_EasySafari
 	dw Options_EarlyVRoad
+	dw Options_FastVRoad
 	dw Options_BFastMovement
 	dw Options_StartWithBike
-	dw Options_StartWithDrink
 	dw Options_PermaOptionsPage
 
 Options_NerfBrock::
@@ -49,20 +50,20 @@ Options_EarlyVRoad::
 	ld c, 9
 	jp Options_OnOff
 	
+Options_FastVRoad::
+	ld hl, FAST_VICTORY_ROAD_ADDRESS
+	ld b, FAST_VICTORY_ROAD
+	ld c, 11
+	jp Options_OnOff
+	
 Options_BFastMovement::
 	ld hl, B_FAST_MOVEMENT_ADDRESS
 	ld b, B_FAST_MOVEMENT
-	ld c, 11
+	ld c, 13
 	jp Options_OnOff
 	
 Options_StartWithBike::
 	ld hl, START_WITH_BIKE_ADDRESS
 	ld b, START_WITH_BIKE
-	ld c, 13
-	jp Options_OnOff
-	
-Options_StartWithDrink::
-	ld hl, START_WITH_DRINK_ADDRESS
-	ld b, START_WITH_DRINK
 	ld c, 15
 	jp Options_OnOff
