@@ -8,6 +8,7 @@ PermaOptions5Pointers::
 	dw Options_Boat
 	dw Options_PokemonPics
 	dw Options_PermaOptionsPage
+PermaOptions5PointersEnd::
 
 Options_Boat::
 	ld hl, BACKWARDS_BOAT_ADDRESS

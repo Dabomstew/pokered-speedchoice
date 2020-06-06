@@ -14,7 +14,6 @@ PermaOptions2String::
 	db "BETTER MARTS<LNBRK>"
 	db "        :@"
 	
-
 PermaOptions2Pointers::
 	dw Options_Delays
 	dw Options_ShakeMoves
@@ -24,7 +23,8 @@ PermaOptions2Pointers::
 	dw Options_GoodEarlyWilds
 	dw Options_BetterMarts
 	dw Options_PermaOptionsPage
-	
+PermaOptions2PointersEnd::
+
 Options_Delays:: ; 3
 	ld hl, SHORT_DELAYS_ADDRESS
 	ld b, SHORT_DELAYS

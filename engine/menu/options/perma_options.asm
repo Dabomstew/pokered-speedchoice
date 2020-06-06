@@ -23,7 +23,8 @@ PermaOptionsPointers::
 	dw Options_Spinners
 	dw Options_TrainerVision
 	dw Options_PermaOptionsPage
-	
+PermaOptionsPointersEnd::
+
 permaoptionspreset: MACRO
 	dw \1
 rept NUM_PERMAOPTIONS_BYTES

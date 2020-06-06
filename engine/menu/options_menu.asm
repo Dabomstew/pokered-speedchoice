@@ -133,23 +133,23 @@ RetrieveOptionsMenuConfig::
 	jp CopyData
 	
 options_menu: MACRO
-	db (\1) ; number of options except bottom option
-	dw (\2) ; template string
-	dw (\3) ; jumptable for options
-	db (\4) ; buttons that can be pressed to exit
+	db ((\2End - \2)/2 - 1) ; number of options except bottom option
+	dw (\1) ; template string
+	dw (\2) ; jumptable for options
+	db (\3) ; buttons that can be pressed to exit
 ENDM
 
 OptionsMenuScreens:
 	; default options page 1
-	options_menu 6, MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
-	options_menu 2, MainOptions2String, MainOptions2Pointers, (START | B_BUTTON)
+	options_menu MainOptionsString, MainOptionsPointers, (START | B_BUTTON)
+	options_menu MainOptions2String, MainOptions2Pointers, (START | B_BUTTON)
 	; permaoptions page 1-3
 PermaOptionsMenuScreens:
-	options_menu 7, PermaOptionsString, PermaOptionsPointers, START
-	options_menu 7, PermaOptions2String, PermaOptions2Pointers, START
-	options_menu 7, PermaOptions3String, PermaOptions3Pointers, START
-	options_menu 7, PermaOptions4String, PermaOptions4Pointers, START
-	options_menu 2, PermaOptions5String, PermaOptions5Pointers, START
+	options_menu PermaOptionsString, PermaOptionsPointers, START
+	options_menu PermaOptions2String, PermaOptions2Pointers, START
+	options_menu PermaOptions3String, PermaOptions3Pointers, START
+	options_menu PermaOptions4String, PermaOptions4Pointers, START
+	options_menu PermaOptions5String, PermaOptions5Pointers, START
 PermaOptionsMenuScreensEnd:
 
 GetOptionPointer:

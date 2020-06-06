@@ -20,6 +20,7 @@ MainOptionsPointers::
 	dw Options_BikeMusic
 	dw Options_Nicknames
 	dw Options_OptionsPage
+MainOptionsPointersEnd::
 
 Options_TextSpeed:
 	ld hl, .Data

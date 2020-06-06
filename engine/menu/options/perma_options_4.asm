@@ -23,6 +23,7 @@ PermaOptions4Pointers::
 	dw Options_SelectTo
 	dw Options_RodsAlwaysWork
 	dw Options_PermaOptionsPage
+PermaOptions4PointersEnd::
 	
 Options_StartWithDrink::
 	ld hl, START_WITH_DRINK_ADDRESS

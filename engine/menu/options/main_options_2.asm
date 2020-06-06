@@ -8,6 +8,7 @@ MainOptions2Pointers::
 	dw Options_Frame
 	dw Options_Palette
 	dw Options_OptionsPage
+MainOptions2PointersEnd::
 
 Options_Palette:
 	ld a, [wCurPalette]

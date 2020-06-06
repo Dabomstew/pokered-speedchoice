@@ -13,8 +13,6 @@ PermaOptions3String::
 	db "        :<LNBRK>"
 	db "START WITH BIKE<LNBRK>"
 	db "        :@"
-	
-	
 
 PermaOptions3Pointers::
 	dw Options_NerfBrock
@@ -25,6 +23,7 @@ PermaOptions3Pointers::
 	dw Options_BFastMovement
 	dw Options_StartWithBike
 	dw Options_PermaOptionsPage
+PermaOptions3PointersEnd::
 
 Options_NerfBrock::
 	ld hl, NERF_PEWTER_GYM_ADDRESS
