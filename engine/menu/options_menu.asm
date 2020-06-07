@@ -305,22 +305,25 @@ Options_UpdateCursorPosition:
 	ld [hl], "▶"
 	ret
 	
-; b = x-coordinate
-; c = y-coordinate
+; b = x-coordinate (0~19)
+; c = y-coordinate (0~17)
+; clobbers a, b, c; result in hl
 CoordHL:
-	push bc
-	ld h, 0
-	ld b, h
-	ld l, c
-	add hl, hl
-	add hl, hl ; *4
-	add hl, bc ; *5
-	add hl, hl
-	add hl, hl ; *20
-	ld bc, wTileMap
+	ld a, c
+	add c ; *2 (0~34)
+	add a ; *4 (0~68)
+	add c ; *5 (0~85)
+	add a ; *10 (0~170)
+	add a ; *20 (0~340)
+	ld c, a
+	ld a, b
+	ld b, 0
+	jr nc, .noOverflow
+	inc b
+.noOverflow
+	ld hl, wTileMap
 	add hl, bc
-	pop bc
-	ld c, b
+	ld c, a
 	ld b, 0
 	add hl, bc
 	ret
