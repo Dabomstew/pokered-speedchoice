@@ -46,6 +46,16 @@ HallofFameRoomScript2:
 	ld a, PALLET_TOWN
 	ld [wLastBlackoutMap], a
 	callba SaveSAVtoSRAM
+; if short delays off, wait 600 frames like vanilla
+	sboptioncheck SHORT_DELAYS
+	jr nz, .done
+	ld b, 3
+.delayLoop
+	ld c, 200
+	call DelayFrames
+	dec b
+	jr nz, .delayLoop
+.done
 	call WaitForTextScrollButtonPress
 	jp Init
 
