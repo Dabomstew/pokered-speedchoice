@@ -34,7 +34,7 @@ compare: $(roms)
 
 clean:
 	rm -f $(roms) $(pokered_obj) $(roms:.gbc=.sym)
-	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' \) -exec rm {} +
+	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' -o -iname '*.lz' \) -exec rm {} +
 	$(MAKE) clean -C tools/
 
 tidy:
@@ -66,6 +66,11 @@ pokered_opt  = -cjsv -k 01 -l 0x33 -m 0x13 -p 0 -r 03 -t "RED_SPDC" -i KAPC
 	$(RGBLINK) -n $*.sym -l pokered.link -o $@ $^
 	$(RGBFIX) $($*_opt) $@
 	sort $*.sym -o $*.sym
+	
+### LZ compression rules
+
+%.lz: %
+	tools/lzcomp $(LZFLAGS) -- $< $@
 
 
 ### Misc file-specific graphics rules
@@ -81,6 +86,14 @@ gfx/game_boy.2bpp: tools/gfx += --remove-duplicates
 gfx/theend.2bpp: tools/gfx += --interleave --png=$<
 gfx/tilesets/%.2bpp: tools/gfx += --trim-whitespace
 
+pic/bmon/%.2bpp: RGBGFX += -h
+pic/monback/%.2bpp: RGBGFX += -h
+pic/other/%.2bpp: RGBGFX += -h
+pic/rgmon/%.2bpp: RGBGFX += -h
+pic/trainer/%.2bpp: RGBGFX += -h
+pic/ymon/%.2bpp: RGBGFX += -h
+pic/ytrainer/%.2bpp: RGBGFX += -h
+
 
 ### Catch-all graphics rules
 
@@ -95,9 +108,6 @@ gfx/tilesets/%.2bpp: tools/gfx += --trim-whitespace
 	$(RGBGFX) -d1 $(rgbgfx) -o $@ $<
 	$(if $(tools/gfx),\
 		tools/gfx $(tools/gfx) -d1 -o $@ $@)
-
-%.pic:  %.2bpp
-	tools/pkmncompress $< $@
 	
 %.ini: %.gbc %.sym
 	$(PYTHON3) genrandoini.py $^ $@

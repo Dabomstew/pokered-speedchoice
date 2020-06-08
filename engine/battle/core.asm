@@ -6528,12 +6528,12 @@ LoadPlayerBackPic:
 	ld a, [wBattleType]
 	dec a ; is it the old man tutorial?
 	ld de, RedPicBack
+	ld a, BANK(RedPicBack)
 	jr nz, .next
+	ld a, BANK(OldManPic)
 	ld de, OldManPic
 .next
-	ld a, BANK(RedPicBack)
 	call UncompressSpriteFromDE
-	predef ScaleSpriteByTwo
 	ld hl, wOAMBuffer
 	xor a
 	ld [hOAMTile], a ; initial tile number
@@ -6565,18 +6565,12 @@ LoadPlayerBackPic:
 	ld e, a
 	dec b
 	jr nz, .loop
-	ld de, vBackPic
-	call InterlaceMergeSpriteBuffers
-	ld a, $a
-	ld [$0], a
-	xor a
-	ld [$4000], a
+	ld hl, vBackPic
+	ld de, sSpriteBuffer0
+	call CopySpriteBufferToVRam
 	ld hl, vSprites
-	ld de, sSpriteBuffer1
-	ld a, [H_LOADEDROMBANK]
-	ld b, a
-	ld c, 7 * 7
-	call CopyVideoData
+	ld de, sSpriteBuffer0
+	call CopySpriteBufferToVRam
 	xor a
 	ld [$0], a
 	ld a, $31
@@ -7234,15 +7228,12 @@ LoadMonBackPic:
 	call ClearScreenArea
 	ld hl,  wMonHBackSprite - wMonHeader
 	call UncompressMonSprite
-	predef ScaleSpriteByTwo
-	ld de, vBackPic
-	call InterlaceMergeSpriteBuffers ; combine the two buffers to a single 2bpp sprite
+	ld hl, vBackPic
+	ld de, sSpriteBuffer0
+	call CopySpriteBufferToVRam
 	ld hl, vSprites
-	ld de, vBackPic
-	ld c, (2*SPRITEBUFFERSIZE)/16 ; count of 16-byte chunks to be copied
-	ld a, [H_LOADEDROMBANK]
-	ld b, a
-	jp CopyVideoData
+	ld de, sSpriteBuffer0
+	jp CopySpriteBufferToVRam
 
 JumpMoveEffect:
 	call _JumpMoveEffect

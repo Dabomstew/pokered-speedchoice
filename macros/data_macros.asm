@@ -242,6 +242,6 @@ ENDC
 ENDM
 
 altpokepic: MACRO
-	dw \1
-	INCBIN \2,0,1 ; sprite dimensions
+	dw \1 ; pointer
+	db \2 ; sprite dimensions
 ENDM

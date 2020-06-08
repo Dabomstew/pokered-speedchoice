@@ -193,18 +193,15 @@ HoFLoadPlayerPics:
 	ld de, RedPicFront
 	ld a, BANK(RedPicFront)
 	call UncompressSpriteFromDE
-	ld hl, sSpriteBuffer1
+	ld hl, vFrontPic
 	ld de, sSpriteBuffer0
-	ld bc, $310
-	call CopyData
-	ld de, vFrontPic
-	call InterlaceMergeSpriteBuffers
+	call CopySpriteBufferToVRam
 	ld de, RedPicBack
 	ld a, BANK(RedPicBack)
 	call UncompressSpriteFromDE
-	predef ScaleSpriteByTwo
-	ld de, vBackPic
-	call InterlaceMergeSpriteBuffers
+	ld hl, vBackPic
+	ld de, sSpriteBuffer0
+	call CopySpriteBufferToVRam
 	ld c, $1
 
 HoFLoadMonPlayerPicTileIDs:

@@ -723,9 +723,7 @@ LoadUncompressedSpriteData::
 	swap a
 	and $f
 	ld b, a
-	add a
-	add a
-	add a     ; 8*tiles is height in bytes
+	swap a ; 16*tiles is height in bytes
 	ld [H_SPRITEHEIGHT], a
 	ld a, $7
 	sub b      ; 7-h         ; skip for vertical center (in tiles, relative to current column)
@@ -734,22 +732,19 @@ LoadUncompressedSpriteData::
 	add b     ; 7*((8-w)/2) + 7-h ; combined overall offset (in tiles)
 	add a
 	add a
-	add a     ; 8*(7*((8-w)/2) + 7-h) ; combined overall offset (in bytes)
+	add a
+	add a     ; 16*(7*((8-w)/2) + 7-h) ; combined overall offset (in bytes)
 	ld [H_SPRITEOFFSET], a
 	xor a
 	ld [$4000], a
-	ld hl, sSpriteBuffer0
-	call ZeroSpriteBuffer   ; zero buffer 0
-	ld de, sSpriteBuffer1
-	ld hl, sSpriteBuffer0
-	call AlignSpriteDataCentered    ; copy and align buffer 1 to 0 (containing the MSB of the 2bpp sprite)
 	ld hl, sSpriteBuffer1
 	call ZeroSpriteBuffer   ; zero buffer 1
-	ld de, sSpriteBuffer2
+	ld de, sSpriteBuffer0
 	ld hl, sSpriteBuffer1
-	call AlignSpriteDataCentered    ; copy and align buffer 2 to 1 (containing the LSB of the 2bpp sprite)
-	pop de
-	jp InterlaceMergeSpriteBuffers
+	call AlignSpriteDataCentered    ; copy and align buffer 0 to 1 (containing the MSB of the 2bpp sprite)
+	pop hl ; put output into hl
+	ld de, sSpriteBuffer1
+	jp CopySpriteBufferToVRam
 
 ; copies and aligns the sprite data properly inside the sprite buffer
 ; sprite buffers are 7*7 tiles in size, the loaded sprite is centered within this area
@@ -771,7 +766,7 @@ AlignSpriteDataCentered::
 	dec c
 	jr nz, .columnInnerLoop
 	pop hl
-	ld bc, 7*8    ; 7 tiles
+	ld bc, 7*16   ; 7 tiles
 	add hl, bc    ; advance one full column
 	pop af
 	dec a
@@ -790,51 +785,10 @@ ZeroSpriteBuffer::
 	jr nz, .nextByteLoop
 	ret
 
-; combines the (7*7 tiles, 1bpp) sprite chunks in buffer 0 and 1 into a 2bpp sprite located in buffer 1 through 2
-; in the resulting sprite, the rows of the two source sprites are interlaced
-; de: output address
-InterlaceMergeSpriteBuffers::
-	xor a
-	ld [$4000], a
-	push de
-	ld hl, sSpriteBuffer2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2
-	ld de, sSpriteBuffer1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
-	ld bc, sSpriteBuffer0 + (SPRITEBUFFERSIZE - 1) ; source 1: end of buffer 0
-	ld a, SPRITEBUFFERSIZE/2 ; $c4
-	ld [H_SPRITEINTERLACECOUNTER], a
-.interlaceLoop
-	ld a, [de]
-	dec de
-	ld [hld], a   ; write byte of source 2
-	ld a, [bc]
-	dec bc
-	ld [hld], a   ; write byte of source 1
-	ld a, [de]
-	dec de
-	ld [hld], a   ; write byte of source 2
-	ld a, [bc]
-	dec bc
-	ld [hld], a   ; write byte of source 1
-	ld a, [H_SPRITEINTERLACECOUNTER]
-	dec a
-	ld [H_SPRITEINTERLACECOUNTER], a
-	jr nz, .interlaceLoop
-	ld a, [wSpriteFlipped]
-	and a
-	jr z, .notFlipped
-	ld bc, 2*SPRITEBUFFERSIZE
-	ld hl, sSpriteBuffer1
-.swapLoop
-	swap [hl]    ; if flipped swap nybbles in all bytes
-	inc hl
-	dec bc
-	ld a, b
-	or c
-	jr nz, .swapLoop
-.notFlipped
-	pop hl
-	ld de, sSpriteBuffer1
-	ld c, (2*SPRITEBUFFERSIZE)/16 ; $31, number of 16 byte chunks to be copied
+CopySpriteBufferToVRam::
+; de = input pointer
+; hl = output pointer
+	ld c, SPRITEBUFFERSIZE/$10 ; $31, number of 16 byte chunks to be copied
 	ld a, [H_LOADEDROMBANK]
 	ld b, a
 	jp CopyVideoData
@@ -898,7 +852,7 @@ PickUpItemText::
 	jp TextScriptEnd
 
 
-INCLUDE "home/pic.asm"
+INCLUDE "home/pic_lz.asm"
 
 
 ResetPlayerSpriteData::
