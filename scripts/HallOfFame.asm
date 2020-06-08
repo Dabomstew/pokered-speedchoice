@@ -46,12 +46,6 @@ HallofFameRoomScript2:
 	ld a, PALLET_TOWN
 	ld [wLastBlackoutMap], a
 	callba SaveSAVtoSRAM
-	ld b, 5
-.delayLoop
-	ld c, 600 / 5
-	call DelayFrames
-	dec b
-	jr nz, .delayLoop
 	call WaitForTextScrollButtonPress
 	jp Init
 
