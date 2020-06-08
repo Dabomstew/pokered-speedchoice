@@ -11,7 +11,7 @@
 	git clone https://github.com/Dabomstew/pokered-speedchoice
 	cd pokered-speedchoice
 
-To build **pokered.gbc**:
+To build **red-speedchoice.gbc**:
 
 	make red
 	make
@@ -31,7 +31,7 @@ Then in **Terminal**, run:
 	git clone https://github.com/Dabomstew/pokered-speedchoice
 	cd pokered-speedchoice
 
-To build **pokered.gbc**:
+To build **red-speedchoice.gbc**:
 
 	make red
 	make
@@ -56,7 +56,7 @@ In the **Cygwin terminal**, enter these commands:
 	git clone https://github.com/Dabomstew/pokered-speedchoice
 	cd pokered-speedchoice
 
-To build **pokered.gbc**:
+To build **red-speedchoice.gbc**:
 
 	make red
 	make

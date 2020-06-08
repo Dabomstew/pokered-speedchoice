@@ -42,3 +42,6 @@ pokered.ini
 
 # rom patches
 *.ips
+
+# map file for red-speedchoice specifically, other map files can be data files
+red-speedchoice.map
