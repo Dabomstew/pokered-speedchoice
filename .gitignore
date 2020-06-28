@@ -38,10 +38,11 @@
 
 # dynamically generated files
 git-revision.asm
-pokered.ini
+
 
 # rom patches
 *.ips
 
 # map file for red-speedchoice specifically, other map files can be data files
 red-speedchoice.map
+red-speedchoice.ini

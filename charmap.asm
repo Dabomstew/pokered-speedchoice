@@ -228,7 +228,7 @@ charmap "x", $B7
 charmap "y", $B8
 charmap "z", $B9
 
-charmap "£", $C6
+charmap "£", $C6 ; actually # but don't want to break existing code
 
 charmap "'d", $D0
 charmap "'l", $D1
