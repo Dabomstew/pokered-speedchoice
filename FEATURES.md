@@ -54,3 +54,14 @@ These are options that are only configurable immediately after you hit New Game.
   * Normal - battle EXP calculations are the same as vanilla Gen 1 games.
   * B/W - battle EXP calculations use a slightly modified version of the formula introduced in Gen 5 that scales experience according to the level difference between your Pokemon and its opponent. The modifications are that the experience can never be penalised even if you outlevel your opponent, but the constant divisor is increased from 5 to 7. 
   * None - no EXP or stat EXP is awarded in battle. Rare Candies and vitamins still work.
+* EXP Splitting:
+  * Normal - vanilla behavior for how EXP is split between participants (it is split evenly between alive participants; if Exp All is in bag, half is taken away and then is split between all mons in party after), and vanilla messaging for Exp All (separate message for every party mon)
+  * No Spam - vanilla behavior for EXP splitting, but if Exp All activates, there is only a single message printed apart from levelup messages.
+  * Gen 6/7 - all alive participants gain full EXP and stat EXP. When Exp All is in inventory, all alive non-participants gain 50% EXP and stat EXP.
+  * Gen 8 - same as Gen 6/7, but the non-participant EXP happens without any item requirement. Exp All is completely useless with this setting on.
+* Catch EXP (On/Off) - when on, catching a Pokemon awards the same experience as defeating it. Obeys the EXP formula and EXP splitting choices above.
+* Good Early Wilds (On/Off) - when on, if you encounter a Pokemon in the wild below level 10, it will be fully evolved. Best suited for randomizer races to beat the game.
+* Better Marts (On/Off) - when on, all early marts (Viridian/Pewter/Cerulean) use a common inventory that includes all status heals, repels and escape ropes. Celadon Mart 4F also sells Moon Stones at 2100 each.
+* Nerf Brock (On/Off) - when on, Brock's party levels are nerfed to 10 and 12 for the Geodude and Onix respectively. His single gym trainer is also nerfed to have two lv9 Pokemon instead of lv11.
+* Better Game Corner (On/Off) - when on, the Gen 2 interface for buying coins is used at the Game Corner. This means that you can buy 500 coins at a time instead of only 50, and you can also quickly buy multiple sets in short succession.
+* Easy Safari (On/Off) - when on, 
