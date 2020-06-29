@@ -1,6 +1,15 @@
 # Red Speedchoice Features
 This is a list of what is different in Red Speedchoice relative to a vanilla Pokemon Red game.
 
+Table of contents
+=================
+
+   * [Engine Changes](#engine-changes)
+   * [Permanent Options](#permanent-options)
+   * [Normal Options](#normal-options)
+   * [Done Screen](#done-screen)
+   * [Why U No?](#why-u-no)
+
 ## Engine Changes
 These are changes that are integral to the game itself and cannot be influenced by options.
 
@@ -139,8 +148,8 @@ A: Luckytyphlosion (the author of Fastmenu) changed the Red movement engine a lo
 Q: Why no "true colors" (Yellow-style or GSC-style)?  
 A: Loading in extra palettes is pretty much an unavoidable source of lag, and I don't want to introduce extra lag in the game. Also, most Gen1 runners are used to seeing the game in its DMG-on-GBC form, aka without "true colors".
 
-Q: Why haven't you fixed any notable Gen 1 bugs like the 256 miss glitch?
+Q: Why haven't you fixed any notable Gen 1 bugs like the 256 miss glitch?  
 A: Fixing gen 1 bugs would take away from the intended experience for this hack - vanilla gen 1 gameplay but with quality-of-life speedups and minor mechanics changes.
 
-Q: Why haven't you added physical/special split or abilities or more Pokemon (etc, etc)?
+Q: Why haven't you added physical/special split or abilities or more Pokemon (etc, etc)?  
 A: Same answer as above.
