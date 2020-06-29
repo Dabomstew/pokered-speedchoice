@@ -2,6 +2,8 @@
 
 This is a disassembly of a randomizer speedrun-oriented ROM hack of Pokemon Red.
 
+To see what the hack adds or changes, see [**FEATURES.md**](FEATURES.md).
+
 To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 
@@ -16,7 +18,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 * Disassembly of [**Pokémon Ruby**][pokeruby]
 * Disassembly of [**Pokémon Fire Red**][pokefirered]
 * Disassembly of [**Pokémon Emerald**][pokeemerald]
-* Discord: [**pret**][Discord]
+* Discord: [**pret Discord**][Discord]
 * irc: **irc.freenode.net** [**#pret**][irc]
 
 [pokered]: https://github.com/pret/pokered
