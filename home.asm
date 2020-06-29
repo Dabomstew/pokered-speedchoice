@@ -553,8 +553,7 @@ GetMonHeader::
 	ld de, wMonHeader
 	ld bc, MonBaseStatsEnd - MonBaseStats
 	call CopyData
-	ld a, [PICSET_ADDRESS]
-	and PICSET_MASK
+	mboptionload PICSET
 	jr z, .done
 	callab LoadFrontPicFromSet
 	jr .done

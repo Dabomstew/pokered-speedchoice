@@ -7029,6 +7029,8 @@ InitWildBattle:
 	ld a, c
 	ld [hli], a   ; write front sprite pointer
 	ld [hl], b
+	ld a, BANK(GhostPic)
+	ld [wMonHPicBank], a
 	ld hl, wEnemyMonNick  ; set name to "GHOST"
 	ld a, "G"
 	ld [hli], a
