@@ -65,3 +65,82 @@ These are options that are only configurable immediately after you hit New Game.
 * Nerf Brock (On/Off) - when on, Brock's party levels are nerfed to 10 and 12 for the Geodude and Onix respectively. His single gym trainer is also nerfed to have two lv9 Pokemon instead of lv11.
 * Better Game Corner (On/Off) - when on, the Gen 2 interface for buying coins is used at the Game Corner. This means that you can buy 500 coins at a time instead of only 50, and you can also quickly buy multiple sets in short succession.
 * Easy Safari (On/Off) - when on, you receive 99 Safari Balls and 999 steps each time you enter. In addition, Safari Balls will have a 100% catch rate.
+* Early Victory Road (On/Off) - when on, the first 7 badge checkers on Route 23 are removed and the Earth Badge check is moved to after Victory Road. In practice, this means that you can fish on Route 23 as soon as you have a rod, and reach its grass and the first floor of Victory Road as soon as you can Surf. Reaching the other floors of Victory Road will also require Strength, unless you have the next option switched on as well.
+* Fast Victory Road (On/Off) - when on, the 4 "exit boulders" in Victory Road are removed, allowing you to bike through it extremely quickly and bypassing the need for Strength entirely. Note that this is completely separate from "Early Victory Road" - it has no impact on what badges you need to reach Victory Road in the first place.
+* B To Go Fast (On/Off) - when on, holding B on the overworld will double your movement speed. If you are on a bike, this stacks with the bike speed increase to result in 4x movement speed overall.
+* Start With Bike (On/Off) - when on, you begin the game with a Bicycle in your inventory.
+* Start With Drink (On/Off) - when on, you begin the game with a single Fresh Water in your inventory. Make sure to not use it before reaching the Saffron guards!
+* Pokedex Area Beep (On/Off) - when on, if you view the Pokedex area data for a Pokemon while you are on a map where that Pokemon appears as a grass/surfing/cave encounter, the game will briefly pause and make 3 beeping noises. This allows you to find which floor of a multi-floor area contains a certain Pokemon much easier.
+* Keep Warden Candy (On/Off) - when on, picking up the Rare Candy item ball in the Safari Zone Warden's house will always give you a Rare Candy, even if the ROM has been randomized to turn that item into something else. This guarantees you can obtain at least one Rare Candy during your playthrough.
+* Levelup Moves:
+  * Can Skip - vanilla gen1 behavior - you skip levelup moves if you gain multiple levels at once and skip their exact level.
+  * No Skip - vanilla gen2 and up behavior - all the levels you passed through are considered for levelup moves.
+* Metronome Only (On/Off) - when on, you will always use Metronome every turn and so will your opponent. The move selection menu is removed entirely. You will also never run out of PP.
+* Select To:
+  * None - vanilla behavior, pressing SELECT in the overworld does nothing.
+  * Bike - if you hit SELECT on the overworld when you have a Bicycle in your inventory, you will mount/dismount it. If you don't have one, nothing happens.
+  * Jack - if you hit SELECT on the overworld you will enter a "Jack" state (named for a glitch item in vanilla Blue that gives the state) where you can clip through 1-2 tile wide walls. For more info you can read [this Glitch City Laboratories page](https://glitchcity.info/wiki/Rival%27s_effect).
+* Rods Always Work (On/Off) - when on, fishing rods (Good Rod/Super Rod, Old Rod never failed regardless) will never say "not even a nibble!". You will always get an encounter every time you fish unless the map has no fishing encounters.
+* Boat (Normal/Meme) - try it and see, just don't report any weird looking tiles as a glitch.
+* Pokemon Pics (Normal/Green/Yellow) - select which set of Pokemon front sprites you want to use for your playthrough. This will probably be moved to be a [normal option](#normal-options) in a later release.
+
+## Normal Options
+These are options that are configurable at any time during your playthrough, including before you start. Some are retained from the vanilla game with minor changes, others are new.
+
+* Text Speed - retained from the vanilla game with the addition of INST which gives instant text printing. Default changed to INST.
+* Hold To Mash (On/Off) - When on, you can hold A or B to clear textboxes instead of having to press for each individual textbox clear. Default is ON.
+* Battle Scene (On/Off) - Refers to animations in battle. Default changed to OFF.
+* Battle Style (Shift/Set) - Refers to the prompt to change Pokemon after you faint an opponent trainer's Pokemon. Default changed to SET (no prompt).
+* Bike Music:
+  * Normal - vanilla Red/Blue behavior, bike music always plays when you get on it.
+  * Yellow - vanilla Yellow behavior, bike music will always play unless you are on Route 23, Victory Road or Indigo Plateau.
+  * None - bike music is completely disabled.
+* Give Nicknames:
+  * Yes - you will be prompted to nickname Pokemon you receive or catch as normal.
+  * No - all nicknaming prompts outside of the Name Rater service will be skipped. If you run into a nicknaming prompt other than Name Rater with this option selected, please report it as a bug.
+* Frame - Refers to the frame shown around textboxes ingame. Directly ported from Gen 2. Frame 1 is the default Gen 1 textbox frame, Frames 2-9 are GSC Frames 1-8, and Frame 10 is the unimplemented GSC Frame 9.
+* Palette - allows you to choose the color scheme used ingame. Replaces the ability to choose palette from the GBC/GBA bios since this hack handles its own colors. Offers all possible palette choices from the BIOS as well as a few extras.
+
+## Done Screen
+
+This is a screen that shows you a range of stats from your playthrough, intended to be viewed once you have completed your main goal. The following stats are tracked:
+
+* Playtime, further divided into overworld/battle/menus/intros.
+* Step count, divided into walking/biking/surfing.
+* Bonks (when you hit your character up against a wall and a distinct sound is heard)
+* Battle count, divided into wild battles/trainer battles.
+* Battles fled from as well as number of failed escapes.
+* Total pokemon fainted by you and your opponent.
+* Total experience gained.
+* Number of times you switched out.
+* Balls thrown and Pokemon captured.
+* Moves hit, missed, super effective/not very effective moves used, critical hits and OHKO moves used (by both you and opponents)
+* Damage dealt and taken, showing both the actual numbers (so damage is capped to the Pokemon's HP) and theoretical numbers if this were not a factor.
+* Money made from battles and selling items.
+* Money spent at shops & vending machines.
+* Money lost to losing battles.
+* Total number of items picked up, bought and sold.
+* Number of times saved and number of times a save was loaded.
+
+The third-to-last page of the Done Screen will show you the DVs and Stat Exp for all your Pokemon. You can press Up and Down to scroll between Pokemon two at a time, or hold A while pressing Up and Down to skip between Pokemon locations directly (your party, and then each of the 12 PC Boxes).
+
+The last two pages of the Done Screen will show you the number of times you and your opponents used each individual move in the game. Metronome is deliberately double-counted as both itself and the move it chooses. You can press Up and Down to scroll through the move list, or hit SELECT to jump directly to Metronome itself in the list.
+
+## Why U No?
+
+This is a list of things that **aren't** in Red Speedchoice along with reasons why. Some of these things *may* be added in the future but there are no guarantees.
+
+Q: Why no **BnMode** (Fast soft resets that bypass the game intros and dump you straight into the overworld)?  
+A: This isn't in the hack currently due to the author's hesitancy regarding its effect on game balance. It can have some negative effects on optimal strats, namely making spamming resets for a low probability event (known as savescumming) a lot more appealing.
+
+Q: Why no **BikeSlipRun** (A fast method of movement that was present in the old Red FastMenu/3 page options hack)?  
+A: Luckytyphlosion (the author of Fastmenu) changed the Red movement engine a lot in his hack and introduced a few bugs. I don't want to have to deal with these bugs myself. BikeSlipRun could theoretically be added without overhauling the movement engine as much as FastMenu did, but there are enough fast movement options already in this hack anyway.
+
+Q: Why no "true colors" (Yellow-style or GSC-style)?  
+A: Loading in extra palettes is pretty much an unavoidable source of lag, and I don't want to introduce extra lag in the game. Also, most Gen1 runners are used to seeing the game in its DMG-on-GBC form, aka without "true colors".
+
+Q: Why haven't you fixed any notable Gen 1 bugs like the 256 miss glitch?
+A: Fixing gen 1 bugs would take away from the intended experience for this hack - vanilla gen 1 gameplay but with quality-of-life speedups and minor mechanics changes.
+
+Q: Why haven't you added physical/special split or abilities or more Pokemon (etc, etc)?
+A: Same answer as above.
