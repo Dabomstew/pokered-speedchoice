@@ -4,12 +4,15 @@ PermaOptions5String::
 	db "POKéMON PICS<LNBRK>"
 	db "        :<LNBRK>"
 	db "PRIZE MONEY<LNBRK>"
+	db "        :<LNBRK>"
+	db "HEART FAILURES<LNBRK>"
 	db "        :@"
 
 PermaOptions5Pointers::
 	dw Options_Boat
 	dw Options_PokemonPics
 	dw Options_PrizeMoney
+	dw Options_HeartFailures
 	dw Options_PermaOptionsPage
 PermaOptions5PointersEnd::
 
@@ -59,3 +62,9 @@ Options_PrizeMoney::
 	db "NORMAL@"
 .On
 	db "OFF   @"
+
+Options_HeartFailures::
+	ld hl, HEART_FAILURES_ADDRESS
+	ld b, HEART_FAILURES
+	ld c, 9
+	jp Options_OnOff

@@ -27,11 +27,11 @@ SECTION "Text 1", ROMX ; BANK $20
 _PleaseSetOptions::
 	text "Please set the"
 	line "game settings."
-	
+
 	para "Press START when"
 	line "you're finished."
 	prompt
-	
+
 _AreOptionsAcceptable::
 	text "Are these options"
 	line "acceptable?"
@@ -1116,6 +1116,11 @@ _MoneyForWinningText::
 	line "for winning!"
 	prompt
 
+_HeartFailureText::
+	text "Oh no! Random"
+	line "heart failure!"
+	prompt
+
 _TrainerDefeatedText::
 	text "<PLAYER> defeated"
 	line "@"
@@ -1462,24 +1467,24 @@ _ExpPointsText::
 	TX_NUM wExpAmountGained + 1, 2, 4
 	text " EXP. Points!"
 	prompt
-	
+
 _ExpPointsLongText::
 	TX_NUM wExpAmountGained, 3, 8
 	text " EXP!"
 	prompt
-	
+
 _ExpAllTruncatedText::
 	text "Party #MON"
 	line "gained EXP"
 	cont "with EXP ALL!"
 	prompt
-	
+
 _ExpShareText::
 	text "Party #MON"
 	line "gained EXP"
 	cont "with EXP SHARE!"
 	prompt
-	
+
 _AlwaysExpShareText::
 	text "Party #MON"
 	line "gained EXP!"

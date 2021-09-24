@@ -3028,13 +3028,13 @@ DisabledText:
 
 TypeText:
 	db "TYPE@"
-	
+
 PowerText:
 	db "POW/ @"
-	
+
 AccText:
 	db "ACC/ @"
-	
+
 PowerAccNoneText:
 	db "--@"
 
@@ -3179,11 +3179,29 @@ LinkBattleExchangeData:
 	jr nz, .syncLoop3
 	ret
 
+HeartFailureText:
+		TX_FAR _HeartFailureText
+		db "@"
+
 ExecutePlayerMove:
 	xor a
 	ld [H_WHOSETURN], a ; set player's turn
 	ld a, [wPlayerSelectedMove]
 	inc a
+	sboptioncheck HEART_FAILURES
+	jr z, .continue2
+	call BattleRandom
+	cp $19 ; 26/256 change of heart failure
+	jr nc, .continue2
+	ld hl, HeartFailureText
+	call PrintText
+	ld hl, wDamage ; inflict 65565 damage to player pokemon
+	ld a, $ff
+	ld [hli], a
+	ld [hl], a
+	call ApplyDamageToPlayerPokemon
+	xor a
+	.continue2
 	jp z, ExecutePlayerMoveDone ; for selected move = FF, skip most of player's turn
 	xor a
 	ld [wMoveMissed], a
@@ -5448,7 +5466,7 @@ AdjustDamageForMoveType:
 	jp .loop
 .done
 	ret
-	
+
 ; calculate actual effectiveness multiplier of [wMoveType] against opponent, store in d
 ; (b is used to store it in the function itself)
 StatsGetEffectiveness::
