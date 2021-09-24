@@ -1,6 +1,6 @@
-roms := red-speedchoice.gbc
+roms := red-deathmode.gbc
 
-red-speedchoice_obj := audio_red.o main_red.o pics_red.o text_red.o wram_red.o
+red-deathmode_obj := audio_red.o main_red.o pics_red.o text_red.o wram_red.o
 
 
 ### Build tools
@@ -24,21 +24,21 @@ RGBLINK ?= $(RGBDS)rgblink
 .PHONY: all red clean tidy compare tools config
 
 all: $(roms) config
-red: red-speedchoice.gbc
+red: red-deathmode.gbc
 
-config: red-speedchoice.ini
+config: red-deathmode.ini
 
 # For contributors to make sure a change didn't affect the contents of the rom.
 compare: $(roms)
 	@$(MD5) roms.md5
 
 clean:
-	rm -f $(roms) $(red-speedchoice_obj) $(roms:.gbc=.sym)
+	rm -f $(roms) $(red-deathmode_obj) $(roms:.gbc=.sym)
 	find . \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' -o -iname '*.lz' \) -exec rm {} +
 	$(MAKE) clean -C tools/
 
 tidy:
-	rm -f $(roms) $(red-speedchoice_obj) $(roms:.gbc=.sym)
+	rm -f $(roms) $(red-deathmode_obj) $(roms:.gbc=.sym)
 	$(MAKE) clean -C tools/
 
 tools:
@@ -57,16 +57,16 @@ $(shell echo "db \"-"$(shell git log -1 --format="%h")"\"" > git-revision.asm)
 %.asm: ;
 
 %_red.o: dep = $(shell tools/scan_includes $(@D)/$*.asm)
-$(red-speedchoice_obj): %_red.o: %.asm $$(dep)
+$(red-deathmode_obj): %_red.o: %.asm $$(dep)
 	$(RGBASM) -D _RED -h -o $@ $*.asm
 
-red-speedchoice_opt  = -cjsv -k 01 -l 0x33 -m 0x13 -p 0 -r 03 -t "RED_SPDC" -i KAPC
+red-deathmode_opt  = -cjsv -k 01 -l 0x33 -m 0x13 -p 0 -r 03 -t "RED_SPDC" -i KAPC
 
 %.gbc: $$(%_obj)
-	$(RGBLINK) -n $*.sym -l red-speedchoice.link -m red-speedchoice.map -o $@ $^
+	$(RGBLINK) -n $*.sym -l red-deathmode.link -m red-deathmode.map -o $@ $^
 	$(RGBFIX) $($*_opt) $@
 	sort $*.sym -o $*.sym
-	
+
 ### LZ compression rules
 
 %.lz: %
@@ -108,7 +108,7 @@ pic/ytrainer/%.2bpp: RGBGFX += -h
 	$(RGBGFX) -d1 $(rgbgfx) -o $@ $<
 	$(if $(tools/gfx),\
 		tools/gfx $(tools/gfx) -d1 -o $@ $@)
-	
+
 %.ini: %.gbc %.sym
 	$(PYTHON3) genrandoini.py $^ $@
 	echo "MD5Hash="$(shell md5sum $< | cut -d' ' -f1) >> $@
