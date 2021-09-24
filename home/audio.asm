@@ -216,7 +216,7 @@ PopAllRet:
 
 _LoadMusicByte::
 ; wCurMusicByte = [a:de]
-; GLOBAL LoadMusicByte
+EXPORT LoadMusicByte
 
 	ld [H_LOADEDROMBANK], a
 	ld [$2000], a
