@@ -2,11 +2,14 @@ PermaOptions5String::
 	db "BOAT<LNBRK>"
 	db "        :<LNBRK>"
 	db "POKéMON PICS<LNBRK>"
+	db "        :<LNBRK>"
+	db "PRIZE MONEY<LNBRK>"
 	db "        :@"
 
 PermaOptions5Pointers::
 	dw Options_Boat
 	dw Options_PokemonPics
+	dw Options_PrizeMoney
 	dw Options_PermaOptionsPage
 PermaOptions5PointersEnd::
 
@@ -27,7 +30,7 @@ Options_Boat::
 Options_PokemonPics:
 	ld hl, .Data
 	jp Options_Multichoice
-	
+
 .Data:
 	multichoiceoptiondata PICSET_ADDRESS, PICSET_SHIFT, PICSET_SIZE, 5, NUM_OPTIONS, .Strings
 .Strings:
@@ -35,10 +38,24 @@ Options_PokemonPics:
 	dw .Green
 	dw .Yellow
 .Strings_End:
-	
+
 .Normal
 	db "NORMAL@"
 .Green
 	db "GREEN @"
 .Yellow
 	db "YELLOW@"
+
+Options_PrizeMoney::
+	ld hl, PRIZE_MONEY_ADDRESS
+	ld b, PRIZE_MONEY
+	ld c, 7
+	ld de, .NormalAll
+	jp Options_TrueFalse
+.NormalAll
+	dw .Off
+	dw .On
+.Off
+	db "NORMAL@"
+.On
+	db "OFF   @"

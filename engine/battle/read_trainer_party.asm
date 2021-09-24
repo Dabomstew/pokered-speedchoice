@@ -162,6 +162,8 @@ ReadTrainer:
 	ld b, a
 .LastLoop
 ; update wAmountMoneyWon addresses (money to win) based on enemy's level
+	sboptioncheck PRIZE_MONEY ; check for prize money option, skip loop if on
+	jr nz, .continue
 	ld hl, wTrainerBaseMoney + 1
 	ld c, 2 ; wAmountMoneyWon is a 3-byte number
 	push bc
@@ -171,4 +173,5 @@ ReadTrainer:
 	inc de
 	dec b
 	jr nz, .LastLoop ; repeat wCurEnemyLVL times
+	.continue
 	ret

@@ -62,7 +62,7 @@ obtemp = 0
 obtemp = obtemp + 1
 	endr
 ENDM
-	
+
 popalloptions: MACRO
 obtemp = NUM_OPTIONS_BYTES - 1
 	rept NUM_OPTIONS_BYTES
@@ -90,11 +90,11 @@ TEXT_SLOW    EQU %11
 	optionbytestart
 	mboption FRAME, 4
 	mboption BIKE_MUSIC, 2
-	
+
 BIKE_MUSIC_NORMAL EQU %00
 BIKE_MUSIC_YELLOW EQU %01
 BIKE_MUSIC_NONE   EQU %10
-	
+
 NUM_OPTIONS_BYTES EQU optionbyte
 
 ; permaoptions
@@ -122,7 +122,7 @@ SPINNERHELL_WHY_SPEED EQU %11
 	mboption SELECTTO, 2 ; 4
 	sboption BETTER_GAME_CORNER ; 6
 	sboption EASY_SAFARI ; 7
-	
+
 SELECTTO_NONE EQU %00
 SELECTTO_BIKE EQU %01
 SELECTTO_JACK EQU %10
@@ -144,18 +144,19 @@ RACEGOAL_151DEX    EQU %10
 	sboption B_FAST_MOVEMENT ; 5
 	sboption KEEP_WARDEN_CANDY ; 6
 	sboption DEX_AREA_BEEP ; 7
-	
+
 	optionbytestart
 	sboption DONT_SKIP_MOVES ; 0
 	mboption EXP_SPLITTING, 2 ; 1
 	sboption CATCH_EXP ; 3
 	sboption FAST_VICTORY_ROAD ; 4
+	sboption PRIZE_MONEY ; 5
 
 EXP_SPLITTING_VANILLA     EQU %00
 EXP_SPLITTING_NOSPAM      EQU %01
 EXP_SPLITTING_EXPSHARE    EQU %10
 EXP_SPLITTING_ALWAYS      EQU %11
-	
+
 NUM_PERMAOPTIONS_BYTES EQU optionbyte
 
 ; wSpeedchoiceFlags:
