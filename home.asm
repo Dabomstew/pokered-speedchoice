@@ -9,7 +9,7 @@ SECTION "Bankswitch", ROM0
 	ld bc, BankswitchReturn
 	push bc
 	jp hl
-BankswitchReturn
+BankswitchReturn:
 	pop bc
 	ld a, b
 	jr _BankswitchCommon
@@ -1385,7 +1385,7 @@ DisplayListMenuIDLoop::
 	jp z, DisplayListMenuIDLoop
 	dec [hl]
 	jp DisplayListMenuIDLoop
-	
+
 DisplayChooseQuantityMenu::
 	ld a, [H_LOADEDROMBANK]
 	push af
@@ -2666,7 +2666,7 @@ YesNoChoicePokeCenter::
 	ld [wTwoOptionMenuID], a
 	coord hl, 11, 6
 	lb bc, 8, 12
-	
+
 DisplayYesNoChoice::
 	ld a, TWO_OPTION_MENU
 	ld [wTextBoxID], a
@@ -3052,7 +3052,7 @@ JoypadLowSensitivity::
 	ld a, 5 ; 1/12 of a second delay
 	ld [H_FRAMECOUNTER], a
 	ret
-	
+
 WaitForTextScrollButtonPressNoHTM::
 	ld a, [HOLD_TO_MASH_ADDRESS]
 	push af
@@ -4186,5 +4186,5 @@ GetFarByte::
 	rst BankswitchCommon
 	ld a, b
 	ret
-	
+
 HomeBankFreeSpace::

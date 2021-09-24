@@ -104,7 +104,7 @@ UpdateSound::
 	ld a, [wHaltAudio]
 	and a
 	ret nz
-	
+
 	homecall _UpdateSound
 	ret
 
@@ -120,7 +120,7 @@ PlayMusic::
 	push af
 	homecall _PlayMusic
 	jr PopAllRet
-	
+
 PlayCry:: ; 13d0 (0:13d0)
 ; Play monster a's cry.
 ; Play a cry given parameters in header de
@@ -175,9 +175,9 @@ PlayCry:: ; 13d0 (0:13d0)
 	pop af
 	ld [H_LOADEDROMBANK], a
 	ld [$2000], a
-	
+
 	call WaitForSoundToFinish
-	
+
 	jr PopAllRet
 ; 3c23
 
@@ -191,7 +191,7 @@ PlaySFX:: ; 3c23
 	push bc
 	push af
 
-PlaySFX_play
+PlaySFX_play:
 .play
 	ld a, [H_LOADEDROMBANK]
 	push af
@@ -216,8 +216,8 @@ PopAllRet:
 
 _LoadMusicByte::
 ; wCurMusicByte = [a:de]
-GLOBAL LoadMusicByte
-    
+; GLOBAL LoadMusicByte
+
 	ld [H_LOADEDROMBANK], a
 	ld [$2000], a
 
@@ -228,13 +228,13 @@ GLOBAL LoadMusicByte
 	ld [H_LOADEDROMBANK], a
 	ld [$2000], a
 	ret
-	
+
 PlaySoundWaitForCurrent::
 	push af
 	call WaitForSoundToFinish
 	pop af
 	jp PlaySound
-	
+
 ; Wait for sound to finish playing
 WaitForSoundToFinish::
 WaitSFX::
@@ -267,7 +267,7 @@ WaitForSoundToFinishIgnoreRedbar::
 
 	pop hl
 	ret
-	
+
 WaitForSongToFinish::
 .loop
 	call IsSongPlaying
